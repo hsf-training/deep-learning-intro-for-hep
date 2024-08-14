@@ -39,3 +39,5 @@ html:
 parse:
   myst_enable_extensions:
     - attrs_inline
+    - dollarmath
+    - smartquotes
