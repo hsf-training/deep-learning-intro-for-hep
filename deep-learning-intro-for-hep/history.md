@@ -49,4 +49,15 @@ Although many computing tasks in particle physics are suitable for hand-written 
 
 ## Summers and winters of AI
 
-AI has had a rocky history, driven by competition between two philosophies that have been called "symbolic" (or "GOFAI: Good Old Fashioned AI") and "connectionist." Symbolic AI
+AI has had a rocky history, driven by competition between two philosophies that have been called "symbolic" (or "GOFAI: Good Old Fashioned AI") and "connectionist."
+
+Symbolic AI consists of hand-written algorithms, which today wouldn't be called AI. In fact, it was a joke that once a human-like problem had been solved by computer, at that point [it ceases to be AI](https://quoteinvestigator.com/2024/06/20/not-ai/). The problems that went through this cycle include:
+
+* parsing the source code of a high-level programming language,
+* checking the proof of a theorem, and later, searching for proofs,
+* playing chess and other games by truncated searches through all possible games,
+* expert systems and fuzzy database searches.
+
+Symbolic AI is called "symbolic" because the starting point is a system of abstract symbols and rules—like programming in general. An associated philosophical idea is that this is the starting point for intelligence itself: human and artificial intelligence consists in manipulating propositions like an algebra, as proposed by George Boole, Gottlob Frege, and Bertrand Russell, and in language by Noam Chomsky.
+
+Connectionist AI makes a weaker claim about what happens in the intelligent system (human or artificial): only that the system's inputs and outputs are correlated appropriately, and an intricate network of connections can implement this correlation. As we'll see, neural networks are an effective way to implement these correlations, and were (loosely) inspired by the biology of human brains. The idea that we can only talk about the inputs and outputs of human intelligence, without proposing entities like symbols in the mind, was a popular trend in psychology called Behaviorism in the first half of the 20th century, but
