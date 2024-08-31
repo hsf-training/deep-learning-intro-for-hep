@@ -75,3 +75,14 @@ These early attempts were only moderately successful, but those who were excited
 The second wave ("summer") of AI was commercial, rather than academic with military applications. In the early 1980's, programs called "expert systems" were promoted as a way for humans to query domain-specific knowledge using natural language or fuzzy searches. Unfortunately, it was hard to encode common-sense variations using hand-written algorithms, so these projects were short-lived. Neural networks were revived as researchers recognized the importance of developing specialized network topologies, such as the Convolutional Neural Network (CNN) for recognizing images. Still more needed to be done before these systems became practical, and AI entered a second winter in the 1990s.
 
 From that point until about 2015, AI research has continued, shifting more toward connectionist systems. Since the term "AI" was out of favor, synonyms like "data mining" and "machine learning" were used instead. Dramatic advances in deep learning (neural networks with many layers) revived the field around 2015, and we're still seeing the effects of this rise.
+
+We can see this whole story at a glance through the frequency of the terms "artificial intelligence", "machine translation", "expert system", "machine learning", "data mining", "neural network", and "deep learning" in <a href="https://books.google.com/ngrams/graph?content=artificial+intelligence%2Cmachine+translation%2Cexpert+system%2Cmachine+learning%2Cdata+mining%2Cneural+network%2Cdeep+learning&year_start=1950&year_end=2019&case_insensitive=true&corpus=en-2019&smoothing=0">Google Books Ngram Viewer</a>. Below, the relative frequency of each term is overlaid with the funding "winters."
+
+![](img/ups-and-downs-of-ai-2-overlay.png){. width="100%"}
+
+Although the term "artificial intelligence" was coined in 1956, the primary application, "machine translation", was more prominent at first. "Artificial intelligence" appeared widely in print in the 1980's, due to its application in "expert systems". Technical improvements in "neural networks" were widely written about in the 1990's, though this term also fell out of favor when new technical issues were encountered. From the late 1990's until the past decade, alternate terms were introduced, such as "data mining" and "machine learning", to continue research without associating with past failures. "Deep learning" was used to describe neural networks with many hidden layers, and this was one of the innovations that led to the resurgence of the field in 2015.
+
+This era of "stealth" AI is also visible in attendance of AI conferences ([source]()),
+
+![](img/AI-conference-attendance.svg){. width="100%"}
+
