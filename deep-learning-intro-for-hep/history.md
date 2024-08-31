@@ -82,7 +82,10 @@ We can see this whole story at a glance through the frequency of the terms "arti
 
 Although the term "artificial intelligence" was coined in 1956, the primary application, "machine translation", was more prominent at first. "Artificial intelligence" appeared widely in print in the 1980's, due to its application in "expert systems". Technical improvements in "neural networks" were widely written about in the 1990's, though this term also fell out of favor when new technical issues were encountered. From the late 1990's until the past decade, alternate terms were introduced, such as "data mining" and "machine learning", to continue research without associating with past failures. "Deep learning" was used to describe neural networks with many hidden layers, and this was one of the innovations that led to the resurgence of the field in 2015.
 
-This era of "stealth" AI is also visible in attendance of AI conferences ([source]()),
+This era of "stealth" AI is also visible in attendance of AI conferences ([source](https://aiindex.stanford.edu/report/)),
 
 ![](img/AI-conference-attendance.svg){. width="100%"}
 
+and in 
+
+![](img/chep-papers-ml.svg){. width="100%"}
