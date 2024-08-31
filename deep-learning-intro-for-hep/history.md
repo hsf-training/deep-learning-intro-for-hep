@@ -15,7 +15,7 @@ kernelspec:
 
 # History of HEP and ML
 
-The purpose of this section is to show that particle/High Energy Physics (HEP) has always needed ML. It is not a fad—ML would have brought major benefits to HEP at any stage in its history. It's being used now because it's just becoming _possible_ now.
+The purpose of this section is to show that particle physics, specifically High Energy Physics (HEP), has always needed ML. It is not a fad: _effective_ ML would have brought major benefits to HEP at any stage in its history. It's being applied to many problems in HEP now because it's just becoming _possible_ now.
 
 ![](img/hep-plus-ml.jpg){. width="40%"}
 
@@ -49,7 +49,7 @@ Although many computing tasks in particle physics are suitable for hand-written 
 
 ## Symbolic AI and connectionist AI
 
-AI has had a rocky history, driven by competition between two philosophies that have been called "symbolic" (or "GOFAI: Good Old Fashioned AI") and "connectionist."
+AI has had a rocky history, driven by competition between two philosophies that have been called "symbolic" (or "[GOFAI](https://en.wikipedia.org/wiki/GOFAI): Good Old Fashioned AI") and "connectionist."
 
 Symbolic AI consists of hand-written algorithms, which today wouldn't be called AI. In fact, it was a joke that once a human-like problem had been solved by computer, at that point [it ceases to be AI](https://quoteinvestigator.com/2024/06/20/not-ai/). The problems that went through this cycle include:
 
@@ -62,11 +62,11 @@ Symbolic AI is called "symbolic" because the starting point is a system of abstr
 
 Connectionist AI makes a weaker claim about what happens in the intelligent system (human or artificial): only that the system's inputs and outputs are correlated appropriately, and an intricate network of connections can implement that correlation. As we'll see, neural networks are an effective way to implement it, and they were (loosely) inspired by the biology of human brains. The idea that we can only talk about the inputs and outputs of human systems, without proposing symbols as entities in the mind, was a popular trend in psychology called Behaviorism in the first half of the 20th century (in a similar spirit as Quantum Mechanics and S-Matrix theory in physics, in which we only speak of particles going in and particles coming out of an interaction, not what happens in between). Today, Cognitive Psychologists can measure the scaling time and other properties of algorithms in human minds, so Behaviorism is out of favor. But it's ironic that large language models like ChatGPT are an implementation of what Behaviorists proposed as a model of human intelligence a century ago.
 
-Although connectionist systems like neural networks don't start with propositions and symbols, something like these structures may form among the connections as the most effective way to produce the desired outputs, similar to emergent behavior in dynamical systems. Practitioners of explainable AI (xAI) try to find patterns like these in trained neural networks—far from treating them as a black box!
+Although connectionist systems like neural networks don't start with propositions and symbols, something like these structures may form among the connections as the most effective way to produce the desired outputs, similar to emergent behavior in dynamical systems. Practitioners of explainable AI (xAI) try to find patterns like these in trained neural networks—far from treating a trained model as a black box, they treat it as a natural system to study!
 
 ## AI's summers and winters
 
-Connectionism started early: Warren McCulloch and Walter Pitts described a formalism for neural networks in 1943 ([ref](https://doi.org/10.1007/BF02478259)), while the first digital computers were still being invented. Frank Rosenblatt built a working model and demonstrated it to the U.S. Navy in 1958 ([ref](https://news.cornell.edu/stories/2019/09/professors-perceptron-paved-way-ai-60-years-too-soon), 20×20 input grid → 512-node hidden layer → 8-node output layer, [ref](https://en.wikipedia.org/wiki/Perceptron#Mark_I_Perceptron_machine)).
+Connectionism started early: Warren McCulloch and Walter Pitts described a formalism for neural networks in 1943 ([ref](https://doi.org/10.1007/BF02478259)), while the first digital computers were still being invented. Frank Rosenblatt built a working model and demonstrated it to the U.S. Navy in 1958 ([ref](https://news.cornell.edu/stories/2019/09/professors-perceptron-paved-way-ai-60-years-too-soon)). In modern terms, the architecture was already multi-layer: a 20×20 input grid fed into a 512-node hidden layer, which fed into an 8-node output layer ([ref](https://en.wikipedia.org/wiki/Perceptron#Mark_I_Perceptron_machine)).
 
 ![](img/perceptron-1958-a.jpg){. width="47%"} ![](img/perceptron-1958-b.png){. width="45%"}
 
@@ -80,12 +80,24 @@ We can see this whole story at a glance through the frequency of the terms "arti
 
 ![](img/ups-and-downs-of-ai-2-overlay.png){. width="100%"}
 
-Although the term "artificial intelligence" was coined in 1956, the primary application, "machine translation", was more prominent at first. "Artificial intelligence" appeared widely in print in the 1980's, due to its application in "expert systems". Technical improvements in "neural networks" were widely written about in the 1990's, though this term also fell out of favor when new technical issues were encountered. From the late 1990's until the past decade, alternate terms were introduced, such as "data mining" and "machine learning", to continue research without associating with past failures. "Deep learning" was used to describe neural networks with many hidden layers, and this was one of the innovations that led to the resurgence of the field in 2015.
+Although the term "artificial intelligence" was coined in 1956 ([ref](https://archive.org/details/defendingairesea0000mcca/mode/2up)), the primary application, "machine translation", was more prominent at first. "Artificial intelligence" appeared widely in print in the 1980's, due to its application in "expert systems". Technical improvements in "neural networks" were widely written about in the 1990's, though this term also fell out of favor when new technical issues were encountered. From the late 1990's until the past decade, alternate terms were introduced, such as "data mining" and "machine learning", to continue research without associating with past failures. "Deep learning" was used to describe neural networks with many hidden layers, and this was one of the innovations that led to the resurgence of the field in 2015.
 
-This era of "stealth" AI is also visible in attendance of AI conferences ([source](https://aiindex.stanford.edu/report/)),
+The most recent decline and resurgence of AI is also visible in attendance of AI conferences from 1985 to the present ([source](https://aiindex.stanford.edu/report/)):
 
 ![](img/AI-conference-attendance.svg){. width="100%"}
 
-and in 
+More importantly for us, it's also visible in the titles and abstracts of talks at CHEP (Computing in High Energy Physics). The plot below shows the percentage of CHEP talks whose title and/or abstract, retrieved from [InspireHEP](https://inspirehep.net/), matches searches for "machine-learning" or "ML", "neural" or "NN", "deep-learning", and "boosted-decision" or "BDT" (with or without the hyphen in all two-word terms).
 
 ![](img/chep-papers-ml.svg){. width="100%"}
+
+In the 1990's (years are labeled on the top axis), particle physicists discussed neural networks frequently, but this came to a end when AI research declined. Although I know from personal experience that Boosted Decision Trees (BDTs) were widely employed, they weren't often mentioned in CHEP titles and abstracts. After 2015, HEP followed the AI industry's renewed interest, but with a variety of names that include "machine learning" and "deep learning".
+
+## Conclusion
+
+HEP has always needed ML. Since the beginning of the HEP as we know it, high energy physicists have invested heavily in computing, but their problems could not be solved without human intelligence in the workflow, which doesn't scale to large numbers of collision events. Today, we're finding that many of the hand-written algorithms from the decades in which AI was not ready are less efficient and less capable than connectionist AI solutions, especially deep learning.
+
+Meanwhile, the prospect of connectionist AI has been unclear until very recently. Interest and funding vacillated throughout its history (including a [brief dip in 2020‒2022](https://en.wikipedia.org/wiki/AI_winter#AI_spring_(2015%E2%80%932020)_followed_by_a_short_winter_(2020%E2%80%932022)), before ChatGPT) as hype alternated with pessimism. Given this history, one could find examples to justify either extreme.
+
+Particle physicists followed these trends, at least in the last cycle, since the neural networks of the 1990's were promising, but ultimately not as effective as BDTs. Things changed when the state of the art in AI reached a new level around 2015. We still haven't exhausted the consequences of these recent advancements and AI capabilities don't seem to be leveling off into a plateau again, at least not yet.
+
+Although we should avoid using AI beyond its reasonable applications—that is, problems in which an exact solution or functional form is known, problems that suggest a specific algorithm that could be hand-written, and systems that need to be controlled without surprising special cases—the range of _good_ problems for AI in HEP is broad and not fully explored.
