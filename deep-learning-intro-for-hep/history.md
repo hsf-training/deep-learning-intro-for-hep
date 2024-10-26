@@ -93,7 +93,7 @@ The most recent decline and resurgence of AI is also visible in attendance of AI
 
 ![](img/AI-conference-attendance.svg){. width="100%"}
 
-More importantly for us, AI was adopted in experimental particle physics, starting in the late 1980's ([ref](https://doi.org/10.1016/0010-4655(88)90004-5), [ref](https://doi.org/10.1016/0168-9002(89)91300-4), [ref](https://inspirehep.net/literature/277470), [ref](https://doi.org/10.1016/0010-4655(89)90267-1), [ref](https://doi.org/10.1016/0168-9002(90)91491-S)). It's visible in talks at CHEP (Computing in High Energy Physics), in which about 5% of the titles and abstracts from 1989 to 1997 matched "neural" or "NN" as a word. The synonyms "ML", "machine-learning", and "deep-learning" (with or without the hyphen) didn't appear until the resurgence of interest after 2015.
+More importantly for us, AI was adopted in experimental particle physics, starting in the late 1980's ([ref](https://doi.org/10.1016/0010-4655(88)90004-5), [ref](https://doi.org/10.1016/0168-9002(89)91300-4), [ref](https://inspirehep.net/literature/277470), [ref](https://doi.org/10.1016/0010-4655(89)90267-1), [ref](https://doi.org/10.1016/0168-9002(90)91491-S), and [retrospective](https://indico.ijclab.in2p3.fr/event/5999/timetable/#77-origins-of-ai-in-high-energ)). It's visible in talks at CHEP (Computing in High Energy Physics), in which about 5% of the titles and abstracts from 1989 to 1997 matched "neural" or "NN" as a word. The synonyms "ML", "machine-learning", and "deep-learning" (with or without the hyphen) didn't appear until the resurgence of interest after 2015.
 
 ![](img/chep-papers-ml.svg){. width="100%"}
 

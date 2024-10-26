@@ -6,3 +6,4 @@ root: intro
 chapters:
 - file: overview
 - file: history
+- file: linear-to-neural
