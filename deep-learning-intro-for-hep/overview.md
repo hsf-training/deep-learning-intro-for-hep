@@ -1,18 +1,3 @@
----
-jupytext:
-  cell_metadata_filter: -all
-  formats: md:myst
-  text_representation:
-    extension: .md
-    format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.16.3
-kernelspec:
-  display_name: Python 3
-  language: python
-  name: python3
----
-
 # Overview
 
 ## Broad overview
@@ -72,7 +57,7 @@ Boosted random forests were particularly popular in particle physics before the 
 
 This course focuses on NNs for several reasons.
 
-1. At heart, an NN is a simple algorithm, a generalization of a linear fit.
+1. At heart, a NN is a simple algorithm, a generalization of a linear fit.
 2. NNs are applicable to a broad range of problems, when large enough training datasets and computational resources are available to train them.
 3. They're open to experimentation with different NN topologies.
 4. At the time of writing, we are in the midst of an ML/AI revolution, almost entirely due to advances in deep NNs.
