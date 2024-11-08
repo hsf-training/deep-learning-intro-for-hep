@@ -13,11 +13,11 @@ kernelspec:
   name: python3
 ---
 
-# Basic fitting
+# Universal function approximation
 
 +++
 
-In this section, we'll start doing some computations, so get a Python interface (terminal, file, or notebook) handy! I'll start with linear fitting, which I assume you're familiar with, and show neural networks are a generalization of this technique.
+In this section, we'll start doing some computations, so get a Python interface (terminal, file, or notebook) handy! I'll start with linear fitting, which I assume you're familiar with, and show how neural networks are a generalization of linear fits.
 
 +++
 
