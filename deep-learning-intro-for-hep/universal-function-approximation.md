@@ -288,16 +288,16 @@ def ansatz(t, y0, t0, mu, tf):
     return y0 - (1/mu)*np.log(np.cosh((t - t0)/tf))
 
 least_squares = LeastSquares(t, y, 1, ansatz)
-minimizer = Minuit(least_squares, y0=100, t0=0, mu=1, tf=5)
+minimizer = Minuit(least_squares, y0=100, t0=0, mu=1, tf=5)   # <-- initial guess
 minimizer.migrad()
 
-model_y = ansatz(t, **{p.name: p.value for p in minimizer.params})
+y_from_ansatz = ansatz(t, **{p.name: p.value for p in minimizer.params})
 ```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 
-ax.plot(t, model_y)
+ax.plot(t, y_from_ansatz)
 
 ax.scatter(t, y, marker=".", color="tab:orange")
 ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
@@ -307,3 +307,61 @@ ax.set_ylabel("height above ground")
 
 None
 ```
+
+It's a great fit, but you had to put part of the answer in to get this answer out. First, you had to know the functional form. Suppose you used the formula for the position of a tossed object _without_ air resistance?
+
+$$y(t) = y_0 - \frac{1}{2}g(t - t_0)^2$$
+
+```{code-cell} ipython3
+def wrong_ansatz(t, y0, t0, g):
+    return y0 - (1/2)*g*(t - t0)**2
+
+least_squares = LeastSquares(t, y, 1, wrong_ansatz)
+minimizer = Minuit(least_squares, y0=100, t0=0, g=5)   # <-- initial guess
+minimizer.migrad()
+
+y_from_wrong_ansatz = wrong_ansatz(t, **{p.name: p.value for p in minimizer.params})
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+ax.plot(t, y_from_wrong_ansatz)
+
+ax.scatter(t, y, marker=".", color="tab:orange")
+ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
+
+ax.set_xlabel("time after release")
+ax.set_ylabel("height above ground")
+
+None
+```
+
+Or suppose you have the right functional form but provided the fitter with a bad initial guess? These are the numbers passed to the `Minuit` object constructor:
+
+```{code-cell} ipython3
+def ansatz(t, y0, t0, mu, tf):
+    return y0 - (1/mu)*np.log(np.cosh((t - t0)/tf))
+
+least_squares = LeastSquares(t, y, 1, ansatz)
+minimizer = Minuit(least_squares, y0=0, t0=0, mu=1, tf=1)   # <-- initial guess
+minimizer.migrad()
+
+y_from_ansatz = ansatz(t, **{p.name: p.value for p in minimizer.params})
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+ax.plot(t, y_from_ansatz)
+
+ax.scatter(t, y, marker=".", color="tab:orange")
+ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
+
+ax.set_xlabel("time after release")
+ax.set_ylabel("height above ground")
+
+None
+```
+
+The fit might converge to the wrong value or it might fail to converge entirely.
