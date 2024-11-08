@@ -13,7 +13,7 @@ kernelspec:
   name: python3
 ---
 
-# From linear fits to neural nets
+# Basic fitting
 
 +++
 
@@ -176,7 +176,7 @@ from sklearn.linear_model import LinearRegression
 
 ```{code-cell} ipython3
 # Scikit-Learn wants an array of vectors, even if they're 1-dimensional
-X = x.reshape(len(x), 1)
+X = x.reshape(len(x), 1)   # or X = x[:, np.newaxis]
 y = y
 
 best_fit = LinearRegression().fit(X, y)
@@ -219,16 +219,91 @@ best_fit.intercept_
 
 +++
 
-In physics, we usually try to find a first-principles theory that relates quantities $x$ to measurements $y$. Usually, that theory doesn't predict a _linear_ relationship. For example, the position of a skydiver as a function of time, $y(t)$, is
+In physics, we usually try to find a first-principles theory that relates quantities $x$ to measurements $y$. Usually, that theory doesn't predict a _linear_ relationship. For example, the position of a tossed object as a function of time, $y(t)$, is
 
 $$y(t) = y_0 - \frac{1}{\mu} \log \left( \cosh \frac{t - t_0}{t_f} \right)$$
 
 where $y_0$ and $t_0$ are the starting position and time, and $\mu$ and $t_f$ are related to the air resistance.
 
 ```{code-cell} ipython3
+def y_of_t(t):
+    y0, t0, mu, tf = 60, 3, 0.05, 2
+    return y0 - (1/mu)*np.log(np.cosh((t - t0)/tf))
+
+def measurement_error(n):
+    return np.random.normal(0, 1, n)
+```
+
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 
-t = np.linspace()
+t = np.linspace(0, 10, 50)
+y = y_of_t(t) + measurement_error(50)
+
+ax.scatter(t, y, marker=".", color="tab:orange")
+ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
+
+ax.set_xlabel("time after release")
+ax.set_ylabel("height above ground")
+
+None
+```
+
+A linear fit would be a disaster:
+
+```{code-cell} ipython3
+best_fit = LinearRegression().fit(t[:, np.newaxis], y)
+
+(linear_slope,) = best_fit.coef_
+linear_intercept = best_fit.intercept_
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+ax.plot([0, 10], [linear_slope * 0 + linear_intercept, linear_slope * 10 + linear_intercept])
+
+ax.scatter(t, y, marker=".", color="tab:orange")
+ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
+
+ax.set_xlabel("time after release")
+ax.set_ylabel("height above ground")
+
+None
+```
+
+Instead, we use our theoretical knowledge of the shape of the functional form (often called an "ansatz") and consider any unknown magnitudes as free parameters. Unlike a linear fit, there might not be an exact formula to find those parameters—there usually isn't—so we use an algorithm to search the space of free parameters until it minimizes
+
+$$\chi^2 = \sum_i \left[f(x) - y\right]^2$$
+
+In HEP, our favorite search algorithm is implemented in the Minuit library.
+
+```{code-cell} ipython3
+from iminuit import Minuit
+from iminuit.cost import LeastSquares
+```
+
+```{code-cell} ipython3
+def ansatz(t, y0, t0, mu, tf):
+    return y0 - (1/mu)*np.log(np.cosh((t - t0)/tf))
+
+least_squares = LeastSquares(t, y, 1, ansatz)
+minimizer = Minuit(least_squares, y0=100, t0=0, mu=1, tf=5)
+minimizer.migrad()
+
+model_y = ansatz(t, **{p.name: p.value for p in minimizer.params})
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+ax.plot(t, model_y)
+
+ax.scatter(t, y, marker=".", color="tab:orange")
+ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
+
+ax.set_xlabel("time after release")
+ax.set_ylabel("height above ground")
 
 None
 ```
