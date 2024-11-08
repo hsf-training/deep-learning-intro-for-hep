@@ -218,3 +218,17 @@ best_fit.intercept_
 ## Non-linear fitting
 
 +++
+
+In physics, we usually try to find a first-principles theory that relates quantities $x$ to measurements $y$. Usually, that theory doesn't predict a _linear_ relationship. For example, the position of a skydiver as a function of time, $y(t)$, is
+
+$$y(t) = y_0 - \frac{1}{\mu} \log \left( \cosh \frac{t - t_0}{t_f} \right)$$
+
+where $y_0$ and $t_0$ are the starting position and time, and $\mu$ and $t_f$ are related to the air resistance.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+t = np.linspace()
+
+None
+```
