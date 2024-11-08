@@ -13,11 +13,11 @@ kernelspec:
   name: python3
 ---
 
-# Universal function approximation
+# Basic fitting
 
 +++
 
-In this section, we'll start doing some computations, so get a Python interface (terminal, file, or notebook) handy! I'll start with linear fitting, which I assume you're familiar with, and show how neural networks are a generalization of linear fits.
+In this section, we'll start doing some computations, so get a Python interface (terminal, file, or notebook) handy! I'll start with basic fitting, which I assume you're familiar with, and show how neural networks are a generalization of linear fits.
 
 +++
 
@@ -75,7 +75,7 @@ b = ((sumxx*sumy) - (sumx*sumxy)) / delta
 a, b
 ```
 
-which should be close to $a = 2$ and $b = 3$, and it depends on the exact values of the noise. Regenerate the data points several times and you should see $a$ jump around $2$ and $b$ jump around $3$.
+which should be close to $a = 2$ and $b = 3$. Differences from the true values depend on the details of the noise. Regenerate the data points several times and you should see $a$ jump around $2$ and $b$ jump around $3$.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -86,7 +86,7 @@ ax.plot([-5, 5], [a*-5 + b, a*5 + b], color="tab:blue")
 None
 ```
 
-The first thing to notice is that there's a difference between the $x$ dimension and the $y$ dimension: $x$ is presumed to range over all values, potentially from $-\infty$ to $\infty$, and $y$ follows the linear relationship plus some noise. You couldn't, for instance, fit a vertical line: $y$ is supposed to be a _function_ of $x$. In an experiment, you'd use $x$ to denote the variables you can control, such as the voltage you apply to a circuit, and $y$ is the measured response of the system, like a current in that circuit. In ML terminology, $x$ is a "feature" and $y$ is a "prediction," and this whole fitting process is called "regression."
+Note, however, that there's a difference between the $x$ dimension and the $y$ dimension: $x$ is presumed to range over all values, potentially from $-\infty$ to $\infty$, and $y$ follows the linear relationship plus some noise. You couldn't, for instance, fit a vertical line: $y$ is supposed to be a _function_ of $x$. In an experiment, you'd use $x$ to denote the variables you can control, such as the voltage you apply to a circuit, and $y$ is the measured response of the system, like a current in that circuit. In ML terminology, $x$ is a "feature" and $y$ is a "prediction," and this whole fitting process is called "regression."
 
 Now suppose you can control two features. The $x$ values are now 2-dimensional vectors and you need a 2-dimensional $a$ parameter to write a linear relationship:
 
@@ -276,7 +276,7 @@ Instead, we use our theoretical knowledge of the shape of the functional form (o
 
 $$\chi^2 = \sum_i \left[f(x) - y\right]^2$$
 
-In HEP, our favorite search algorithm is implemented in the Minuit library.
+In HEP, our favorite search algorithm is implemented by the Minuit library.
 
 ```{code-cell} ipython3
 from iminuit import Minuit
@@ -364,4 +364,31 @@ ax.set_ylabel("height above ground")
 None
 ```
 
-The fit might converge to the wrong value or it might fail to converge entirely.
+The fit might converge to the wrong value or it might fail to converge entirely. (Long-time HEP experimentalists are familiar with these struggles!)
+
++++
+
+## When to use linear or non-linear fitting?
+
++++
+
+If you _do_ know enough to write a (correct) functional form and seed the fit with good starting values, then ansatz fitting is the best way to completely understand a system. Not only is the fitted function an accurate predictor of new values, but the parameters derived from the fit tell you about the underlying reality by filling in numerical values that were missing from the theory. In the above example, we could have used $\mu$ and $t_f$ to derive the force of air resistance on the tossed object. In general, all of physics is one big ansatz fit: we hypothesize general relativity and the Standard Model, then perform fits to measurements and learn the values of the constant of universal gravitation, the masses of quarks, leptons, and bosons, the strengths of interactions between them, etc. I didn't show it in the examples above, but fitting procedures can also provide uncertainties on each parameter, their correlations, and likelihoods that the ansatz is correct.
+
+_However_, most scientific problems don't have this much prior information. This is especially true in sciences that study the behavior of human beings. What is the underlying theory for a kid preferring chocolate ice cream over vanilla? What are the variables, and what's the functional form? Even if you think that human behavior is determined by underlying chemistry and physics, it would be horrendously complex.
+
+Here's an example: the [Boston Housing Prices](https://www.kaggle.com/datasets/vikrishnan/boston-house-prices) is a classic dataset for regression. The goal is to predict median housing prices in areas around Boston using features like
+
+* proportion of residental land zoned for lots over 25,000 square feet
+* proportion of non-retail business acres per town
+* whether the area is adjacent to the Charles river (a boolean variable)
+* nitric oxides concentration
+* average number of rooms per dwelling
+* proportion of owner-occupied lots built before 1940
+* weighted distances to 5 Boston employment centers
+* accessibility to radial highways
+* full-value property tax rate
+* pupil-teacher ratio in schools
+
+All of these seem like they would have an effect on housing prices, but it's almost impossible to guess which would be more important. Problems like these are usually solved by a generic linear fit of many variables. Unimportant features would have a best-fit slope near zero, and if our goal is to find out which features are most important, we can force unimportant features toward zero with "regularization" (to be discussed in a later section). The idea of ML as "throw everything into a big fit" is close to what you have to do if you have no ansatz, and neural networks are a natural generalization of high-dimensional linear fitting.
+
+In the next section, we'll try to fit arbitrary non-linear _curves_ without knowing an ansatz.
