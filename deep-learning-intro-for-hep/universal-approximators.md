@@ -77,23 +77,23 @@ As a physicist, "Taylor series" might have been your first thought!
 
 $$E = mc^2 \, \sqrt{1 + \left(\frac{p}{mc}\right)^2} = mc^2 + \frac{1}{2}mv^2 - \frac{1}{8 c^4}mv^4 + \ldots$$
 
-where the second term is classical energy.
+where the second term is classical kinetic energy.
 
 A Taylor (or Maclaurin) series is a decomposition of a function into infinitely many pieces:
 
 $$f(x) = a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \ldots$$
 
-where each $a_n$ is computed from the $n^{\mbox{\scriptsize th}}$ derivative of the function, evaluated at zero.
+where each $a_n$ is computed from the $n$<sup>th</sup> derivative of the function, evaluated at zero.
 
 $$a_n = \frac{f^{(n)}(0)}{n!}$$
 
-The function can be thought of as a single infinite-dimensional vector and we're just describing its components. These components are "orthonormal," meaning that they're at right angles to each other and have unit length. Other (useful) ways to split a function into infinitely many orthonormal polynomials include [Jacobi](https://en.wikipedia.org/wiki/Jacobi_polynomials), [Laguerre](https://en.wikipedia.org/wiki/Laguerre_polynomials), [Hermite](https://en.wikipedia.org/wiki/Hermite_polynomials), [Chebyshev](https://en.wikipedia.org/wiki/Chebyshev_polynomials)...
+The function $f$ can be thought of as a single infinite-dimensional vector and we're describing its components with all the $a_n$. These components are "orthonormal," meaning that they're at right angles to each other and have unit length. Other (useful) ways to split a function into infinitely many orthonormal pieces include [Jacobi polynomials](https://en.wikipedia.org/wiki/Jacobi_polynomials), [Laguerre polynomials](https://en.wikipedia.org/wiki/Laguerre_polynomials), [Hermite polynomials](https://en.wikipedia.org/wiki/Hermite_polynomials), [Chebyshev polynomials](https://en.wikipedia.org/wiki/Chebyshev_polynomials)...
 
 Since any (infinitely differentiable) function can be described by a Taylor series, we should be able to fit any data with a functional relationship to a series of polynomial terms. The only problem is that we have to pick a _finite_ number of terms.
 
 You could pass something like $a_0 + a_1 x + a_2 x^2 + a_3 x^3$ as an ansatz to Minuit, but orthonormal basis functions have an exact solution. In fact, they're a kind of linear fit—a 4-term polynomial of 1 feature, $x$, is a fit to 4 features: $1$, $x$, $x^2$, and $x^3$. This is sometimes called the "kernel trick," and we'll cover it in a later section.
 
-NumPy has a polynomial fitter built in:
+NumPy has a polynomial fitter built in, so let's see the result.
 
 ```{code-cell} ipython3
 NUMBER_OF_POLYNOMIAL_TERMS = 15
@@ -172,15 +172,6 @@ This is a failure to generalize—we want our function approximation to make rea
 
 +++
 
-$$
-\begin{align}
-a = \frac{1}{2} && b = \frac{1}{3} && c = \frac{1}{4} \\
-a && b && c
-\end{align}
-$$
-
-+++
-
 Your next thought, as a physicist, might be "Fourier series."
 
 [Fourier series](https://en.wikipedia.org/wiki/Fourier_series) are also heavily used throughout physics. For instance, did you know that [epicycles in medieval astronomy are the first few terms in a Fourier series](https://doi.org/10.1086/348869)? Discrete Fourier series approximate periodic functions and integral Fourier transforms approximate non-periodic functions. Like Taylor series, Fourier series are a decomposition of a function as an infinite-dimensional vector into infinitely many components, all orthonormal to one another. Instead of polynomial basis vectors, Fourier basis vectors are sine and cosine functions:
@@ -233,10 +224,143 @@ None
 
 Like the Taylor series, this gets the large feature right and misses the edges. In fact, the Fourier model is constrained to match at $x = 0$ and $x = 1$ because this is a discrete Fourier series and therefore periodic in the training domain.
 
-Both the 15-term Taylor series and the 15-term Fourier series are not good fits to the function. In part, this is because it's neither polynomial nor trigonometric, but a stitched-together monstrosity of both.
+Both the 15-term Taylor series and the 15-term Fourier series are not good fits to the function. In part, this is because the function is neither polynomial nor trigonometric, but a stitched-together monstrosity of both.
 
 +++
 
 ## Adaptive basis functions
+
++++
+
+The classic methods of universal function approximation—Taylor series, Fourier series, and others—have one thing in common: they all approximate the function with a fixed set of basis functions $\psi_i$ for $i \in [0, N)$.
+
+$$f(x) = \sum_i^N c_i \, \psi_i(x)$$
+
+Thus, you're only allowed to optimize the coefficients $c_i$ in front of each basis function. You're allowed to stack them, but not change them.
+
+Suppose, instead, that we had a set of functions that could also change shape:
+
+$$f(x) = \sum_i^N c_i \, \psi(x; \alpha_i, \beta_i)$$
+
+These are functions of $x$, parameterized by $\alpha_i$ and $\beta_i$. Here are some examples that you could use: [sigmoid functions](https://en.wikipedia.org/wiki/Sigmoid_function) with an adjustable center $\alpha$ and width $\beta$:
+
+$$\psi(x; \alpha, \beta) = \frac{1}{1 + \exp\left((x - \alpha)/\beta\right)}$$
+
+```{code-cell} ipython3
+def sigmoid_component(x, center, width):
+    # ignore NumPy errors when Minuit explores extreme values
+    with np.errstate(over="ignore", divide="ignore"):
+        return 1 / (1 + np.exp((x - center) / width))
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+sample_x = np.linspace(0, 1, 1000)
+
+ax.plot(model_x, sigmoid_component(sample_x, 0.5, 0.2), label=r"$\alpha = 0.5$, $\beta = 0.2$")
+ax.plot(model_x, sigmoid_component(sample_x, 0.5, 0.1), label=r"$\alpha = 0.5$, $\beta = 0.1$")
+ax.plot(model_x, sigmoid_component(sample_x, 0.75, -0.01), label=r"$\alpha = 0.75$, $\beta = -0.01$")
+
+ax.legend(loc="lower left", bbox_to_anchor=(0.05, 0.1))
+
+None
+```
+
+Fitting with these adaptive sigmoids requires a non-linear parameter search, rather than computing the parameters with an exact formula. In the Taylor and Fourier cases, the fact that all basis functions $\psi_i$ are orthogonal to each other means that you could determine each coefficient $c_i$ in isolation. Since adaptive basis functions don't have that property, you can't.
+
+In fact, this is a harder-than-usual problem for Minuit because the search space has many local minima. To get around this, let's run it 15 times and take the best result.
+
+```{code-cell} ipython3
+from iminuit import Minuit
+from iminuit.cost import LeastSquares
+```
+
+```{code-cell} ipython3
+NUMBER_OF_SIGMOIDS = 5
+
+def sigmoid_sum(x, parameters):
+    out = np.zeros_like(x)
+    for coefficient, center, width in parameters.reshape(-1, 3):
+        out += coefficient * sigmoid_component(x, center, width)
+    return out
+
+# using Minuit
+least_squares = LeastSquares(x, y, 0.03, sigmoid_sum)
+
+# do best of 15 optimizations
+best_minimizer = None
+for iteration in range(15):
+
+    initial_parameters = np.zeros(5 * 3)
+    initial_parameters[0::3] = np.random.normal(0, 1, NUMBER_OF_SIGMOIDS)    # coefficient terms
+    initial_parameters[1::3] = np.random.uniform(0, 1, NUMBER_OF_SIGMOIDS)   # center parameters (alpha)
+    initial_parameters[2::3] = np.random.normal(0, 0.1, NUMBER_OF_SIGMOIDS)  # width parameters (beta)
+
+    minimizer = Minuit(least_squares, initial_parameters)
+    minimizer.migrad()
+
+    if best_minimizer is None or minimizer.fval < best_minimizer.fval:
+        best_minimizer = minimizer
+
+model_x = np.linspace(0, 1, 1000)
+model_y = sigmoid_sum(model_x, np.array(best_minimizer.values))
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+ax.scatter(x, y, marker=".")
+ax.plot(curve_x, curve_y, color="magenta", linewidth=3)
+ax.plot(model_x, model_y, color="orange", linewidth=3)
+
+ax.legend(["measurements", "truth", f"{len(minimizer.parameters)} sigmoid parameters"])
+
+None
+```
+
+Usually, it's a beautiful fit!
+
+Since you used 5 sigmoids with 3 parameters each (scaling coefficient $c_i$, center $\alpha_i$, and width $\beta_i$), this is 15 parameters, and the result compares favorably with 15 Taylor components or 15 Fourier components.
+
+Moreover, it generalizes reasonably well:
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+model_x_2 = np.linspace(0, 2, 2000)
+model_y_2 = sigmoid_sum(model_x_2, np.array(best_minimizer.values))
+
+ax.scatter(x, y, marker=".")
+ax.plot(curve_x_2, curve_y_2, color="magenta", linewidth=3)
+ax.plot(model_x_2, model_y_2, color="orange", linewidth=3)
+
+ax.legend(["measurements", "truth", f"{len(minimizer.parameters)} sigmoid parameters"])
+ax.set_ylim(-1.5, 1.5)
+
+None
+```
+
+We can't expect the fit to know what the true function does outside of the sample points, but it doesn't shoot off into outer space or connect into a periodic function like Taylor or Fourier series do. It assumes that the curve levels off because it's made out of components that level off.
+
+By varying the scale ($c_i$), center ($\alpha_i$), and width ($\beta_i$) of each sigmoid, we can build any sandcastle we want, and they all level off to horizontal lines outside the domain.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+model_x = np.linspace(0, 1, 1000)
+
+wide_plateau_left = sigmoid_component(model_x, 0.2, 0.005)
+wide_plateau_right = sigmoid_component(model_x, 0.9, -0.005)
+
+narrow_peak_left = sigmoid_component(model_x, 0.4, 0.005)
+narrow_peak_right = sigmoid_component(model_x, 0.6, -0.005)
+
+ax.plot(model_x, -wide_plateau_left - wide_plateau_right - narrow_peak_left - narrow_peak_right)
+
+None
+```
+
+## Adaptive basis functions are a one-level neural network
 
 +++
