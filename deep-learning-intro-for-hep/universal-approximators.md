@@ -362,5 +362,3 @@ None
 ```
 
 ## Adaptive basis functions are a one-level neural network
-
-+++

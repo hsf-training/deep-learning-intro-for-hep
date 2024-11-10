@@ -4,12 +4,14 @@ This book is an introduction to modern neural networks (deep learning), intended
 
 This book is "introductory" because it emphasizes the foundations of what neural networks are, how they work, _why_ they work, and it provides practical steps to train neural networks of any topology. It does not get into the (changing) world of network topologies or designing new kinds of machine learning algorithms to fit new problems.
 
-The material in this book was first presented at [CoDaS-HEP](https://codas-hep.org/) in 2024: [jpivarski-talks/2024-07-24-codas-hep-ml](https://github.com/jpivarski-talks/2024-07-24-codas-hep-ml). It also has roots in [jpivarski-talks/2024-07-08-scipy-teen-track](https://github.com/jpivarski-talks/2024-07-08-scipy-teen-track) (though that was for an entirely different audience). I am writing it in book format, rather than simply depositing my slide PDFs and Jupyter notebooks in [https://hsf-training.org/](https://hsf-training.org/), because the original format assumes that I'll verbally fill in the gaps. This format is good for two purposes:
+The material in this book was first presented at [CoDaS-HEP](https://codas-hep.org/) in 2024: [jpivarski-talks/2024-07-24-codas-hep-ml](https://github.com/jpivarski-talks/2024-07-24-codas-hep-ml). I am writing it in book format, rather than simply depositing my slide PDFs and Jupyter notebooks in [https://hsf-training.org/](https://hsf-training.org/), because the original format assumes that I'll verbally fill in the gaps. This format is good for two purposes:
 
 * offline self-study by a student without a teacher, and
 * for teachers preparing new course slides and notebooks (without having to read my mind).
 
 The course materials include some inline problems, intended for active learning during a lecture, and a large project designed for students to work on for about two hours. (In practice, experienced students finished it in an hour and beginners could have used a little more time.)
+
+## Software for the course
 
 This course uses [Scikit-Learn](https://scikit-learn.org/) and [PyTorch](https://pytorch.org/) for examples and problem sets. [TensorFlow](https://www.tensorflow.org/) is also a popular machine learning library, but its functionality is mostly the same as PyTorch, and I didn't want to hide the concepts behind incidental differences in software interfaces. (I _did_ include Scikit-Learn because its interface is much simpler than PyTorch. When I want to emphasize issues that surround fitting in general, I'll use Scikit-Learn because the fit itself is just two lines of code, and when I want to emphasize the details of the machine learning model, I'll use PyTorch, which expands the fit into tens of lines of code and allows for more control of this part.)
 
@@ -18,6 +20,15 @@ I didn't take the choice of PyTorch over TensorFlow lightly (since I'm a newcome
 ![](img/github-ml-package-cmsswseed.svg){. width="100%"}
 
 Moreover, PyTorch seems to be more future-proof than TensorFlow. By examining the use of both outside of particle physics, we see that <a href="https://trends.google.com/trends/explore?q=%2Fm%2F0h97pvq,%2Fg%2F11bwp1s2k3,%2Fg%2F11gd3905v1&date=2014-08-14%202024-08-14">Google search volume</a> is increasing for PyTorch at the expense of TensorFlow ("JAX" is a common word with meanings beyond machine learning, making it impossible to compare), and PyTorch is much more frequently used by [machine learning competition winners](https://mlcontests.com/state-of-competitive-machine-learning-2023/#deep-learning) in the past few years.
+
+## What to install
+
+* NumPy >= 1.26.4
+* Matplotlib >= 3.8.4
+* Scikit-Learn >= 1.5.2
+* iminuit >= 2.30.1
+
+## Table of contents
 
 ```{tableofcontents}
 ```

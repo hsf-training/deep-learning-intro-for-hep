@@ -77,6 +77,8 @@ a, b
 
 which should be close to $a = 2$ and $b = 3$. Differences from the true values depend on the details of the noise. Regenerate the data points several times and you should see $a$ jump around $2$ and $b$ jump around $3$.
 
+We can also confirm that the line goes through the points:
+
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 
@@ -86,9 +88,9 @@ ax.plot([-5, 5], [a*-5 + b, a*5 + b], color="tab:blue")
 None
 ```
 
-Note, however, that there's a difference between the $x$ dimension and the $y$ dimension: $x$ is presumed to range over all values, potentially from $-\infty$ to $\infty$, and $y$ follows the linear relationship plus some noise. You couldn't, for instance, fit a vertical line: $y$ is supposed to be a _function_ of $x$. In an experiment, you'd use $x$ to denote the variables you can control, such as the voltage you apply to a circuit, and $y$ is the measured response of the system, like a current in that circuit. In ML terminology, $x$ is a "feature" and $y$ is a "prediction," and this whole fitting process is called "regression."
+One thing that you should keep in mind is that we're treating the $x$ dimension and the $y$ dimension differently: $\chi^2$ is minimizing differences in predicted $y$ ($a x_i + b$) and measured $y$ ($y_i$): only the _vertical_ differences between points and the line matter. In an experiment, you'd use $x$ to denote the variables you can control, such as the voltage you apply to a circuit, and $y$ is the measured response of the system, like a current in that circuit. In ML terminology, $x$ is a "feature" and $y$ is a "prediction," and this whole fitting process is called "regression."
 
-Now suppose you can control two features. The $x$ values are now 2-dimensional vectors and you need a 2-dimensional $a$ parameter to write a linear relationship:
+Now suppose you control two features. The $x$ values are now 2-dimensional vectors and you need a 2-dimensional $a$ parameter to write a linear relationship:
 
 $$\left(\begin{array}{c c}
 a^1 & a^2 \\
@@ -136,9 +138,9 @@ y^2 \\
 y^m
 \end{array}\right)$$
 
-Now you're looking for a best-fit $\hat{a}$ matrix and $\vec{b}$ vector to describe a linear relationship between a set of n-dimensional vectors $\vec{x}_i$ and a set of m-dimensional vectors $\vec{y}_i$.
+In this general case, you're looking for a best-fit $\hat{a}$ matrix and $\vec{b}$ vector to describe a linear relationship between a set of n-dimensional vectors $\vec{x}_i$ and a set of m-dimensional vectors $\vec{y}_i$.
 
-By the way, it's sometimes convenient to collect all of our free parameters, $\hat{a}$ and $\vec{b}$, into a single matrix $\hat{A}$ by adding a "fake" dimension to the input features:
+(By the way, it's sometimes convenient to collect all of our free parameters, $\hat{a}$ and $\vec{b}$, into a single matrix $\hat{A}$ by adding a "fake" dimension to the input features:
 
 $$\left(\begin{array}{c c c c c}
 a^{1,1} & a^{1,2} & \cdots & a^{1,n} & b^1 \\
@@ -158,7 +160,7 @@ y^2 \\
 y^m
 \end{array}\right)$$
 
-(This is just a mathematical convenience.)
+This is just a mathematical convenience that we'll use below.)
 
 Since this is still a linear fit and $\chi^2$ is still ordinary least squares:
 
@@ -214,6 +216,27 @@ best_fit.coef_
 ```{code-cell} ipython3
 best_fit.intercept_
 ```
+
+Before we leave linear fitting, I want to point out that getting the indexes right is hard, and that both the mathematical notation and the array syntax hide this difficulty.
+
+* The first of the two fits with Scikit-Learn takes features (`X`) with shape `(100, 1)` and targets (`y`) with shape `(100,)`.
+* The second takes features (`X`) with shape `(100000, 2)` and targets (`Y`) with shape `(100000, 3)`.
+
+Scikit-Learn's `fit` function is operating in two modes: the first takes a rank-1 array (the `shape` tuple has length 1) as a set of scalar targets and the second takes a rank-2 array as a set of vector targets. In both cases, Scikit-Learn requires the features to be rank-2, even if its second dimension just has length 1. (Why isn't it just as strict about the targets? I don't know.)
+
+The mathematical notation is just as tricky: in the fully general case, we want to fit n-dimensional feature vectors $\vec{x}_i$ to m-dimensional target vectors $\vec{y}_i$, and we're looking for a best-fit matrix $\hat{A}$ (or a best-fit matrix $\hat{a}$ _and_ vector $\vec{b}$, depending on whether we use the "fake dimension" trick or not). I'm using the word "vector" (with an arrow over the variable) to mean rank-1 and "matrix" (with a hat over the variable) to mean rank-2. Each pair of $\vec{x}_i$ and $\vec{y}_i$ vectors should be close to the
+
+$$\hat{A} \cdot \vec{x}_i = \vec{y}_i$$
+
+relationship and we minimize $\chi^2$ for the whole dataset, summing over all $i$.
+
+This $i$ can be thought of as _another_ dimension, which is why we have a matrix $\hat{X}$ and a matrix $\hat{Y}$ (but still only a matrix $\hat{A}$: the model parameters are not as numerous as the number of data points in the dataset).
+
+In machine learning applications like computer vision, the individual data points are images, which we'd like to think of as having two dimensions. Thus, we can get into higher and higher ranks, and that's why we usually talk about "tensors." It will be worth paying special attention to which dimensions mean what. The notation gets complicated because it's hard to decide where to put all those indexes. In the above, I've tried to consistently put the data-points-in-dataset index $i$ as a subscript and the features/targets-are-vectors index as a superscript, but if we have more of them, then we just have to list them somehow.
+
+A concept that you should _not_ carry over from physics is the idea that tensors are defined by how they transform under spatial rotations—like the inertia tensor, the stress tensor, or tensors in general relativity. These "tensors" are just rectilinear arrays of numbers.
+
++++
 
 ## Non-linear fitting
 
@@ -272,7 +295,7 @@ ax.set_ylabel("height above ground")
 None
 ```
 
-Instead, we use our theoretical knowledge of the shape of the functional form (often called an "ansatz") and consider any unknown magnitudes as free parameters. Unlike a linear fit, there might not be an exact formula to find those parameters—there usually isn't—so we use an algorithm to search the space of free parameters until it minimizes
+Instead, we use our theoretical knowledge of the shape of the functional form, often called an "ansatz," and consider any unknown magnitudes as free parameters. Unlike a linear fit, there might not be an exact formula to find those parameters—there usually isn't—so we use an algorithm to search the space of free parameters until it minimizes
 
 $$\chi^2 = \sum_i \left[f(x) - y\right]^2$$
 
@@ -344,7 +367,7 @@ def ansatz(t, y0, t0, mu, tf):
     return y0 - (1/mu)*np.log(np.cosh((t - t0)/tf))
 
 least_squares = LeastSquares(t, y, 1, ansatz)
-minimizer = Minuit(least_squares, y0=0, t0=0, mu=1, tf=1)   # <-- initial guess
+minimizer = Minuit(least_squares, y0=0, t0=0, mu=10, tf=10)   # <-- initial guess
 minimizer.migrad()
 
 y_from_ansatz = ansatz(t, **{p.name: p.value for p in minimizer.params})
@@ -368,13 +391,13 @@ The fit might converge to the wrong value or it might fail to converge entirely.
 
 +++
 
-## When to use linear or non-linear fitting?
+## When to use basic fitting?
 
 +++
 
-If you _do_ know enough to write a (correct) functional form and seed the fit with good starting values, then ansatz fitting is the best way to completely understand a system. Not only is the fitted function an accurate predictor of new values, but the parameters derived from the fit tell you about the underlying reality by filling in numerical values that were missing from the theory. In the above example, we could have used $\mu$ and $t_f$ to derive the force of air resistance on the tossed object. In general, all of physics is one big ansatz fit: we hypothesize general relativity and the Standard Model, then perform fits to measurements and learn the values of the constant of universal gravitation, the masses of quarks, leptons, and bosons, the strengths of interactions between them, etc. I didn't show it in the examples above, but fitting procedures can also provide uncertainties on each parameter, their correlations, and likelihoods that the ansatz is correct.
+If you _do_ know enough to write a (correct) functional form and seed the fit with good starting values, then ansatz fitting is the best way to completely understand a system. Not only is the fitted function an accurate predictor of new values, but the parameters derived from the fit tell you about the underlying reality by filling in numerical values that were missing from the theory. In the above example, we could have used $\mu$ and $t_f$ to derive the force of air resistance on the tossed object—we'd learn something new. In general, all of physics is one big ansatz fit: we hypothesize general relativity and the Standard Model, then perform fits to measurements and learn the values of the constant of universal gravitation, the masses of quarks, leptons, and bosons, the strengths of interactions between them, etc. I didn't show it in the examples above, but fitting procedures can also provide uncertainties on each parameter, their correlations, and likelihoods that the ansatz is correct.
 
-_However_, most scientific problems don't have this much prior information. This is especially true in sciences that study the behavior of human beings. What is the underlying theory for a kid preferring chocolate ice cream over vanilla? What are the variables, and what's the functional form? Even if you think that human behavior is determined by underlying chemistry and physics, it would be horrendously complex.
+_However_, most scientific problems beyond physics don't have this much prior information. This is especially true in sciences that study the behavior of human beings. What is the underlying theory for a kid preferring chocolate ice cream over vanilla? What are the variables, and what's the functional form? Even if you think that human behavior is determined by underlying chemistry and physics, it would be horrendously complex.
 
 Here's an example: the [Boston Housing Prices](https://www.kaggle.com/datasets/vikrishnan/boston-house-prices) is a classic dataset for regression. The goal is to predict median housing prices in areas around Boston using features like
 
