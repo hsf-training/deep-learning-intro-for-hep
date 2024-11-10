@@ -87,7 +87,7 @@ where each $a_n$ is computed from the $n$<sup>th</sup> derivative of the functio
 
 $$a_n = \frac{f^{(n)}(0)}{n!}$$
 
-The function $f$ can be thought of as a single infinite-dimensional vector and we're describing its components with all the $a_n$. These components are "orthonormal," meaning that they're at right angles to each other and have unit length. Other (useful) ways to split a function into infinitely many orthonormal pieces include [Jacobi polynomials](https://en.wikipedia.org/wiki/Jacobi_polynomials), [Laguerre polynomials](https://en.wikipedia.org/wiki/Laguerre_polynomials), [Hermite polynomials](https://en.wikipedia.org/wiki/Hermite_polynomials), [Chebyshev polynomials](https://en.wikipedia.org/wiki/Chebyshev_polynomials)...
+The function $f$ can be thought of as a single infinite-dimensional vector and we're describing its components with all the $a_n$. These components are "orthonormal," meaning that they're at right angles to each other and have unit length (in a norm defined on functions: $\int f(x)^2 \, dx$). Other (useful) ways to split a function into infinitely many orthonormal pieces include [Jacobi polynomials](https://en.wikipedia.org/wiki/Jacobi_polynomials), [Laguerre polynomials](https://en.wikipedia.org/wiki/Laguerre_polynomials), [Hermite polynomials](https://en.wikipedia.org/wiki/Hermite_polynomials), [Chebyshev polynomials](https://en.wikipedia.org/wiki/Chebyshev_polynomials)...
 
 Since any (infinitely differentiable) function can be described by a Taylor series, we should be able to fit any data with a functional relationship to a series of polynomial terms. The only problem is that we have to pick a _finite_ number of terms.
 
@@ -116,7 +116,7 @@ ax.legend(["measurements", "truth", f"{len(coefficients)} Taylor components"], l
 None
 ```
 
-It's kind of wiggily. It's a relatively good fit on the big oscillation, since that looks like a polynomial, but it can't dampen the oscillations on the flat parts without a lot more terms.
+It's kind of wiggily. It's a relatively good fit on the big oscillation, since that part looks like a polynomial, but it can't dampen the oscillations on the flat parts without a lot more terms.
 
 Increasing the number of terms makes it look better:
 
@@ -162,9 +162,9 @@ ax.set_ylim(-1.5, 2.5)
 None
 ```
 
-If our only knowledge of the function comes from its sampled points, there isn't a "correct answer" for what the function _should_ be outside of the sampled domain, but it probably shouldn't shoot off into outer space.
+If our only knowledge of the function comes from its sampled points, there isn't a "correct answer" for what the function should be outside of the sampled domain, but it probably shouldn't shoot off into outer space.
 
-This is a failure to generalize—we want our function approximation to make reasonable predictions outside of its training data. What "reasonable" means depends on the application, but if these were measurements of quantities in nature, unmeasured values at $x > 1$ would probably be about $-1.5 < y < 1.5$.
+This is a failure to generalize—we want our function approximation to make reasonable predictions outside of its training data. What "reasonable" means depends on the application, but if these were measurements of quantities in nature, unmeasured values at $x > 1$ would probably be about $2 < y < 2$.
 
 +++
 
@@ -222,7 +222,7 @@ ax.legend(["measurements", "truth", f"{1 + len(cos_terms) + len(sin_terms)} Four
 None
 ```
 
-Like the Taylor series, this gets the large feature right and misses the edges. In fact, the Fourier model is constrained to match at $x = 0$ and $x = 1$ because this is a discrete Fourier series and therefore periodic in the training domain.
+Like the Taylor series, this gets the large feature right and misses the edges. In fact, the Fourier model above is constrained to match at $x = 0$ and $x = 1$ because this is a discrete Fourier series and therefore periodic in the training domain.
 
 Both the 15-term Taylor series and the 15-term Fourier series are not good fits to the function. In part, this is because the function is neither polynomial nor trigonometric, but a stitched-together monstrosity of both.
 
@@ -236,13 +236,13 @@ The classic methods of universal function approximation—Taylor series, Fourier
 
 $$f(x) = \sum_i^N c_i \, \psi_i(x)$$
 
-Thus, you're only allowed to optimize the coefficients $c_i$ in front of each basis function. You're allowed to stack them, but not change them.
+Thus, you're only allowed to optimize the coefficients $c_i$ in front of each basis function, not the shapes of the basis functions themselves. You're allowed to stack them, but not change them.
 
 Suppose, instead, that we had a set of functions that could also change shape:
 
 $$f(x) = \sum_i^N c_i \, \psi(x; \alpha_i, \beta_i)$$
 
-These are functions of $x$, parameterized by $\alpha_i$ and $\beta_i$. Here are some examples that you could use: [sigmoid functions](https://en.wikipedia.org/wiki/Sigmoid_function) with an adjustable center $\alpha$ and width $\beta$:
+These are functions of $x$, parameterized by $\alpha_i$ and $\beta_i$. Here's an example set that we can use: [sigmoid functions](https://en.wikipedia.org/wiki/Sigmoid_function) with an adjustable center $\alpha$ and width $\beta$:
 
 $$\psi(x; \alpha, \beta) = \frac{1}{1 + \exp\left((x - \alpha)/\beta\right)}$$
 
@@ -267,7 +267,7 @@ ax.legend(loc="lower left", bbox_to_anchor=(0.05, 0.1))
 None
 ```
 
-Fitting with these adaptive sigmoids requires a non-linear parameter search, rather than computing the parameters with an exact formula. In the Taylor and Fourier cases, the fact that all basis functions $\psi_i$ are orthogonal to each other means that you could determine each coefficient $c_i$ in isolation. Since adaptive basis functions don't have that property, you can't.
+Fitting with these adaptive sigmoids requires a non-linear parameter search, rather than computing the parameters with an exact formula. In the Taylor and Fourier cases, the fact that all basis functions $\psi_i$ are orthogonal to each other means that you can determine each coefficient $c_i$ in isolation. Since adaptive basis functions don't have that property, you can't.
 
 In fact, this is a harder-than-usual problem for Minuit because the search space has many local minima. To get around this, let's run it 15 times and take the best result.
 
@@ -319,9 +319,13 @@ ax.legend(["measurements", "truth", f"{len(minimizer.parameters)} sigmoid parame
 None
 ```
 
+```{code-cell} ipython3
+assert np.sum((model_y - curve_y)**2) < 10
+```
+
 Usually, it's a beautiful fit!
 
-Since you used 5 sigmoids with 3 parameters each (scaling coefficient $c_i$, center $\alpha_i$, and width $\beta_i$), this is 15 parameters, and the result compares favorably with 15 Taylor components or 15 Fourier components.
+Since you used 5 sigmoids with 3 parameters each (scaling coefficient $c_i$, center $\alpha_i$, and width $\beta_i$), this is 15 parameters, and the result is much better than it is with 15 Taylor components or 15 Fourier components.
 
 Moreover, it generalizes reasonably well:
 

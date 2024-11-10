@@ -387,6 +387,10 @@ ax.set_ylabel("height above ground")
 None
 ```
 
+```{code-cell} ipython3
+assert np.sum((y_from_ansatz - y)**2) > 100
+```
+
 The fit might converge to the wrong value or it might fail to converge entirely. (Long-time HEP experimentalists are familiar with these struggles!)
 
 +++
