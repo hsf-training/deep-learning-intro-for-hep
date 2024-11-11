@@ -365,4 +365,273 @@ ax.plot(model_x, -wide_plateau_left - wide_plateau_right - narrow_peak_left - na
 None
 ```
 
-## Adaptive basis functions are a one-level neural network
+## Adaptive basis functions are a one-layer neural network
+
++++
+
+It may not look like it, but we've just crossed the (conventional) boundary from basic fitting to neural networks. The fit function
+
+$$y = \sum_i^n c_i \psi(x; \alpha_i, \beta_i) = \sum_i^n c_i \, \frac{1}{1 + \exp\left((x - \alpha_i)/\beta_i\right)}$$
+
+can be written as a linear-transformed $x$ passed into a hard-coded sigmoid. Let's call the hard-coded sigmoid $f$:
+
+$$f(x) = \frac{1}{1 + \exp\left(x\right)}$$
+
+and the linear-transformed $x$ as $x'_i$:
+
+$$x'_i = (x - \alpha_i)/\beta_i$$
+
+Now the full fit function is
+
+$$y = \sum_i^n c_i \, f\left(x'_i\right)$$
+
+We took a 1-dimensional $x$, linear transformed it into an n-dimensional $\vec{x}'$, applied a non-linear function $f$, and then linear-transformed that into a 1-dimensional $y$. Let's draw it (for $n = 5$) like this:
+
+![](img/artificial-neural-network-layers-3.svg){. width="100%"}
+
+If you've seen diagrams of neural networks before, this should look familiar! The input is on the left as a vertical column of boxes—only one in this case because our input is 1-dimensional—and the linear transformation is represented by arrows to the next vertical column of boxes, our 5-dimensional $\vec{x}'$. The sigmoid $f$ is not shown in diagram, and the next set of arrows represent another linear transformation to the outputs, $y$, which is also 1-dimensional so only one box.
+
+The first linear transform has slopes $1/\beta$ and intercepts $\alpha_i/\beta_i$ and the second linear transformation in our example has only slopes $c_i$, but we could have added another intercept $y_0$ if we wanted to, to let the vertical offset float.
+
+In neural network terminology, the intermediate $\vec{x}_i$ vector is a "hidden layer" between $x$ and $y$. The non-linear function applied at that layer is an "activation function." Generally speaking (if you have enough parameters), the exact shape of the activation function isn't important, but it _cannot_ be linear, or else the two linear transformations would coalesce into one linear transformation. The activation function breaks the linearity that would make the $c_i$ exactly expressible in terms of the $\alpha_i$ and $\beta_i$.
+
+Here are some commonly used activation functions:
+
+| | Name | Function |
+|:-:|:-|:-:|
+| ![](img/Activation_binary_step.svg){. width="100%"} | binary step | $f(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ 1 & \mbox{if } x \ge 0\end{array}\right.$ | 
+| ![](img/Activation_logistic.svg){. width="100%"} | sigmoid, logistic, or soft step | $f(x) = \frac{1}{1 + e^{-x}}$ | 
+| ![](img/Activation_tanh.svg){. width="100%"} | hyperbolic tangent | $f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ | 
+| ![](img/Activation_rectified_linear.svg){. width="100%"} | rectified linear unit or ReLU | $f(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ | 
+| ![](img/Activation_prelu.svg){. width="100%"} | leaky ReLU | $f(x) = \left\{\begin{array}{c l}\alpha x & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ | 
+| ![](img/Activation_swish.svg){. width="100%"} | sigmoid linear unit or swish | $f(x) = \frac{x}{1 + e^{-x}}$ | 
+
+If we had 3-dimensional inputs $\vec{x}$ and 2-dimensional outputs $\vec{y}$, the diagram would look like this:
+
+![](img/artificial-neural-network-layers-4.svg){. width="100%"}
+
+Now there are 15 arrows between the input layer and the hidden layer, just as there are 15 parameters in a 3×5 matrix, and there are 10 arrows between the hidden layer and the output layer, just as there are 10 parameters in a 5×2 matrix.
+
++++
+
+## Neural networks
+
++++
+
+We were led to this formalism because we wanted a universal function approximator that's more well-behaved than the classic Taylor and Fourier series, a fit function that uses fewer parameters and does not explode or wrap-around beyond the training data. This is not at all how neural networks were first developed (or how they're normally presented).
+
+Originally, neural networks were inspired by analogy with neurons in the brain. A neuron (nerve cell) receives n electro-chemical signals at one end and transmits m electro-chemical signals at the other end via some function. This can be modeled as a linear transformation passed through an activation function, since there are enough parameters in the linear transformation to simulate whatever a real neuron does.
+
+![](img/real-neuron.svg){. width="100%"}
+
+$$f\left[\left(\begin{array}{c c c c}
+a_{1,1} & a_{1,2} & \cdots & a_{1,10} \\
+a_{2,1} & a_{2,2} & \cdots & a_{2,10} \\
+a_{3,1} & a_{3,2} & \cdots & a_{3,10} \\
+a_{4,1} & a_{4,2} & \cdots & a_{4,10} \\
+a_{5,1} & a_{5,2} & \cdots & a_{5,10} \\
+\end{array}\right) \cdot \left(\begin{array}{c}
+x_1 \\
+x_2 \\
+\vdots \\
+x_{10}
+\end{array}\right) + \left(\begin{array}{c}
+b_1 \\
+b_2 \\
+b_3 \\
+b_4 \\
+b_5 \\
+\end{array}\right)\right] = \left(\begin{array}{c}
+y_1 \\
+y_2 \\
+y_3 \\
+y_4 \\
+y_5 \\
+\end{array}\right)$$
+
+or
+
+$$\begin{array}{c}
+f\left[a_{1,1}x_1 + a_{1,2}x_2 + \ldots + a_{1,10}x_{10} + b_1\right] = y_1 \\
+f\left[a_{2,1}x_1 + a_{2,2}x_2 + \ldots + a_{2,10}x_{10} + b_2\right] = y_2 \\
+f\left[a_{3,1}x_1 + a_{3,2}x_2 + \ldots + a_{3,10}x_{10} + b_3\right] = y_3 \\
+f\left[a_{4,1}x_1 + a_{4,2}x_2 + \ldots + a_{4,10}x_{10} + b_4\right] = y_4 \\
+f\left[a_{5,1}x_1 + a_{5,2}x_2 + \ldots + a_{5,10}x_{10} + b_5\right] = y_5 \\
+\end{array}$$
+
+In the original formulation, $\vec{y}$ was a 1-dimensional binary value and the activation function $f$ was a sharp threshold ("binary step" in the table above). Real neurons tend to fire in all-or-nothing pulses. This single-layer neural network was called a perceptron.
+
+Perceptrons can be used to classify linearly separable data into two categories.
+
+```{code-cell} ipython3
+blob1 = np.random.normal(0, 1, (1000, 2)) + np.array([[0, 3]])
+blob2 = np.random.normal(0, 1, (2000, 2)) + np.array([[3, 0]])
+
+all_data = np.concatenate((blob1, blob2))
+targets = np.concatenate((np.zeros(len(blob1)), np.ones(len(blob2))))
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(5, 5))
+
+ax.scatter(blob1[:, 0], blob1[:, 1], marker=".", color="tab:blue")
+ax.scatter(blob2[:, 0], blob2[:, 1], marker=".", color="tab:orange")
+
+ax.set_xlim(-4, 7)
+ax.set_ylim(-4, 7)
+
+None
+```
+
+A perceptron is mathematically equivalent to Scikit-Learn's logistic regression fitter:
+
+```{code-cell} ipython3
+from sklearn.linear_model import LogisticRegression
+```
+
+```{code-cell} ipython3
+best_fit = LogisticRegression(penalty=None).fit(all_data, targets)
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(5, 5))
+
+# Compute the model's orange-vs-blue probability for 100×100 points in the background
+background_x, background_y = np.meshgrid(np.linspace(-4, 7, 100), np.linspace(-4, 7, 100))
+background_2d = np.column_stack((background_x.ravel(), background_y.ravel()))
+probabilities = best_fit.predict_proba(background_2d)
+
+# And draw a line where the probability crosses 0.5
+probability_of_0 = probabilities[:, 0].reshape(background_x.shape)
+ax.contour(background_x, background_y, probability_of_0, [0.5], linestyles=["--"])
+ax.contourf(background_x, background_y, probability_of_0, alpha=0.1)
+
+ax.scatter(blob1[:, 0], blob1[:, 1], marker=".", color="tab:blue")
+ax.scatter(blob2[:, 0], blob2[:, 1], marker=".", color="tab:orange")
+
+ax.set_xlim(-4, 7)
+ax.set_ylim(-4, 7)
+
+None
+```
+
+What a perceptron can't do is classify data that are not linearly separable:
+
+```{code-cell} ipython3
+blobs1 = np.concatenate((
+    np.random.normal(0, 1, (1000, 2)) + np.array([[0, 0]]),
+    np.random.normal(0, 1, (1000, 2)) + np.array([[3, 3]]),
+))
+blobs2 = np.concatenate((
+    np.random.normal(0, 1, (1000, 2)) + np.array([[0, 3]]),
+    np.random.normal(0, 1, (1000, 2)) + np.array([[3, 0]]),
+))
+
+all_data = np.concatenate((blobs1, blobs2))
+targets = np.concatenate((np.zeros(len(blobs1)), np.ones(len(blobs2))))
+```
+
+```{code-cell} ipython3
+best_fit = LogisticRegression(penalty=None).fit(all_data, targets)
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(5, 5))
+
+# Compute the model's orange-vs-blue probability for 100×100 points in the background
+background_x, background_y = np.meshgrid(np.linspace(-4, 7, 100), np.linspace(-4, 7, 100))
+background_2d = np.column_stack((background_x.ravel(), background_y.ravel()))
+probabilities = best_fit.predict_proba(background_2d)
+
+# And draw a line where the probability crosses 0.5
+probability_of_0 = probabilities[:, 0].reshape(background_x.shape)
+ax.contour(background_x, background_y, probability_of_0, [0.5], linestyles=["--"])
+ax.contourf(background_x, background_y, probability_of_0, alpha=0.1)
+
+ax.scatter(blobs1[:, 0], blobs1[:, 1], marker=".", color="tab:blue")
+ax.scatter(blobs2[:, 0], blobs2[:, 1], marker=".", color="tab:orange")
+
+ax.set_xlim(-4, 7)
+ax.set_ylim(-4, 7)
+
+None
+```
+
+There is no line that will separate the orange points from the blue points.
+
+This limitation led to the first "winter" for connectionist AI, but the fix is (in retrospect) obvious: the brain consists of more than one neuron!
+
+![](img/nerve-cells-sem-steve-gschmeissner.jpg){. width="100%"}
+
+By connecting the output of one perceptron to the input of another, we get the universal approximator described above:
+
+![](img/artificial-neural-network-layers-4.svg){. width="100%"}
+
+which can solve the above problem:
+
+```{code-cell} ipython3
+from sklearn.neural_network import MLPRegressor
+```
+
+```{code-cell} ipython3
+best_fit = MLPRegressor(
+    activation="logistic", hidden_layer_sizes=(5,), max_iter=10000, alpha=0
+).fit(all_data, targets)
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(5, 5))
+
+# Compute the model's orange-vs-blue probability for 100×100 points in the background
+background_x, background_y = np.meshgrid(np.linspace(-4, 7, 100), np.linspace(-4, 7, 100))
+background_2d = np.column_stack((background_x.ravel(), background_y.ravel()))
+probabilities = best_fit.predict(background_2d)
+
+# And draw a line where the probability crosses 0.5
+probability_of_0 = probabilities.reshape(background_x.shape)
+ax.contour(background_x, background_y, probability_of_0, [0.5], linestyles=["--"])
+ax.contourf(background_x, background_y, probability_of_0, alpha=0.1)
+
+ax.scatter(blobs1[:, 0], blobs1[:, 1], marker=".", color="tab:blue")
+ax.scatter(blobs2[:, 0], blobs2[:, 1], marker=".", color="tab:orange")
+
+ax.set_xlim(-4, 7)
+ax.set_ylim(-4, 7)
+
+None
+```
+
+## Deep learning
+
++++
+
+In principle, one hidden layer is enough to approximate any shape: this fact is known as the Universal Approximation Theorem.
+
+However, multiple hidden layers are _better_ at approximating complex shapes.
+
+![](img/artificial-neural-network-layers-5.svg){. width="100%"}
+
+This is one perceptron fed into another, fed into another, etc. The general adage is that "one layer memorizes, many layers generalize." To get an intuition about this, consider the following:
+
+* Adding one more component to a layer adds one wiggle (sigmoid curve) to the fit function.
+* Adding one more layer effectively folds space under the next set of wiggly functions. Instead of fitting individual wiggles, they find symmetries in the data that (probably) correspond to an underlying relationship, rather than noise.
+
+Consider this horseshoe-shaped decision boundary: with two well-chosen folds along the symmetries, it reduces to a simpler curve to fit. Instead of 4 ad-hoc wiggles, it's 2 folds and 1 wiggle.
+
+![](img/deep-learning-by-space-folding.svg){. width="100%"}
+
+(from Montúfar, Pascanu, Cho, & Bengio, [On the Number of Linear Regions of Deep Neural Networks](https://arxiv.org/abs/1402.1869) (2014))
+
+You can see this in detail in [Roy Keyes's fantastic demo](https://gist.github.com/jpivarski/f99371614ecaa48ace90a6025d430247). The three categories of data in the spiral arms of the galaxy on the left are fitted with a neural network that transforms the underlying coordinates to the warped mesh shown on the right. Then the three categories are linearly separable.
+
+![](img/network-layer-space-folding.png){. width="100%"}
+
+The recognition that "deep" neural networks with many layers are more powerful than one large hidden layer, as well as the ability to train them, is recent. It's responsible for the resurgence of interest in neural networks around 2015. Here's a plot of Google searches for the words "neural network" and "deep learning" from the past 10 years:
+
+![](img/rise-of-deep-learning.svg){. width="100%"}
+
+* 2006‒2007: problems that prevented the training of deep learning were solved.
+* 2012: AlexNet, a GPU-enabled 8 layer network (with ReLU), won the ImageNet competition.
+* 2015: ResNet, a GPU-enabled 152+ layer network (with skip-connections), won the ImageNet competition.
+
+In the next section, you'll use a graphical user interface to a deep neural network to solve classification problems.
