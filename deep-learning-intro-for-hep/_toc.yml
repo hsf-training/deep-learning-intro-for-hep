@@ -6,3 +6,5 @@ root: intro
 chapters:
 - file: overview
 - file: history
+- file: basic-fitting
+- file: universal-approximators
