@@ -63,7 +63,7 @@ From that point until about 2015, AI research has continued, shifting more towar
 
 We can see this whole story at a glace through the frequency of terms used to describe it in books:
 
-![](img/ups-and-downs-of-ai-3-overlay.png){. width="100%"}
+<a href="https://books.google.com/ngrams/graph?content=cybernetics%2Cartificial+intelligence%2Cexpert+system%2Cperceptron%2Cneural+network%2Cmachine+learning%2Cdata+mining%2Cdeep+learning&year_start=1950&year_end=2019&case_insensitive=true&corpus=en-2019&smoothing=0"><img src="ups-and-downs-of-ai-3-overlay.png" width="100%"></a>
 
 <a href="https://books.google.com/ngrams/graph?content=cybernetics%2Cartificial+intelligence%2Cexpert+system%2Cperceptron%2Cneural+network%2Cmachine+learning%2Cdata+mining%2Cdeep+learning&year_start=1950&year_end=2019&case_insensitive=true&corpus=en-2019&smoothing=0">The above search</a> in Google Books's Ngram Viewer shows the rise and fall of the following terms:
 
@@ -90,7 +90,7 @@ The 2024 Nobel Prize in Physics has drawn attention to connections between the t
 
 HEP has always needed ML. Since the beginning of the HEP as we know it, high energy physicists have invested heavily in computing, but their problems could not be solved without human intelligence in the workflow, which doesn't scale to large numbers of collision events. Today, we're finding that many of the hand-written algorithms from the decades in which AI was not ready are less efficient and less capable than connectionist AI solutions, especially deep learning.
 
-Meanwhile, the prospect of connectionist AI has been unclear until very recently. Interest and funding vacillated throughout its history (including a [brief dip in 2020‒2022](https://en.wikipedia.org/wiki/AI_winter#AI_spring_(2015%E2%80%932020)_followed_by_a_short_winter_(2020%E2%80%932022)), before ChatGPT) as hype alternated with pessimism. Given this history, one could find examples to justify either extreme: it has been heavily oversold and undersold.
+Meanwhile, the prospect of connectionist AI has been unclear until very recently. Interest and funding vacillated throughout its history (including a brief dip in 2020‒2022 ([ref](https://doi.org/10.1109/AIMLA59606.2024.10531477)), before ChatGPT) as hype alternated with pessimism. Given this history, one could find examples to justify either extreme: it has been heavily oversold and undersold.
 
 Experimental particle physicists followed these trends, at least in the last cycle, since the neural networks of the 1990's seemed promising, but ultimately not as effective as BDTs. Things changed when the state of the art in AI reached a new level around 2015. We still haven't exhausted the consequences of these recent advancements and AI capabilities don't seem to be leveling off into a plateau again, at least not yet.
 

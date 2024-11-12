@@ -4,7 +4,7 @@
 
 <br><br><br><br><br>
 
-## Status of continuous updates
+## Status of daily deployments
 
 (The version you read online is from the last _successful_ deployment.)
 

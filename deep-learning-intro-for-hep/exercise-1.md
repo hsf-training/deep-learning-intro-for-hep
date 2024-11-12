@@ -17,7 +17,7 @@ kernelspec:
 
 +++
 
-For this exercise, go to <a href="https://playground.tensorflow.org/#activation=sigmoid&batchSize=10&dataset=gauss&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=&seed=0.55534&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false" target="_blank">playground.tensorflow.org</a> by clicking on the image below.
+For this exercise, go to <a href="https://playground.tensorflow.org/#activation=sigmoid&batchSize=10&dataset=gauss&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=&seed=0.55534&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false" target="_blank">playground.tensorflow.org</a> by clicking on the image below. The purpose of this exercise is to get comfortable with neural networks (and how they fail) in an interactive, manual way that builds intutiion before we start working with them in code.
 
 +++
 
@@ -27,7 +27,7 @@ For this exercise, go to <a href="https://playground.tensorflow.org/#activation=
 
 Press the "play" button to start training the network. The colored background (the model) should progressively become a better fit to the points (the training data).
 
-Next, try each of these exercises:
+Next, try each of the following:
 
 1. Increase the noise in the data and fit it again.
 
@@ -45,7 +45,7 @@ Next, try each of these exercises:
 
 ![](img/tensorflow-playground-dataset-spiral.png)
 
-5. What if you use different features instead? Repeat 2‒4 using features instead of hidden layers.
+5. What if you use different features instead? Repeat 2‒4 using features instead of hidden layers. What's the smallest set of features you can use for each, and why do they work?
 
 ![](img/tensorflow-playground-features.png)
 

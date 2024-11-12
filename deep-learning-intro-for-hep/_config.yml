@@ -45,5 +45,5 @@ parse:
 
 sphinx:
   config:
-    html_extra_path: ["img/tensorflow-playground.png"]
+    html_extra_path: ["img/tensorflow-playground.png", "img/ups-and-downs-of-ai-3-overlay.png"]
     nb_execution_show_tb: true

@@ -367,7 +367,7 @@ def ansatz(t, y0, t0, mu, tf):
     return y0 - (1/mu)*np.log(np.cosh((t - t0)/tf))
 
 least_squares = LeastSquares(t, y, 1, ansatz)
-minimizer = Minuit(least_squares, y0=0, t0=1, mu=10, tf=100)   # <-- initial guess
+minimizer = Minuit(least_squares, y0=100, t0=100, mu=100, tf=100)   # <-- initial guess
 minimizer.migrad()
 
 y_from_ansatz = ansatz(t, **{p.name: p.value for p in minimizer.params})
