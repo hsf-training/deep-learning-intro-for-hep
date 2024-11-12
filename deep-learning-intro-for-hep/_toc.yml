@@ -8,3 +8,5 @@ chapters:
 - file: history
 - file: basic-fitting
 - file: universal-approximators
+- file: neural-networks
+- file: exercise-1

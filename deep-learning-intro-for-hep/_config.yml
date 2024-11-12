@@ -41,3 +41,7 @@ parse:
     - attrs_inline
     - dollarmath
     - smartquotes
+
+sphinx:
+  config:
+    html_extra_path: ["img/tensorflow-playground.png"]

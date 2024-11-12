@@ -1,209 +1,462 @@
-<?xml version="1.0" encoding="utf-8"  standalone="no"?>
-<svg 
- width="1000" height="600"
- viewBox="0 0 1000 600"
- xmlns="http://www.w3.org/2000/svg"
- xmlns:xlink="http://www.w3.org/1999/xlink"
->
-
-<title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.2 patchlevel 8 </desc>
-
-<g id="gnuplot_canvas">
-
-<rect x="0" y="0" width="1000" height="600" fill="none"/>
-<defs>
-
-	<circle id='gpDot' r='0.5' stroke-width='0.5' stroke='currentColor'/>
-	<path id='gpPt0' stroke-width='0.222' stroke='currentColor' d='M-1,0 h2 M0,-1 v2'/>
-	<path id='gpPt1' stroke-width='0.222' stroke='currentColor' d='M-1,-1 L1,1 M1,-1 L-1,1'/>
-	<path id='gpPt2' stroke-width='0.222' stroke='currentColor' d='M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1'/>
-	<rect id='gpPt3' stroke-width='0.222' stroke='currentColor' x='-1' y='-1' width='2' height='2'/>
-	<rect id='gpPt4' stroke-width='0.222' stroke='currentColor' fill='currentColor' x='-1' y='-1' width='2' height='2'/>
-	<circle id='gpPt5' stroke-width='0.222' stroke='currentColor' cx='0' cy='0' r='1'/>
-	<use xlink:href='#gpPt5' id='gpPt6' fill='currentColor' stroke='none'/>
-	<path id='gpPt7' stroke-width='0.222' stroke='currentColor' d='M0,-1.33 L-1.33,0.67 L1.33,0.67 z'/>
-	<use xlink:href='#gpPt7' id='gpPt8' fill='currentColor' stroke='none'/>
-	<use xlink:href='#gpPt7' id='gpPt9' stroke='currentColor' transform='rotate(180)'/>
-	<use xlink:href='#gpPt9' id='gpPt10' fill='currentColor' stroke='none'/>
-	<use xlink:href='#gpPt3' id='gpPt11' stroke='currentColor' transform='rotate(45)'/>
-	<use xlink:href='#gpPt11' id='gpPt12' fill='currentColor' stroke='none'/>
-	<path id='gpPt13' stroke-width='0.222' stroke='currentColor' d='M0,1.330 L1.265,0.411 L0.782,-1.067 L-0.782,-1.076 L-1.265,0.411 z'/>
-	<use xlink:href='#gpPt13' id='gpPt14' fill='currentColor' stroke='none'/>
-	<filter id='textbox' filterUnits='objectBoundingBox' x='0' y='0' height='1' width='1'>
-	  <feFlood flood-color='white' flood-opacity='1' result='bgnd'/>
-	  <feComposite in='SourceGraphic' in2='bgnd' operator='atop'/>
-	</filter>
-	<filter id='greybox' filterUnits='objectBoundingBox' x='0' y='0' height='1' width='1'>
-	  <feFlood flood-color='lightgrey' flood-opacity='1' result='grey'/>
-	  <feComposite in='SourceGraphic' in2='grey' operator='atop'/>
-	</filter>
-</defs>
-<g fill="none" color="white" stroke="black" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M20.7,582.0 L975.0,582.0  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M20.7,582.0 M975.0,582.0  '/>	<g transform="translate(12.4,585.9)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
-		<text></text>
-	</g>
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M20.7,488.0 L975.0,488.0  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M20.7,488.0 M975.0,488.0  '/>	<g transform="translate(12.4,491.9)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
-		<text></text>
-	</g>
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M20.7,394.0 L975.0,394.0  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M20.7,394.0 M975.0,394.0  '/>	<g transform="translate(12.4,397.9)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
-		<text></text>
-	</g>
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M20.7,300.0 L975.0,300.0  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M20.7,300.0 M975.0,300.0  '/>	<g transform="translate(12.4,303.9)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
-		<text></text>
-	</g>
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M20.7,206.1 L975.0,206.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M20.7,206.1 M975.0,206.1  '/>	<g transform="translate(12.4,210.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
-		<text></text>
-	</g>
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M20.7,112.1 L975.0,112.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M20.7,112.1 M975.0,112.1  '/>	<g transform="translate(12.4,116.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
-		<text></text>
-	</g>
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M20.7,18.1 L975.0,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M20.7,18.1 M975.0,18.1  '/>	<g transform="translate(12.4,22.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
-		<text></text>
-	</g>
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M20.7,582.0 L20.7,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M20.7,582.0 M20.7,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M116.1,582.0 L116.1,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M116.1,582.0 M116.1,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M211.6,582.0 L211.6,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M211.6,582.0 M211.6,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M307.0,582.0 L307.0,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M307.0,582.0 M307.0,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M402.4,582.0 L402.4,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M402.4,582.0 M402.4,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M497.9,582.0 L497.9,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M497.9,582.0 M497.9,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M593.3,582.0 L593.3,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M593.3,582.0 M593.3,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M688.7,582.0 L688.7,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M688.7,582.0 M688.7,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M784.1,582.0 L784.1,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M784.1,582.0 M784.1,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M879.6,582.0 L879.6,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M879.6,582.0 M879.6,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(190, 190, 190)' class="gridline"  d='M975.0,582.0 L975.0,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M975.0,582.0 M975.0,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(  0,   0,   0)'  d='M20.7,488.0 L975.0,488.0  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(  0,   0,   0)'  d='M497.9,582.0 L497.9,18.1  '/></g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-	<g id="gnuplot_plot_1" ><title>x/(1 + exp(-x))</title>
-<g fill="none" color="white" stroke="black" stroke-width="3.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="3.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(139,   0,   0)'  d='M20.7,491.2 L30.3,491.4 L40.0,491.7 L49.6,492.0 L59.3,492.3 L68.9,492.7 L78.5,493.1 L88.2,493.5
-		L97.8,493.9 L107.5,494.3 L117.1,494.8 L126.7,495.3 L136.4,495.9 L146.0,496.5 L155.7,497.1 L165.3,497.8
-		L174.9,498.4 L184.6,499.2 L194.2,499.9 L203.8,500.7 L213.5,501.6 L223.1,502.4 L232.8,503.3 L242.4,504.2
-		L252.0,505.1 L261.7,506.1 L271.3,507.0 L281.0,508.0 L290.6,508.9 L300.2,509.8 L309.9,510.7 L319.5,511.5
-		L329.2,512.2 L338.8,512.9 L348.4,513.4 L358.1,513.9 L367.7,514.1 L377.4,514.2 L387.0,514.0 L396.6,513.7
-		L406.3,513.0 L415.9,512.0 L425.6,510.7 L435.2,509.1 L444.8,507.1 L454.5,504.6 L464.1,501.7 L473.8,498.4
-		L483.4,494.6 L493.0,490.3 L502.7,485.6 L512.3,480.4 L521.9,474.7 L531.6,468.5 L541.2,461.9 L550.9,454.8
-		L560.5,447.4 L570.1,439.5 L579.8,431.3 L589.4,422.8 L599.1,414.0 L608.7,404.9 L618.3,395.5 L628.0,386.0
-		L637.6,376.2 L647.3,366.3 L656.9,356.3 L666.5,346.1 L676.2,335.9 L685.8,325.6 L695.5,315.2 L705.1,304.8
-		L714.7,294.4 L724.4,283.9 L734.0,273.5 L743.7,263.1 L753.3,252.6 L762.9,242.2 L772.6,231.9 L782.2,221.5
-		L791.9,211.2 L801.5,200.9 L811.1,190.6 L820.8,180.4 L830.4,170.2 L840.0,160.1 L849.7,150.0 L859.3,139.9
-		L869.0,129.9 L878.6,119.8 L888.2,109.9 L897.9,99.9 L907.5,90.0 L917.2,80.1 L926.8,70.2 L936.4,60.4
-		L946.1,50.6 L955.7,40.8 L965.4,31.0 L975.0,21.2  '/></g>
-	</g>
-<g fill="none" color="white" stroke="rgb(139,   0,   0)" stroke-width="2.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="2.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="black" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-</g>
-</g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="120"
+   height="60"
+   viewBox="0 0 120 59.999999"
+   version="1.1"
+   id="svg1764"
+   sodipodi:docname="Activation_swish.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1768">
+    <defs
+       id="defs1522">
+      <circle
+         id="gpDot"
+         r="0.5"
+         stroke-width="0.5"
+         stroke="currentColor"
+         cx="0"
+         cy="0" />
+      <path
+         id="gpPt0"
+         stroke-width="0.222"
+         stroke="currentColor"
+         d="M -1,0 H 1 M 0,-1 v 2" />
+      <path
+         id="gpPt1"
+         stroke-width="0.222"
+         stroke="currentColor"
+         d="M -1,-1 1,1 M 1,-1 -1,1" />
+      <path
+         id="gpPt2"
+         stroke-width="0.222"
+         stroke="currentColor"
+         d="M -1,0 H 1 M 0,-1 v 2 m -1,-2 2,2 m -2,0 2,-2" />
+      <rect
+         id="gpPt3"
+         stroke-width="0.222"
+         stroke="currentColor"
+         x="-1"
+         y="-1"
+         width="2"
+         height="2" />
+      <rect
+         id="gpPt4"
+         stroke-width="0.222"
+         stroke="currentColor"
+         fill="currentColor"
+         x="-1"
+         y="-1"
+         width="2"
+         height="2" />
+      <circle
+         id="gpPt5"
+         stroke-width="0.222"
+         stroke="currentColor"
+         cx="0"
+         cy="0"
+         r="1" />
+      <use
+         xlink:href="#gpPt5"
+         id="gpPt6"
+         fill="currentColor"
+         stroke="none"
+         x="0"
+         y="0"
+         width="100%"
+         height="100%" />
+      <path
+         id="gpPt7"
+         stroke-width="0.222"
+         stroke="currentColor"
+         d="m 0,-1.33 -1.33,2 h 2.66 z" />
+      <use
+         xlink:href="#gpPt7"
+         id="gpPt8"
+         fill="currentColor"
+         stroke="none"
+         x="0"
+         y="0"
+         width="100%"
+         height="100%" />
+      <use
+         xlink:href="#gpPt7"
+         id="gpPt9"
+         stroke="currentColor"
+         transform="scale(-1)"
+         x="0"
+         y="0"
+         width="100%"
+         height="100%" />
+      <use
+         xlink:href="#gpPt9"
+         id="gpPt10"
+         fill="currentColor"
+         stroke="none"
+         x="0"
+         y="0"
+         width="100%"
+         height="100%" />
+      <use
+         xlink:href="#gpPt3"
+         id="gpPt11"
+         stroke="currentColor"
+         transform="rotate(45)"
+         x="0"
+         y="0"
+         width="100%"
+         height="100%" />
+      <use
+         xlink:href="#gpPt11"
+         id="gpPt12"
+         fill="currentColor"
+         stroke="none"
+         x="0"
+         y="0"
+         width="100%"
+         height="100%" />
+      <path
+         id="gpPt13"
+         stroke-width="0.222"
+         stroke="currentColor"
+         d="M 0,1.33 1.265,0.411 0.782,-1.067 -0.782,-1.076 -1.265,0.411 Z" />
+      <use
+         xlink:href="#gpPt13"
+         id="gpPt14"
+         fill="currentColor"
+         stroke="none"
+         x="0"
+         y="0"
+         width="100%"
+         height="100%" />
+      <filter
+         id="textbox"
+         filterUnits="objectBoundingBox"
+         x="0"
+         y="0"
+         height="1"
+         width="1">
+        <feFlood
+           flood-color="white"
+           flood-opacity="1"
+           result="bgnd"
+           id="feFlood1512" />
+        <feComposite
+           in="SourceGraphic"
+           in2="bgnd"
+           operator="atop"
+           id="feComposite1514" />
+      </filter>
+      <filter
+         id="greybox"
+         filterUnits="objectBoundingBox"
+         x="0"
+         y="0"
+         height="1"
+         width="1">
+        <feFlood
+           flood-color="lightgrey"
+           flood-opacity="1"
+           result="grey"
+           id="feFlood1517" />
+        <feComposite
+           in="SourceGraphic"
+           in2="grey"
+           operator="atop"
+           id="feComposite1519" />
+      </filter>
+    </defs>
+  </defs>
+  <sodipodi:namedview
+     id="namedview1766"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="4.6236205"
+     inkscape:cx="74.40057"
+     inkscape:cy="71.048219"
+     inkscape:window-width="1672"
+     inkscape:window-height="970"
+     inkscape:window-x="133"
+     inkscape:window-y="85"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1764" />
+  <title
+     id="title1490">Gnuplot</title>
+  <desc
+     id="desc1492">Produced by GNUPLOT 5.2 patchlevel 8 </desc>
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 0.01341195,59.951247 H 119.81577"
+     id="path1528"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 0.01341195,59.951247 m 119.80235805,0"
+     id="path1532"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <text
+     id="text1534"
+     style="color:#000000;font-size:1.27456px;font-family:Arial;text-anchor:end;fill:#000000;stroke:none;stroke-width:0.106213;stroke-linecap:butt;stroke-linejoin:miter"
+     x="8.3534994"
+     y="-7.6108422" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 0.01341195,49.967227 H 119.81577"
+     id="path1542"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 0.01341195,49.967227 m 119.80235805,0"
+     id="path1546"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <text
+     id="text1548"
+     style="color:#000000;font-size:1.27456px;font-family:Arial;text-anchor:end;fill:#000000;stroke:none;stroke-width:0.106213;stroke-linecap:butt;stroke-linejoin:miter"
+     x="8.3534994"
+     y="-17.594868" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 0.01341195,39.983197 H 119.81577"
+     id="path1556"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 0.01341195,39.983197 m 119.80235805,0"
+     id="path1560"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <text
+     id="text1562"
+     style="color:#000000;font-size:1.27456px;font-family:Arial;text-anchor:end;fill:#000000;stroke:none;stroke-width:0.106213;stroke-linecap:butt;stroke-linejoin:miter"
+     x="8.3534994"
+     y="-27.578892" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 0.01341195,29.999177 H 119.81577"
+     id="path1570"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 0.01341195,29.999177 m 119.80235805,0"
+     id="path1574"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <text
+     id="text1576"
+     style="color:#000000;font-size:1.27456px;font-family:Arial;text-anchor:end;fill:#000000;stroke:none;stroke-width:0.106213;stroke-linecap:butt;stroke-linejoin:miter"
+     x="8.3534994"
+     y="-37.562912" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 0.01341195,20.025777 H 119.81577"
+     id="path1584"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 0.01341195,20.025777 m 119.80235805,0"
+     id="path1588"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <text
+     id="text1590"
+     style="color:#000000;font-size:1.27456px;font-family:Arial;text-anchor:end;fill:#000000;stroke:none;stroke-width:0.106213;stroke-linecap:butt;stroke-linejoin:miter"
+     x="8.3534994"
+     y="-47.536316" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 0.01341195,10.041757 H 119.81577"
+     id="path1598"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 0.01341195,10.041757 m 119.80235805,0"
+     id="path1602"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <text
+     id="text1604"
+     style="color:#000000;font-size:1.27456px;font-family:Arial;text-anchor:end;fill:#000000;stroke:none;stroke-width:0.106213;stroke-linecap:butt;stroke-linejoin:miter"
+     x="8.3534994"
+     y="-57.520325" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 0.01341195,0.0577365 H 119.81577"
+     id="path1612"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 0.01341195,0.0577365 m 119.80235805,0"
+     id="path1616"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <text
+     id="text1618"
+     style="color:#000000;font-size:1.27456px;font-family:Arial;text-anchor:end;fill:#000000;stroke:none;stroke-width:0.106213;stroke-linecap:butt;stroke-linejoin:miter"
+     x="8.3534994"
+     y="-67.504349" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 9.2350596,59.951247 V 0.0577365"
+     id="path1626"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 9.2350596,59.951247 m 0,-59.8935105"
+     id="path1630"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 19.36778,59.951247 V 0.0577365"
+     id="path1636"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 19.36778,59.951247 m 0,-59.8935105"
+     id="path1640"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 29.51112,59.951247 V 0.0577365"
+     id="path1646"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 29.51112,59.951247 m 0,-59.8935105"
+     id="path1650"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 39.64384,59.951247 V 0.0577365"
+     id="path1656"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 39.64384,59.951247 m 0,-59.8935105"
+     id="path1660"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 49.77656,59.951247 V 0.0577365"
+     id="path1666"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 49.77656,59.951247 m 0,-59.8935105"
+     id="path1670"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 59.9199,59.951247 V 0.0577365"
+     id="path1676"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 59.9199,59.951247 m 0,-59.8935105"
+     id="path1680"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 70.05262,59.951247 V 0.0577365"
+     id="path1686"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 70.05262,59.951247 m 0,-59.8935105"
+     id="path1690"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 80.18534,59.951247 V 0.0577365"
+     id="path1696"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 80.18534,59.951247 m 0,-59.8935105"
+     id="path1700"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 90.31806,59.951247 V 0.0577365"
+     id="path1706"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 90.31806,59.951247 m 0,-59.8935105"
+     id="path1710"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 100.4614,59.951247 V 0.0577365"
+     id="path1716"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 100.4614,59.951247 m 0,-59.8935105"
+     id="path1720"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#bebebe"
+     class="gridline"
+     d="M 110.59412,59.951247 V 0.0577365"
+     id="path1726"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="m 110.59412,59.951247 m 0,-59.8935105"
+     id="path1730"
+     style="color:#000000;fill:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke:#c0c0c0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="M 0.01341195,49.96723 H 119.81577"
+     id="path1736"
+     style="color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#000000"
+     d="M 59.9199,59.95125 V 0.057736"
+     id="path1740"
+     style="color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <path
+     stroke="#8b0000"
+     d="m 0.00304415,50.29435 1.20528565,0.0212 1.217851,0.0319 1.2052856,0.0319 1.217851,0.0319 1.2052856,0.0425 1.2052974,0.0425 1.2178392,0.0425 1.2052974,0.0425 1.217839,0.0425 1.205298,0.0531 1.205286,0.0531 1.217851,0.0637 1.205297,0.0637 1.217839,0.0637 1.205298,0.0743 1.205285,0.0637 1.217851,0.085 1.205286,0.0743 1.205297,0.085 1.217839,0.0956 1.205298,0.085 1.217839,0.0956 1.205297,0.0956 1.205286,0.0956 1.217851,0.10616 1.205286,0.0956 1.217851,0.10617 1.205297,0.0956 1.205286,0.0956 1.217851,0.0956 1.205285,0.085 1.217851,0.0743 1.205286,0.0743 1.205297,0.0531 1.217839,0.0531 1.205298,0.0212 1.217839,0.0106 1.205297,-0.0213 1.205286,-0.0319 1.217851,-0.0743 1.205286,-0.10616 1.217851,-0.13802 1.205285,-0.16986 1.205298,-0.21234 1.217851,-0.26541 1.205285,-0.30788 1.217851,-0.35034 1.205286,-0.40343 1.205297,-0.45651 1.217839,-0.49898 1.205298,-0.55205 1.205285,-0.60515 1.217851,-0.65822 1.205286,-0.70069 1.217851,-0.75378 1.205286,-0.78562 1.205297,-0.83871 1.217839,-0.87055 1.205298,-0.9024 1.217851,-0.93426 1.205285,-0.9661 1.205298,-0.99796 1.217839,-1.00856 1.205297,-1.04042 1.217839,-1.05104 1.205298,-1.06165 1.205285,-1.08288 1.217851,-1.08289 1.205286,-1.0935 1.217851,-1.10412 1.205286,-1.10412 1.205297,-1.10411 1.217839,-1.11474 1.205298,-1.10411 1.217851,-1.10413 1.205285,-1.11474 1.205298,-1.10411 1.217839,-1.0935 1.205297,-1.10412 1.217839,-1.0935 1.205298,-1.093506 1.205285,-1.093498 1.217854,-1.082882 1.20528,-1.082893 1.2053,-1.072267 1.21784,-1.072268 1.2053,-1.072267 1.21784,-1.061652 1.20529,-1.072268 1.20529,-1.051037 1.21785,-1.061652 1.20528,-1.051037 1.21785,-1.051037 1.2053,-1.051037 1.20529,-1.040412 1.21785,-1.040421 1.20528,-1.040422 1.21786,-1.040422 1.20528,-1.040412"
+     id="path1750"
+     style="color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#7f0000;stroke-width:0.68558;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+  <metadata
+     id="metadata3190">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Gnuplot</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>
-
