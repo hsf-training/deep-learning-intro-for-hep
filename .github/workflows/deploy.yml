@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # Every day at 2am UTC
+    - cron: "00 2 * * *"
 
 env:
   BASE_URL: /${{ github.event.repository.name }}
