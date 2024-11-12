@@ -1,4 +1,4 @@
-#######################################################################################
+######################################################################################
 # A default configuration that will be loaded for all jupyter books
 # See the documentation for help and more options: 
 # https://jupyterbook.org/customize/config.html
@@ -14,6 +14,7 @@ logo                        : logo.png  # A path to the book logo
 # See https://jupyterbook.org/content/execute.html
 execute:
   execute_notebooks: force
+  allow_errors: false
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -45,3 +46,4 @@ parse:
 sphinx:
   config:
     html_extra_path: ["img/tensorflow-playground.png"]
+    nb_execution_show_tb: true
