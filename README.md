@@ -6,8 +6,8 @@
 
 ## Status of continuous updates
 
+(The version you read online is from the last _successful_ deployment.)
+
 <a href="https://github.com/hsf-training/deep-learning-intro-for-hep/actions/workflows/deploy.yml">
   <img src="https://github.com/hsf-training/deep-learning-intro-for-hep/actions/workflows/deploy.yml/badge.svg" alt="Check deploy.yml" height="40">
 </a>
-
-(The version you read online is from the last _successful_ deployment.)

@@ -33,10 +33,6 @@ $$y = \left\{\begin{array}{l l}
 \end{array}\right.$$
 
 ```{code-cell} ipython3
-assert False
-```
-
-```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 ```
