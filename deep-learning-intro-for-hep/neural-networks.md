@@ -183,11 +183,11 @@ best_fit.predict_proba([[3, 0]]).tolist()
 best_fit.predict_proba([[2, 2]]).tolist()
 ```
 
-We've colored the plane by classification probability because the model makes a prediction for every infinitesimal point, though it was trained with finitely many points. (Thus, generalizing well is important!)
+We've colored the plane by classification probability because the model makes a prediction for every infinitesimal point on the plane, though it was trained with finitely many points.
 
 Some of the training points are on the wrong side of the 50% probability line, but the fitting process minimized these errors.
 
-Now let's consider a problem that perceptrons are bad at—distributions that are not linearly separable. Incidentally, this example started a controversy that was responsible for the first "winter" of AI ([ref](https://en.wikipedia.org/wiki/Perceptrons_(book))).
+Now let's consider a problem that perceptrons are bad at: distributions that are not linearly separable. Incidentally, this example started a controversy that was responsible for the first "winter" of AI ([ref](https://en.wikipedia.org/wiki/Perceptrons_(book))).
 
 ```{code-cell} ipython3
 blobs1 = np.concatenate((
@@ -251,7 +251,7 @@ There have been a few different approaches.
 1. Require the graph to not have cycles. This is what McCulloch & Pitts did in their original formulation, since they were trying to build neuron diagrams that make logical propositions, like AND, OR, and NOT in digital circuits. These have clear inputs and outputs and should be time-independent.
 2. Update the graph in discrete time-steps. If $x_i = 0$ implies, through some connections, that $x_i$ will be $1$, it is updated in a later time-step.
 
-The layers that we now use in most neural networks are a special case of #1. Even #2, which are now known as Recurrent Neural Networks (RNNs), evolved toward a layered approach. Hopfield and Hinton's 2024 Nobel prize work started with general, fully-connected graphs like the one below on the left, but eventually led to "Restricted Boltzmann machines," in which nodes are separated into two types: visible (associated with observables to model) and hidden, with connections only between the visible and hidden, not within each type:
+The layers that we now use in most neural networks are a special case of #1. Even #2, which are known as Recurrent Neural Networks (RNNs), evolved toward a layered approach. Hopfield and Hinton's 2024 Nobel prize work started with general, fully-connected graphs like the one below on the left, but eventually led to "Restricted Boltzmann machines," in which nodes are separated into two types: visible (associated with observables to model) and hidden, with connections only between the visible and hidden, not within each type:
 
 ![](img/boltzmann-machine.svg){. width="100%"}
 
@@ -274,11 +274,11 @@ best_fit = MLPRegressor(
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(5, 5))
 
-def plot_probability_and_50_threshold_NN(ax, best_fit):
+def plot_probability_and_50_threshold_NN(ax, best_fit, low=-4, high=7):
     # MLPRegressor has a slightly different interface from LogisticRegressor,
     # so we need another plotting function. best_fit.predict returns probabilities.
 
-    background_x, background_y = np.meshgrid(np.linspace(-4, 7, 100), np.linspace(-4, 7, 100))
+    background_x, background_y = np.meshgrid(np.linspace(low, high, 100), np.linspace(low, high, 100))
     background_2d = np.column_stack((background_x.ravel(), background_y.ravel()))
     probabilities = best_fit.predict(background_2d)
     probability_of_0 = probabilities.reshape(background_x.shape)
@@ -300,14 +300,14 @@ The basis functions didn't have to be sigmoid-shaped. Here are a few common opti
 
 | | Name | Function |
 |:-:|:-|:-:|
-| ![](img/Activation_binary_step.svg){. width="100%"} | binary step | $f(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ 1 & \mbox{if } x \ge 0\end{array}\right.$ | 
-| ![](img/Activation_logistic.svg){. width="100%"} | sigmoid, logistic, or soft step | $f(x) = \frac{1}{1 + e^{-x}}$ | 
-| ![](img/Activation_tanh.svg){. width="100%"} | hyperbolic tangent | $f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ | 
-| ![](img/Activation_rectified_linear.svg){. width="100%"} | rectified linear unit or ReLU | $f(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ | 
-| ![](img/Activation_prelu.svg){. width="100%"} | leaky ReLU | $f(x) = \left\{\begin{array}{c l}\alpha x & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ | 
-| ![](img/Activation_swish.svg){. width="100%"} | sigmoid linear unit or swish | $f(x) = \frac{x}{1 + e^{-x}}$ |
+| ![](img/Activation_binary_step.svg){. width="100%"} | binary step | $\displaystyle f(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ 1 & \mbox{if } x \ge 0\end{array}\right.$ | 
+| ![](img/Activation_logistic.svg){. width="100%"} | sigmoid, logistic, or soft step | $\displaystyle f(x) = \frac{1}{1 + e^{-x}}$ | 
+| ![](img/Activation_tanh.svg){. width="100%"} | hyperbolic tangent | $\displaystyle f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ | 
+| ![](img/Activation_rectified_linear.svg){. width="100%"} | rectified linear unit or ReLU | $\displaystyle f(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ | 
+| ![](img/Activation_prelu.svg){. width="100%"} | leaky ReLU | $\displaystyle f(x) = \left\{\begin{array}{c l}\alpha x & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ | 
+| ![](img/Activation_swish.svg){. width="100%"} | sigmoid linear unit or swish | $\displaystyle f(x) = \frac{x}{1 + e^{-x}}$ |
 
-Let's see it fit with ReLU shapes instead. These are the most common today, because of their simplicity (and their derivatives don't asymptotically approach zero).
+Let's use the ReLU shape instead. This is perhaps the most common activation function, because of its simplicity (and its derivatives don't asymptotically approach zero).
 
 ```{code-cell} ipython3
 best_fit = MLPRegressor(
@@ -327,7 +327,7 @@ ax.set_ylim(-4, 7)
 None
 ```
 
-The boundaries still separate the orange and blue points, but now they're made out of piecewise straight segments.
+The boundaries still separate the orange and blue points, but now they're made out of piecewise straight segments, not smooth curves.
 
 +++
 
@@ -335,67 +335,51 @@ The boundaries still separate the orange and blue points, but now they're made o
 
 +++
 
-With enough 
+With enough components in the hidden layer, we can approximate any shape. After all, each component is one adaptive basis function, and our favorite activation functions (the table above) have one wiggle each. Adding a component to the hidden layer adds a wiggle, which the fitter can use to wrap around the training points.
 
-```{code-cell} ipython3
+However, if the fit function has too many wiggles to fit around the outliers in the training data, it will overfit the data (to be discussed in an upcoming section). We want a model that _generalizes_ the training data, not one that _memorizes_ it.
 
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-## Deep learning
-
-+++
-
-In principle, one hidden layer is enough to approximate any shape: this fact is known as the Universal Approximation Theorem.
-
-However, multiple hidden layers are _better_ at approximating complex shapes.
+An effective way to do that is to add more hidden layers, like the diagram below:
 
 ![](img/artificial-neural-network-layers-5.svg){. width="100%"}
 
-This is one perceptron fed into another, fed into another, etc. The general adage is that "one layer memorizes, many layers generalize." To get an intuition about this, consider the following:
+$\vec{x}^{L1}$ (layer 1) is the input and $\vec{x}^{L2}$ (layer 2) is the first hidden layer. Then the output of that is passed through another linear transformation and activation function, as many times as we want. Each layer is a function composition. (Be careful when specifying how many layers a neural network has. We're interested in how many linear transformations the network has, so we'd count the above as 4, not 5.)
 
-* Adding one more component to a layer adds one wiggle (sigmoid curve) to the fit function.
-* Adding one more layer effectively folds space under the next set of wiggly functions. Instead of fitting individual wiggles, they find symmetries in the data that (probably) correspond to an underlying relationship, rather than noise.
-
-Consider this horseshoe-shaped decision boundary: with two well-chosen folds along the symmetries, it reduces to a simpler curve to fit. Instead of 4 ad-hoc wiggles, it's 2 folds and 1 wiggle.
-
-![](img/deep-learning-by-space-folding.svg){. width="100%"}
-
-(from Montúfar, Pascanu, Cho, & Bengio, [On the Number of Linear Regions of Deep Neural Networks](https://arxiv.org/abs/1402.1869) (2014))
-
-You can see this in detail in [Roy Keyes's fantastic demo](https://gist.github.com/jpivarski/f99371614ecaa48ace90a6025d430247). The three categories of data in the spiral arms of the galaxy on the left are fitted with a neural network that transforms the underlying coordinates to the warped mesh shown on the right. Then the three categories are linearly separable.
-
-![](img/network-layer-space-folding.png){. width="100%"}
-
-The recognition that "deep" neural networks with many layers are more powerful than one large hidden layer, as well as the ability to train them, is recent. It's responsible for the resurgence of interest in neural networks around 2015. Here's a plot of Google searches for the words "neural network" and "deep learning" from the past 10 years:
+This technique is called "deep learning" (especially when many, many layers are used) and it is largely responsible for the resurgence of interest in neural networks since 2015. Below is a plot of Google search volume for the words "neural network" and "deep learning":
 
 ![](img/rise-of-deep-learning.svg){. width="100%"}
 
-* 2006‒2007: problems that prevented the training of deep learning were solved.
-* 2012: AlexNet, a GPU-enabled 8 layer network (with ReLU), won the ImageNet competition.
-* 2015: ResNet, a GPU-enabled 152+ layer network (with skip-connections), won the ImageNet competition.
+As you can see, interest in neural networks was waning in the early 2000's, then there was a blip in theoretical interest in deep learning around 2009‒2010, followed by a rise in both after 2015. What happened was a combination of theoretical improvements and availability of GPUs. On the theory side:
 
-In the next section, you'll use a graphical user interface to a deep neural network to solve classification problems.
+* **2006:** Hinton, Osindero, and Teh ([ref](https://doi.org/10.1162/neco.2006.18.7.1527)) introduced a method to train one layer at a time to avoid the problem that deep layers "feel" less of a pull from training data ("vanishing gradients").
+* **2007:** Bengio and LeCun ([ref](https://doi.org/10.7551/mitpress/7496.003.0016)) demonstrated that networks with more than 2 or 3 layers can be applied to tasks that shallower networks can't address without overfitting.
+* **2007:** Ranzato, Boureau, and LeCun ([ref](https://dl.acm.org/doi/10.5555/2981562.2981711)) presented a method to train deep networks in sparse batches.
+
+Computationally, GPUs are very well suited to large-scale array operations. Both the hardware and the frameworks to use them became available at around this time. (CUDA was first released in 2006.)
+
+But what really got things started was that deep neural networks started winning the ImageNet competition.
+
+* **2012:** AlexNet, a GPU-enabled 8 layer network (with ReLU), won ImageNet.
+* **2015:** ResNet, a GPU-enabled 152+ layer network (with skip-connections), won ImageNet.
+
++++
+
+## Why deep learning?
+
++++
+
+The general adage is that "one layer memorizes, many layers generalize."
+
+Each layer in a neural network is a function composition: the arbitrary curve that a set of adaptive basis functions learn is in a space that has already been transformed by a previous set of adaptive basis functions. Each layer warps space to make the next layer's problem simpler.
+
+Roy Keyes has a [fantastic demo](https://gist.github.com/jpivarski/f99371614ecaa48ace90a6025d430247) (too much detail for this section) that classifies three categories of points that are arranged like spiral arms of a galaxy, shown below on the left. The first layer of the neural network transforms the $x$-$y$ space of the original problem into the mesh shown in grey on the right. In the transformed space, the three spiral arms are now linearly separable. It is the starting point for the second layer.
+
+![](img/network-layer-space-folding.png){. width="100%"}
+
+For another illustration ([ref](https://arxiv.org/abs/1402.1869)), consider the horseshoe-shaped decision boundary below: it _could_ be fit by a sufficiently large set of adaptive basis functions, with enough flexibility to account for each of the wiggles, but that would not take advantage of its symmetries. Two well-chosen folds make the symmetric parts overlap, and then it can be fitted by a simpler curve.
+
+![](img/deep-learning-by-space-folding.svg){. width="100%"}
+
+One hidden layer with many components has a lot of adjustable handles to fit a curve. Multiple hidden layers search for symmetries and try to use them to describe the data in a more generalizable way.
+
+These arguments are heuristic: you could certainly have a problem with no internal symmetries. However, the fact that deep learning has been so successful might mean that most problems do.
