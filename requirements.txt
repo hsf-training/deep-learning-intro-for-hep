@@ -1,4 +1,10 @@
 jupyter-book
-matplotlib
-numpy
 ghp-import
+numpy
+matplotlib
+pandas
+iminuit
+scikit-learn
+torch
+h5py
+awkward
