@@ -38,7 +38,7 @@ jobs:
       # Build the book
       - name: Build the book
         run: |
-          jupyter-book build deep-learning-intro-for-hep
+          jupyter-book build -W deep-learning-intro-for-hep
 
       # Upload the book's HTML as an artifact
       - name: Upload artifact
