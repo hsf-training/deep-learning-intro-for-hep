@@ -23,10 +23,16 @@ Moreover, PyTorch seems to be more future-proof than TensorFlow. By examining th
 
 ## What to install
 
-* NumPy >= 1.26.4
-* Matplotlib >= 3.8.4
-* Scikit-Learn >= 1.5.2
-* iminuit >= 2.30.1
+Make sure that you have these packages installed with [conda](https://scikit-hep.org/user/installing-conda), pip, uv, etc.
+
+```{include} ../environment.yml
+:literal: true
+:start-after: "  # packages we'll use\n"
+```
+
+If you're using pip, see [PyTorch's documentation](https://pytorch.org/get-started/locally/) for instructions. The name `pytorch-cpu` is only for conda.
+
+The exercises are all small enough that you won't need a GPU, but if you want to use PyTorch with your GPU, you'll have to install the GPU drivers (only) outside of conda and then `conda install 'cuda-version>=12' pytorch pytorch-cuda`. If you're using pip, the entire CUDA installation is outside of what pip manages.
 
 ## Table of contents
 

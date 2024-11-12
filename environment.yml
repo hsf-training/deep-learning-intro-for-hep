@@ -1,14 +1,21 @@
 name: deep-learning-intro-for-hep
 
+channels:
+  - conda-forge
+
 dependencies:
   - python=3.11
+
+  # infrastructure (you won't need these)
   - jupyter-book
   - ghp-import
+
+  # packages we'll use
   - numpy
   - matplotlib
   - pandas
   - iminuit
   - scikit-learn
-  - pytorch-cpu
   - h5py
   - awkward
+  - pytorch-cpu  # `torch` in pip
