@@ -123,7 +123,7 @@ plot_blob_points(ax, blob1, blob2)
 ax.set_xlim(-4, 7)
 ax.set_ylim(-4, 7)
 
-None
+plt.show()
 ```
 
 Since a perceptron doesn't have a hidden layer, it's not even considered a neural network by Scikit-Learn. A model consisting of a linear transformation passed into a sigmoid function is called logistic regression (sigmoid is sometimes called "logistic").
@@ -156,7 +156,7 @@ plot_blob_points(ax, blob1, blob2)
 ax.set_xlim(-4, 7)
 ax.set_ylim(-4, 7)
 
-None
+plt.show()
 ```
 
 By drawing a line where $P_A(\vec{x}) = 0.5$, we effectively turn the soft sigmoid boundary into a sharp binary classifier. `LogisticRegression` has a method to return this hard classification,
@@ -219,7 +219,7 @@ plot_blob_points(ax, blobs1, blobs2)
 ax.set_xlim(-4, 7)
 ax.set_ylim(-4, 7)
 
-None
+plt.show()
 ```
 
 The 50% line is more-or-less random, and the probability threshold (gradient of background colors) isn't as sharp. The trained model can't make correct predictions for all 4 of the blob centers:
@@ -291,7 +291,7 @@ plot_blob_points(ax, blobs1, blobs2)
 ax.set_xlim(-4, 7)
 ax.set_ylim(-4, 7)
 
-None
+plt.show()
 ```
 
 The shape of the boundary outside of the training data is unconstrained, but it's allowed to curve enough to put orange points on one side and blue points on the other. It's allowed to curve because we've given the fitter sigmoid-shaped adaptive basis functions to transform and add together (in 2 dimensions).
@@ -324,7 +324,7 @@ plot_blob_points(ax, blobs1, blobs2)
 ax.set_xlim(-4, 7)
 ax.set_ylim(-4, 7)
 
-None
+plt.show()
 ```
 
 The boundaries still separate the orange and blue points, but now they're made out of piecewise straight segments, not smooth curves.
