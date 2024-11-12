@@ -1,0 +1,14 @@
+name: deep-learning-intro-for-hep
+
+dependencies:
+  - python=3.11
+  - jupyter-book
+  - ghp-import
+  - numpy
+  - matplotlib
+  - pandas
+  - iminuit
+  - scikit-learn
+  - pytorch-cpu
+  - h5py
+  - awkward

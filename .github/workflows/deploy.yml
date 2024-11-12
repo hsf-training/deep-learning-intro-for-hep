@@ -18,22 +18,28 @@ concurrency:
 jobs:
   deploy-book:
     runs-on: ubuntu-latest
+
     # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
     permissions:
       pages: write
       id-token: write
+
+    # Required for micromamba to activate
+    defaults:
+      run:
+        shell: "bash -l {0}"
+
     steps:
       - uses: actions/checkout@v3
 
       # Install dependencies
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+      - name: Set up Python via Micromamba
+        uses: mamba-org/setup-micromamba@v2
         with:
-          python-version: 3.11
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+          environment-file: environment.yml
+          init-shell: bash
+          cache-environment: true
+          post-cleanup: "all"
 
       # Build the book
       - name: Build the book
