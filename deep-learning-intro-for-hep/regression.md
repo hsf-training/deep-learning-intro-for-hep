@@ -13,11 +13,11 @@ kernelspec:
   name: python3
 ---
 
-# Classification and regression in PyTorch
+# Regression in PyTorch
 
 +++
 
-This section introduces PyTorch so that we can use it for the remainder of the course. Whereas Scikit-Learn gives you a function for just about [every type of machine learning model](https://scikit-learn.org/stable/machine_learning_map.html), PyTorch gives you the pieces and expects you to build it yourself. (The [JAX](https://jax.readthedocs.io/) library is even more extreme in providing only the fundamental pieces. PyTorch's level of abstraction is between JAX and Scikit-Learn.)
+This and the next section introduce PyTorch so that we can use it for the remainder of the course. Whereas Scikit-Learn gives you a function for just about [every type of machine learning model](https://scikit-learn.org/stable/machine_learning_map.html), PyTorch gives you the pieces and expects you to build it yourself. (The [JAX](https://jax.readthedocs.io/) library is even more extreme in providing only the fundamental pieces. PyTorch's level of abstraction is between JAX and Scikit-Learn.)
 
 I'll use the two types of problems we've seen so far—regression and classification—to show Scikit-Learn and PyTorch side-by-side. First, though, let's get a dataset that will provide us with realistic regression and classification problems.
 
@@ -31,7 +31,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 ```
 
-This is my new favorite dataset: basic measurements of 3 species of penguins. You can get the data as a CSV file from the [original source](https://www.kaggle.com/code/parulpandey/penguin-dataset-the-new-iris) or from this project's GitHub: [deep-learning-intro-for-hep/data/penguins.csv](https://github.com/hsf-training/deep-learning-intro-for-hep/blob/main/deep-learning-intro-for-hep/data/penguins.csv).
+This is my new favorite dataset: basic measurements on 3 species of penguins. You can get the data as a CSV file from the [original source](https://www.kaggle.com/code/parulpandey/penguin-dataset-the-new-iris) or from this project's GitHub: [deep-learning-intro-for-hep/data/penguins.csv](https://github.com/hsf-training/deep-learning-intro-for-hep/blob/main/deep-learning-intro-for-hep/data/penguins.csv).
 
 ![](img/culmen_depth.png){. width="50%"}
 
@@ -44,24 +44,7 @@ penguins_df
 
 This dataset has numerical features, such as `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g` and `year` of data-taking, and it has categorical features like `species`, `island`, and `sex`. Some of the measurements are missing (`NaN`), but we'll ignore them with [pd.DataFrame.dropna](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html).
 
-+++
-
-## Numerical and categorical data
-
-+++
-
-Numerical versus categorical may be thought of as data types in a programming language: integers and floating-point types are numerical, booleans and strings are categorical. However, they can also be thought of as the [fundamental types in data analysis](https://en.wikipedia.org/wiki/Level_of_measurement), which determines which set of mathematical operations are meaningful:
-
-| Level | Math | Description | Physics example |
-|:--|:--:|:--|:--|
-| Nominal category | =, ≠ | categories without order | jet classification, data versus Monte Carlo |
-| Ordinal category | >, < | categories that have an order | barrel region, overlap region, endcap region |
-| Interval number | +, ‒ | doesn't have an origin | energy, voltage, position, momentum |
-| Ratio number | ×, / | has an origin | absolute temperature, mass, opening angle |
-
-Python's `TypeError` won't tell you if you're inappropriately multiplying or dividing an interval number, but it will tell you if you try to subtract strings.
-
-**Regression** problems are ones in which the features and the predictions are both numerical (interval numbers, at least). For instance, given a penguin's flipper length, what's its mass?
+For our regression problem, let's ask, "Given a flipper length (mm), what is the penguin's most likely body mass (g)?"
 
 ```{code-cell} ipython3
 regression_features, regression_targets = penguins_df.dropna()[["flipper_length_mm", "body_mass_g"]].values.T
@@ -82,103 +65,7 @@ plot_regression_problem(ax)
 plt.show()
 ```
 
-**Categorical** problems involve at least one categorical variable. For instance, given a penguin's bill length and bill depth, what's its species? We might ask a categorical model to predict the most likely category or we might ask it to tell us the probabilities of each category.
-
-We can't pass string-valued variables into a fitter, so we need to convert the strings into numbers. Since these categories are nominal (not ordinal), equality/inequality is the only meaningful operation, so the numbers should only indicate which strings are the same as each other and which are different.
-
-Pandas has a function, [pd.factorize](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.factorize.html), to turn unique categories into unique integers and an index to get the original strings back. (You can also use Pandas's [categorical dtype](https://pandas.pydata.org/docs/user_guide/categorical.html).)
-
-```{code-cell} ipython3
-categorical_int_df = penguins_df.dropna()[["bill_length_mm", "bill_depth_mm", "species"]]
-categorical_int_df["species"], code_to_name = pd.factorize(categorical_int_df["species"].values)
-categorical_int_df
-```
-
-```{code-cell} ipython3
-code_to_name
-```
-
-This is called an "integer encoding" or "label encoding."
-
-Pandas also has a function, [pd.get_dummies](https://pandas.pydata.org/docs/reference/api/pandas.get_dummies.html), that turns $n$ unique categories into an $n$-dimensional space of booleans. As training data, these represent the probabilities of each species: `False` is $0$ and `True` is $1$ and the _given_ classifications are certain.
-
-```{code-cell} ipython3
-categorical_1hot_df = pd.get_dummies(penguins_df.dropna()[["bill_length_mm", "bill_depth_mm", "species"]])
-categorical_1hot_df
-```
-
-This is called [one-hot encoding](https://en.wikipedia.org/wiki/One-hot) and it's generally more useful than integer encoding, though it takes more memory (especially if you have a lot of distinct categories).
-
-For instance, suppose that the categorical variable is the feature and we're trying to predict something numerical:
-
-```{code-cell} ipython3
-fig, ax = plt.subplots()
-
-ax.scatter(categorical_int_df["species"], categorical_int_df["bill_length_mm"])
-ax.set_xlabel("species")
-ax.set_ylabel("bill length (mm)")
-
-plt.show()
-```
-
-If you were to fit a straight line through $x = 0$ and $x = 1$, it would have _some_ meaning: the intersections would be the average bill lengths of Adelie and Gentoo penguins, respectively. But if the fit also includes $x = 2$, it would be meaningless, since it would be using the order of Adelie, Gentoo, and Chinstrap, as well as the equal spacing between them, as relevant for determining the $y$ predictions.
-
-On the other hand, the one-hot encoding is difficult to visualize, but any fits through this high-dimensional space are meaningful.
-
-```{code-cell} ipython3
-fig = plt.figure(figsize=(8, 8))
-ax = fig.add_subplot(projection="3d")
-
-jitter = np.random.normal(0, 0.05, (len(categorical_1hot_df), 3))
-
-vis = ax.scatter(
-    categorical_1hot_df["species_Adelie"] + jitter[:, 0],
-    categorical_1hot_df["species_Gentoo"] + jitter[:, 1],
-    categorical_1hot_df["species_Chinstrap"] + jitter[:, 2],
-    c=categorical_1hot_df["bill_length_mm"],   # color of points is bill length
-    s=categorical_1hot_df["bill_depth_mm"],    # size of points is bill depth
-)
-ax.set_xlabel("species is Adelie")
-ax.set_ylabel("species is Gentoo")
-ax.set_zlabel("species is Chinstrap")
-
-plt.colorbar(vis, ax=ax, label="bill length (mm)", location="top")
-
-plt.show()
-```
-
-It's also possible to consider problems in which all features and all predictions being categorical.
-
-```{code-cell} ipython3
-pd.get_dummies(penguins_df.dropna()[["species", "island"]])
-```
-
-We don't encounter these kinds of problems very often in HEP, though.
-
-Here's what we'll use as our sample problem: given the bill length and depth, what is the penguin's species? The fact that there's more than 2 categories will require special handling.
-
-```{code-cell} ipython3
-fig, ax = plt.subplots()
-
-def plot_categorical_problem(ax, xlow=29, xhigh=61, ylow=12, yhigh=22):
-    df_Adelie = categorical_1hot_df[categorical_1hot_df["species_Adelie"] == 1]
-    df_Gentoo = categorical_1hot_df[categorical_1hot_df["species_Gentoo"] == 1]
-    df_Chinstrap = categorical_1hot_df[categorical_1hot_df["species_Chinstrap"] == 1]
-
-    ax.scatter(df_Adelie["bill_length_mm"], df_Adelie["bill_depth_mm"], color="tab:blue", label="Adelie")
-    ax.scatter(df_Gentoo["bill_length_mm"], df_Gentoo["bill_depth_mm"], color="tab:orange", label="Gentoo")
-    ax.scatter(df_Chinstrap["bill_length_mm"], df_Chinstrap["bill_depth_mm"], color="tab:green", label="Chinstrap")
-
-    ax.set_xlim(xlow, xhigh)
-    ax.set_ylim(ylow, yhigh)
-    ax.legend(loc="lower left")
-
-plot_categorical_problem(ax)
-
-plt.show()
-```
-
-## Scikit-Learn and PyTorch for regression
+## Scikit-Learn
 
 +++
 
@@ -227,6 +114,10 @@ plot_regression_problem(ax)
 plt.show()
 ```
 
+## PyTorch
+
++++
+
 Now let's do the same in PyTorch. First, the linear model: `nn.Linear(1, 1)` means a linear transformation from a 1-dimensional space to a 1-dimensional space.
 
 ```{code-cell} ipython3
@@ -240,7 +131,7 @@ model = nn.Linear(1, 1)
 model
 ```
 
-A model has parameters that PyTorch will vary in the fit. When you create a model, they're already given random values (one slope and one intercept, in this case). `requires_grad` refers to the fact that the derivatives of the parameters are also tracked, for the optimization methods that use derivatives.
+A model has parameters that the optimizer will vary in the fit. When you create a model, they're already given random values (one slope and one intercept, in this case). `requires_grad` refers to the fact that the derivatives of the parameters are also tracked, for the optimization methods that use derivatives.
 
 ```{code-cell} ipython3
 list(model.parameters())
@@ -270,7 +161,7 @@ optimizer = optim.Rprop(model.parameters())
 
 To actually train the model, you have to write your own loop! It's more verbose, but you get to control what happens and debug it.
 
-One step in optimization is called an "epoch." In Scikit-Learn, we set `max_iter=1000` to get 1000 epochs.
+One step in optimization is called an "epoch." In Scikit-Learn, we set `max_iter=1000` to get 1000 epochs. In PyTorch, we write,
 
 ```{code-cell} ipython3
 for epoch in range(1000):
@@ -373,10 +264,6 @@ for epoch in range(1000):
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 
-def numpy_model(x):
-    tensor_x = torch.tensor(x[:, np.newaxis], dtype=torch.float32)
-    return model(tensor_x).detach().numpy()
-
 plot_regression_solution(ax, numpy_model)
 plot_regression_problem(ax)
 
@@ -385,7 +272,7 @@ plt.show()
 
 Chances are, you don't see any evidence of the ReLU and the above is just a straight line.
 
-Scroll back up to the initial model parameters, and now look at them after the fit:
+Scroll back up to the initial model parameters. Then, look at them after the fit:
 
 ```{code-cell} ipython3
 list(model.parameters())
@@ -393,12 +280,103 @@ list(model.parameters())
 
 Initially, the model parameters are all random numbers between $-1$ and $1$. After fitting, _some_ of the parameters are in the few-hundred range.
 
-Now look at the $x$ and $y$ ranges on the plot: flipper lengths are hundreds of millimeters and body masses are thousands of grams. The optimizer had to gradually step values of order 1 up to values of order 100‒1000. The optimizer took small steps to avoid jumping over the solution. In the end, the optimizer found a reasonably good fit by scaling just a few parameters up and effectively performing a purely linear fit.
+Now look at the $x$ and $y$ ranges on the plot: flipper lengths are hundreds of millimeters and body masses are thousands of grams. The optimizer had to gradually step values of order 1 up to values of order 100‒1000, and it took small steps to avoid jumping over the solution. In the end, the optimizer found a reasonably good fit by scaling just a few parameters up and effectively performed a purely linear fit.
 
 We should have scaled the inputs and outputs so that the values the fitter sees are _all_ of order 1. This is something that PyTorch _assumes_ you will do.
 
-In many applications, I've seen people scale the data independently of the model. However, I'd like to make the scaling a part of the model. We could add a `nn.Linear(1, 1, bias=False)` to multiply by a parameter, but this would become a new parameter for the optimizer to tune in the fit. Instead, I'll use PyTorch's [nn.Module.register_buffer](https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module.register_buffer) to add a fixed constant to the model (which it would save if it saves the model to a file).
+In many applications, I've seen people scale the data independently of the model. However, I'd like to make the scaling a part of the model, so that it's easier to keep track of when it's been applied and when it hasn't. We could add a `nn.Linear(1, 1)` to multiply and shift by two parameters, but the optimizer would again have problems with a parameter that needs to be very large. Instead, I'll use PyTorch's [nn.Module.register_buffer](https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module.register_buffer) to add a fixed, untunable constant to the model (which it would save if it saves the model to a file).
 
 ```{code-cell} ipython3
+class AddConstant(nn.Module):
+    def __init__(self, constant):
+        super().__init__()   # let PyTorch do its initialization first
 
+        self.register_buffer("constant", torch.tensor([constant], dtype=torch.float32))
+
+    def __repr__(self):
+        return f"{type(self).__name__}({self.constant.item():g})"
+
+    def forward(self, x):
+        return x + self.constant
+
+class MultiplyByConstant(nn.Module):
+    def __init__(self, constant):
+        super().__init__()   # let PyTorch do its initialization first
+
+        self.register_buffer("constant", torch.tensor([constant], dtype=torch.float32))
+
+    def __repr__(self):
+        return f"{type(self).__name__}({self.constant.item():g})"
+
+    def forward(self, x):
+        return x * self.constant
 ```
+
+Now we can build this into the model.
+
+```{code-cell} ipython3
+model = nn.Sequential(
+    AddConstant(-200),         # shift the mean to 0
+    MultiplyByConstant(1/10),  # scale the variance to 1
+    nn.Linear(1, 5),
+    nn.ReLU(),
+    nn.Linear(5, 1),
+    MultiplyByConstant(800),   # scale the variance to 800
+    AddConstant(4200),         # shift the mean to 4200
+)
+model
+```
+
+```{code-cell} ipython3
+list(model.parameters())
+```
+
+Even in its untrained state, the model will return values of the right order of magnitude.
+
+```{code-cell} ipython3
+model(200)
+```
+
+```{code-cell} ipython3
+loss_function = nn.MSELoss()
+optimizer = optim.Rprop(model.parameters())
+
+for epoch in range(1000):
+    # tell the optimizer to begin an optimization step
+    optimizer.zero_grad()
+
+    # use the model as a prediction function: features → prediction
+    predictions = model(tensor_features)
+
+    # compute the loss (χ²) between these predictions and the intended targets
+    loss = loss_function(predictions, tensor_targets)
+
+    # tell the loss function and optimizer to end an optimization step
+    loss.backward()
+    optimizer.step()
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+plot_regression_solution(ax, numpy_model)
+plot_regression_problem(ax)
+
+plt.show()
+```
+
+This time, we see the effect of the ReLU steps because the data and the model parameters have the same order of magnitude.
+
++++
+
+## Conclusion
+
++++
+
+I think this illustrates an important point about working with neural networks: you cannot treat them as black boxes—you have to understand the internal parts to figure out why it is or isn't fitting the way you want it to. Nothing told us that the ReLU parameters were effectively being ignored because the data were at the wrong scale. We had to step through the pieces to find that out.
+
+Hand-written code, called "craftsmanship" in the Overview, is generally designed to be more compartmentalized than this, so if you're coming from a programming background, this is something to look out for! Andrej Karpathy's excellent [recipe for training neural networks](https://karpathy.github.io/2019/04/25/recipe/) starts with the warning that neural network training is a "leaky abstraction," which is to say, it can't be treated as a black box.
+
+That may be why PyTorch is so popular: it forces you to look at the individual pieces, rather than maintaining the illusion that pressing a `fit` button will give you what you want.
+
+Next, we'll see how to use it for classification problems.

@@ -10,4 +10,5 @@ chapters:
 - file: universal-approximators
 - file: neural-networks
 - file: exercise-1
-- file: pytorch
+- file: regression
+- file: classification
