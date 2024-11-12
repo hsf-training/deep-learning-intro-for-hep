@@ -35,20 +35,22 @@ This is my new favorite dataset: basic measurements of 3 species of penguins. Yo
 
 ![](img/culmen_depth.png){. width="50%"}
 
-Replace `data/penguins.csv` with the file path where you downloaded it.
+Replace `data/penguins.csv` with the file path where you saved the file after downloading it.
 
 ```{code-cell} ipython3
 penguins_df = pd.read_csv("data/penguins.csv")
 penguins_df
 ```
 
+This dataset has numerical features, such as `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g` and `year` of data-taking, and it has categorical features like `species`, `island`, and `sex`. Some of the measurements are missing (`NaN`), but we'll ignore them with [pd.DataFrame.dropna](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html).
+
++++
+
 ## Numerical and categorical data
 
 +++
 
-This dataset has numerical features, such as `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g` and `year` of data-taking, and it has categorical features like `species`, `island`, and `sex`. Some of the measurements are missing (`NaN`).
-
-Numerical versus categorical may be thought of as data types in a programming language: integers and floating-point types are numerical, booleans and strings are categorical. However, they can also be thought of as [fundamental types of data analysis](https://en.wikipedia.org/wiki/Level_of_measurement), which affects the set of mathematical operations that are meaningful:
+Numerical versus categorical may be thought of as data types in a programming language: integers and floating-point types are numerical, booleans and strings are categorical. However, they can also be thought of as the [fundamental types in data analysis](https://en.wikipedia.org/wiki/Level_of_measurement), which determines which set of mathematical operations are meaningful:
 
 | Level | Math | Description | Physics example |
 |:--|:--:|:--|:--|
@@ -80,9 +82,9 @@ plot_regression_problem(ax)
 plt.show()
 ```
 
-**Categorical** problems involve at least one categorical variable. For instance, given a penguin's bill length and bill depth, what's its species?
+**Categorical** problems involve at least one categorical variable. For instance, given a penguin's bill length and bill depth, what's its species? We might ask a categorical model to predict the most likely category or we might ask it to tell us the probabilities of each category.
 
-We can't fit to a string-valued variable, so we need to convert the strings into numbers. Since these categories are nominal (not ordinal), equality/inequality is the only meaningful operation, so the numbers should only indicate which strings are the same as each other and which are different.
+We can't pass string-valued variables into a fitter, so we need to convert the strings into numbers. Since these categories are nominal (not ordinal), equality/inequality is the only meaningful operation, so the numbers should only indicate which strings are the same as each other and which are different.
 
 Pandas has a function, [pd.factorize](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.factorize.html), to turn unique categories into unique integers and an index to get the original strings back. (You can also use Pandas's [categorical dtype](https://pandas.pydata.org/docs/user_guide/categorical.html).)
 
@@ -98,7 +100,7 @@ code_to_name
 
 This is called an "integer encoding" or "label encoding."
 
-Pandas also has a function, [pd.get_dummies](https://pandas.pydata.org/docs/reference/api/pandas.get_dummies.html), that turns $n$ unique categories into an $n$-dimensional space of booleans. As training data, these represent the probabilities of each species: `False` is $0$ and `True` is $1$, the given classifications are certain, and $P_A + P_C + P_G = 1$.
+Pandas also has a function, [pd.get_dummies](https://pandas.pydata.org/docs/reference/api/pandas.get_dummies.html), that turns $n$ unique categories into an $n$-dimensional space of booleans. As training data, these represent the probabilities of each species: `False` is $0$ and `True` is $1$ and the _given_ classifications are certain.
 
 ```{code-cell} ipython3
 categorical_1hot_df = pd.get_dummies(penguins_df.dropna()[["bill_length_mm", "bill_depth_mm", "species"]])
@@ -121,7 +123,7 @@ plt.show()
 
 If you were to fit a straight line through $x = 0$ and $x = 1$, it would have _some_ meaning: the intersections would be the average bill lengths of Adelie and Gentoo penguins, respectively. But if the fit also includes $x = 2$, it would be meaningless, since it would be using the order of Adelie, Gentoo, and Chinstrap, as well as the equal spacing between them, as relevant for determining the $y$ predictions.
 
-On the other hand, the one-hot encoding is difficult to visualize, but any fits through it are meaningful.
+On the other hand, the one-hot encoding is difficult to visualize, but any fits through this high-dimensional space are meaningful.
 
 ```{code-cell} ipython3
 fig = plt.figure(figsize=(8, 8))
@@ -133,8 +135,8 @@ vis = ax.scatter(
     categorical_1hot_df["species_Adelie"] + jitter[:, 0],
     categorical_1hot_df["species_Gentoo"] + jitter[:, 1],
     categorical_1hot_df["species_Chinstrap"] + jitter[:, 2],
-    marker=".",
-    c=categorical_1hot_df["bill_length_mm"],
+    c=categorical_1hot_df["bill_length_mm"],   # color of points is bill length
+    s=categorical_1hot_df["bill_depth_mm"],    # size of points is bill depth
 )
 ax.set_xlabel("species is Adelie")
 ax.set_ylabel("species is Gentoo")
@@ -143,4 +145,41 @@ ax.set_zlabel("species is Chinstrap")
 plt.colorbar(vis, ax=ax, label="bill length (mm)", location="top")
 
 plt.show()
+```
+
+It's also possible to consider problems in which all features and all predictions being categorical.
+
+```{code-cell} ipython3
+pd.get_dummies(penguins_df.dropna()[["species", "island"]])
+```
+
+We don't encounter these kinds of problems very often in HEP, though.
+
+Here's what we'll use as our sample problem: given the bill length and depth, what is the penguin's species? The fact that there's more than 2 categories will require special handling.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+def plot_categorical_problem(ax, xlow=29, xhigh=61, ylow=12, yhigh=22):
+    df_Adelie = categorical_1hot_df[categorical_1hot_df["species_Adelie"] == 1]
+    df_Gentoo = categorical_1hot_df[categorical_1hot_df["species_Gentoo"] == 1]
+    df_Chinstrap = categorical_1hot_df[categorical_1hot_df["species_Chinstrap"] == 1]
+
+    ax.scatter(df_Adelie["bill_length_mm"], df_Adelie["bill_depth_mm"], color="tab:blue", label="Adelie")
+    ax.scatter(df_Gentoo["bill_length_mm"], df_Gentoo["bill_depth_mm"], color="tab:orange", label="Gentoo")
+    ax.scatter(df_Chinstrap["bill_length_mm"], df_Chinstrap["bill_depth_mm"], color="tab:green", label="Chinstrap")
+
+    ax.set_xlim(xlow, xhigh)
+    ax.set_ylim(ylow, yhigh)
+    ax.legend(loc="lower left")
+
+plot_categorical_problem(ax)
+
+plt.show()
+```
+
+## Scikit-Learn and PyTorch for regression
+
+```{code-cell} ipython3
+
 ```
