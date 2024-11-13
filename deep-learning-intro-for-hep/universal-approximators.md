@@ -56,7 +56,7 @@ ax.plot(curve_x, curve_y, color="magenta", linewidth=3, label="truth")
 
 ax.legend(loc="lower right")
 
-None
+plt.show()
 ```
 
 I don't think I need to demonstrate that a linear fit would be terrible.
@@ -113,7 +113,7 @@ ax.plot(model_x, model_y, color="orange", linewidth=3)
 
 ax.legend(["measurements", "truth", f"{len(coefficients)} Taylor components"], loc="lower right")
 
-None
+plt.show()
 ```
 
 It's kind of wiggily. It's a relatively good fit on the big oscillation, since that part looks like a polynomial, but it can't dampen the oscillations on the flat parts without a lot more terms.
@@ -138,7 +138,7 @@ ax.plot(model_x, model_y, color="orange", linewidth=3)
 
 ax.legend(["measurements", "truth", f"{len(coefficients)} Taylor components"], loc="lower right")
 
-None
+plt.show()
 ```
 
 But not outside the domain of $x$ values that it was fitted to.
@@ -159,7 +159,7 @@ ax.plot(model_x_2, model_y_2, color="orange", linewidth=3)
 ax.legend(["measurements", "truth", f"{len(coefficients)} Taylor components"], loc="upper right")
 ax.set_ylim(-1.5, 2.5)
 
-None
+plt.show()
 ```
 
 If our only knowledge of the function comes from its sampled points, there isn't a "correct answer" for what the function should be outside of the sampled domain, but it probably shouldn't shoot off into outer space.
@@ -219,7 +219,7 @@ ax.plot(model_x, model_y, color="orange", linewidth=3)
 
 ax.legend(["measurements", "truth", f"{1 + len(cos_terms) + len(sin_terms)} Fourier components"])
 
-None
+plt.show()
 ```
 
 Like the Taylor series, this gets the large feature right and misses the edges. In fact, the Fourier model above is constrained to match at $x = 0$ and $x = 1$ because this is a discrete Fourier series and therefore periodic in the training domain.
@@ -264,7 +264,7 @@ ax.plot(model_x, sigmoid_component(sample_x, 0.75, -0.01), label=r"$\alpha = 0.7
 
 ax.legend(loc="lower left", bbox_to_anchor=(0.05, 0.1))
 
-None
+plt.show()
 ```
 
 Fitting with these adaptive sigmoids requires a non-linear parameter search, rather than computing the parameters with an exact formula. In the Taylor and Fourier cases, the fact that all basis functions $\psi_i$ are orthogonal to each other means that you can determine each coefficient $c_i$ in isolation. Since adaptive basis functions don't have that property, you can't.
@@ -316,7 +316,7 @@ ax.plot(model_x, model_y, color="orange", linewidth=3)
 
 ax.legend(["measurements", "truth", f"{len(minimizer.parameters)} sigmoid parameters"])
 
-None
+plt.show()
 ```
 
 ```{code-cell} ipython3
@@ -342,7 +342,7 @@ ax.plot(model_x_2, model_y_2, color="orange", linewidth=3)
 ax.legend(["measurements", "truth", f"{len(minimizer.parameters)} sigmoid parameters"])
 ax.set_ylim(-1.5, 1.5)
 
-None
+plt.show()
 ```
 
 We can't expect the fit to know what the true function does outside of the sample points, but it doesn't shoot off into outer space or connect into a periodic function like Taylor or Fourier series do. It assumes that the curve levels off because it's made out of components that level off.
@@ -362,7 +362,7 @@ narrow_peak_right = sigmoid_component(model_x, 0.6, -0.005)
 
 ax.plot(model_x, -wide_plateau_left - wide_plateau_right - narrow_peak_left - narrow_peak_right)
 
-None
+plt.show()
 ```
 
 ## Adaptive basis functions are a one-layer neural network

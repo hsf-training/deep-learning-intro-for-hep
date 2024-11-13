@@ -42,6 +42,7 @@ parse:
     - attrs_inline
     - dollarmath
     - smartquotes
+  myst_heading_anchors: 3
 
 sphinx:
   config:

@@ -45,7 +45,7 @@ fig, ax = plt.subplots()
 
 ax.scatter(x, y, marker="+", color="tab:orange")
 
-None
+plt.show()
 ```
 
 You can write an equation for an exact linear relationship:
@@ -85,7 +85,7 @@ fig, ax = plt.subplots()
 ax.scatter(x, y, marker="+", color="tab:orange")
 ax.plot([-5, 5], [a*-5 + b, a*5 + b], color="tab:blue")
 
-None
+plt.show()
 ```
 
 One thing that you should keep in mind is that we're treating the $x$ dimension and the $y$ dimension differently: $\chi^2$ is minimizing differences in predicted $y$ ($a x_i + b$) and measured $y$ ($y_i$): only the _vertical_ differences between points and the line matter. In an experiment, you'd use $x$ to denote the variables you can control, such as the voltage you apply to a circuit, and $y$ is the measured response of the system, like a current in that circuit. In ML terminology, $x$ is a "feature" and $y$ is a "prediction," and this whole fitting process is called "regression."
@@ -269,7 +269,7 @@ ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
 ax.set_xlabel("time after release")
 ax.set_ylabel("height above ground")
 
-None
+plt.show()
 ```
 
 A linear fit would be a disaster:
@@ -292,7 +292,7 @@ ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
 ax.set_xlabel("time after release")
 ax.set_ylabel("height above ground")
 
-None
+plt.show()
 ```
 
 Instead, we use our theoretical knowledge of the shape of the functional form, often called an "ansatz," and consider any unknown magnitudes as free parameters. Unlike a linear fit, there might not be an exact formula to find those parameters—there usually isn't—so we use an algorithm to search the space of free parameters until it minimizes
@@ -328,7 +328,7 @@ ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
 ax.set_xlabel("time after release")
 ax.set_ylabel("height above ground")
 
-None
+plt.show()
 ```
 
 It's a great fit, but you had to put part of the answer in to get this answer out. First, you had to know the functional form. Suppose you used the formula for the position of a tossed object _without_ air resistance?
@@ -357,7 +357,7 @@ ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
 ax.set_xlabel("time after release")
 ax.set_ylabel("height above ground")
 
-None
+plt.show()
 ```
 
 Or suppose you have the right functional form but provided the fitter with a bad initial guess? These are the numbers passed to the `Minuit` object constructor:
@@ -384,7 +384,7 @@ ax.errorbar(t, y, 1, fmt="none", color="tab:orange")
 ax.set_xlabel("time after release")
 ax.set_ylabel("height above ground")
 
-None
+plt.show()
 ```
 
 ```{code-cell} ipython3
