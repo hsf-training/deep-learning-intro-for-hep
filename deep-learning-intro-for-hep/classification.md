@@ -15,16 +15,30 @@ kernelspec:
 
 # Classification in PyTorch
 
++++
+
+This is a continuation of the previous section, introducing PyTorch for two basic problems: regression and classification.
+
 ```{code-cell} ipython3
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 ```
 
+## Penguins again!
+
++++
+
+See [Regression in PyTorch](regression.md) for instructions on how to get the data.
+
 ```{code-cell} ipython3
 penguins_df = pd.read_csv("data/penguins.csv")
 penguins_df
 ```
+
+This time, we're going to focus on the categorical variables, `species`, `island`, `sex`, and `year`.
+
++++
 
 ## Numerical and categorical data
 
@@ -41,9 +55,7 @@ Numerical versus categorical may be thought of as data types in a programming la
 
 Python's `TypeError` won't tell you if you're inappropriately multiplying or dividing an interval number, but it will tell you if you try to subtract strings.
 
-+++
-
-**Categorical** problems involve at least one categorical variable. For instance, given a penguin's bill length and bill depth, what's its species? We might ask a categorical model to predict the most likely category or we might ask it to tell us the probabilities of each category.
+Categorical problems involve at least one categorical variable. For instance, given a penguin's bill length and bill depth, what's its species? We might ask a categorical model to predict the most likely category or we might ask it to tell us the probabilities of each category.
 
 We can't pass string-valued variables into a fitter, so we need to convert the strings into numbers. Since these categories are nominal (not ordinal), equality/inequality is the only meaningful operation, so the numbers should only indicate which strings are the same as each other and which are different.
 
@@ -108,15 +120,13 @@ plt.colorbar(vis, ax=ax, label="bill length (mm)", location="top")
 plt.show()
 ```
 
-It's also possible to consider problems in which all features and all predictions being categorical.
+It's also possible for all of the features and predictions in a problem to be categorical. For instance, suppose the model is given a penguin's species and is asked to predict its probable island (so we can bring it home!).
 
 ```{code-cell} ipython3
 pd.get_dummies(penguins_df.dropna()[["species", "island"]])
 ```
 
-We don't encounter these kinds of problems very often in HEP, though.
-
-Here's what we'll use as our sample problem: given the bill length and depth, what is the penguin's species? The fact that there's more than 2 categories will require special handling.
+Here's what we'll use as our sample problem: given the bill length and depth, what is the penguin's species?
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -132,9 +142,90 @@ def plot_categorical_problem(ax, xlow=29, xhigh=61, ylow=12, yhigh=22):
 
     ax.set_xlim(xlow, xhigh)
     ax.set_ylim(ylow, yhigh)
-    ax.legend(loc="lower left")
+    ax.set_xlabel("bill length (mm)")
+    ax.set_ylabel("bill depth (mm)")
+
+    ax.legend(loc="lower left", framealpha=1)
 
 plot_categorical_problem(ax)
 
 plt.show()
+```
+
+The model will be numerical, a function from bill length and depth to a 3-dimensional probability space. Probabilities have two hard constraints:
+
+* they are all strictly bounded between $0$ and $1$
+* all the probabilities in a set of possibilities need to add to $1$.
+
+If we define $P_A$, $P_G$, and $P_C$ for the probability that a penguin is Adelie, Gentoo, or Chinstrap, respectively, then $P_A + P_G + P_C = 1$ and all are non-negative.
+
+One way to ensure the first constraint is to let a model predict values between $-\infty$ and $\infty$, then pass them through a sigmoid function:
+
+$$p(x) = \frac{1}{1 + \exp(x)}$$
+
+If we only had 2 categories, $P_1$ and $P_2$, this would be sufficient: we'd model the probability of $P_1$ only by applying a sigmoid as the last step in our model. $P_2$ can be inferred from $P_1$.
+
+But what if we have 3 categories, as in the penguin problem?
+
+The sigmoid function has a multidimensional generalization called [softmax](https://en.wikipedia.org/wiki/Softmax_function). Given an $n$-dimensional vector $\vec{x}$ with components $x_1, x_2, \ldots, x_n$,
+
+$$P(\vec{x})_i = \frac{\exp(x_i)}{\displaystyle \sum_j^n \exp(x_j)}$$
+
+For any $x_i$ between $-\infty$ and $\infty$, all $0 \le P_i \le 1$ and $\sum_i P_i = 1$. Thus, we can pass the output of any $n$-dimensional vector through a softmax to get probabilities.
+
++++
+
+## Scikit-Learn
+
++++
+
+In keeping with the principle that a linear fit is the simplest kind of neural network, we can use Scikit-Learn's `LogisticRegression` as a single-layer neural network.
+
+```{code-cell} ipython3
+from sklearn.linear_model import LogisticRegression
+```
+
+Scikit-Learn requires the target classes to be passed as integer labels, so we use `categorical_int_df`, rather than `categorical_1hot_df`.
+
+```{code-cell} ipython3
+categorical_features = categorical_int_df[["bill_length_mm", "bill_depth_mm"]].values
+categorical_targets = categorical_int_df["species"].values
+```
+
+The reason we set `penalty=None` is (again) to stop it from applying regularization, which we'll learn about later.
+
+```{code-cell} ipython3
+best_fit = LogisticRegression(penalty=None).fit(categorical_features, categorical_targets)
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+def plot_categorical_solution(ax, model, xlow=29, xhigh=61, ylow=12, yhigh=22):
+    # compute the three probabilities for every 2D point in the background
+    background_x, background_y = np.meshgrid(np.linspace(xlow, xhigh, 100), np.linspace(ylow, yhigh, 100))
+    background_2d = np.column_stack([background_x.ravel(), background_y.ravel()])
+    probabilities = model(background_2d)
+    
+    # draw contour lines where the probabilities cross the 50% threshold
+    ax.contour(background_x, background_y, probabilities[:, 0].reshape(background_x.shape), [0.5])
+    ax.contour(background_x, background_y, probabilities[:, 1].reshape(background_x.shape), [0.5])
+    ax.contour(background_x, background_y, probabilities[:, 2].reshape(background_x.shape), [0.5])
+
+plot_categorical_solution(ax, lambda x: best_fit.predict_proba(x))
+plot_categorical_problem(ax)
+
+plt.show()
+```
+
+Despite being called a linear model, the best fit lines are curvy. That's because it's a linear fit from the 2-dimensional input space to a 3-dimensional space, which ranges from $-\infty$ to $\infty$ in all 3 dimensions, and then those are passed through a softmax to get 3 well-behaved probabilities.
+
+To add a layer of ReLU functions, use Scikit-Learn's [MLPClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html).
+
+```{code-cell} ipython3
+from sklearn.neural_network import MLPClassifier
+```
+
+```{code-cell} ipython3
+
 ```

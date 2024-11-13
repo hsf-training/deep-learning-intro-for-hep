@@ -93,7 +93,7 @@ plot_regression_problem(ax)
 plt.show()
 ```
 
-Next, let's add a layer of ReLU functions using Scikit-Learn's `MLPRegressor`. The reason we set `alpha=0` is because its regularization is not off by default, and we haven't talked about regularization yet. The `solver="lbfgs"` picks a more robust optimization method for this low-dimension problem.
+Next, let's add a layer of ReLU functions using Scikit-Learn's [MLPRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html). The reason we set `alpha=0` is because its regularization is not off by default, and we haven't talked about regularization yet. The `solver="lbfgs"` picks a more robust optimization method for this low-dimension problem.
 
 ```{code-cell} ipython3
 from sklearn.neural_network import MLPRegressor
@@ -375,7 +375,7 @@ This time, we see the effect of the ReLU steps because the data and the model pa
 
 I think this illustrates an important point about working with neural networks: you cannot treat them as black boxes—you have to understand the internal parts to figure out why it is or isn't fitting the way you want it to. Nothing told us that the ReLU parameters were effectively being ignored because the data were at the wrong scale. We had to step through the pieces to find that out.
 
-Hand-written code, called "craftsmanship" in the Overview, is generally designed to be more compartmentalized than this, so if you're coming from a programming background, this is something to look out for! Andrej Karpathy's excellent [recipe for training neural networks](https://karpathy.github.io/2019/04/25/recipe/) starts with the warning that neural network training is a "leaky abstraction," which is to say, it can't be treated as a black box.
+Hand-written code, called "craftsmanship" in the [Overview](overview.md), is generally designed to be more compartmentalized than this. If you're coming from a programming background, this is something to look out for! Andrej Karpathy's excellent [recipe for training neural networks](https://karpathy.github.io/2019/04/25/recipe/) starts with the warning that neural network training is a "[leaky abstraction](https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/)," which is to say, you have to understand its inner workings to use it effectively—more so than other software products.
 
 That may be why PyTorch is so popular: it forces you to look at the individual pieces, rather than maintaining the illusion that pressing a `fit` button will give you what you want.
 
