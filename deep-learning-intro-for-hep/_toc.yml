@@ -11,4 +11,5 @@ chapters:
 - file: neural-networks
 - file: exercise-1
 - file: regression
+- file: exercise-2
 - file: classification
