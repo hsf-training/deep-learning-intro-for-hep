@@ -226,6 +226,186 @@ To add a layer of ReLU functions, use Scikit-Learn's [MLPClassifier](https://sci
 from sklearn.neural_network import MLPClassifier
 ```
 
-```{code-cell} ipython3
+As in the previous section, we need to scale the features to be order 1. The bill lengths and depths are 30‒60 mm and 13‒22 mm, respectively, which would be hard for the optimizer to find in small steps, starting from numbers between $-1$ and $1$.
 
+But... do we need to scale the prediction targets? Why not?
+
+```{code-cell} ipython3
+def scale_features(x):
+    return (x - categorical_features.mean(axis=0)) / categorical_features.std(axis=0)
+
+categorical_features_scaled = scale_features(categorical_features)
 ```
+
+Below, `alpha=0` because we haven't discussed regularization yet.
+
+```{code-cell} ipython3
+best_fit = MLPClassifier(
+    activation="relu", hidden_layer_sizes=(5,), solver="lbfgs", max_iter=1000, alpha=0
+).fit(categorical_features_scaled, categorical_targets)
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+plot_categorical_solution(ax, lambda x: best_fit.predict_proba(scale_features(x)))
+plot_categorical_problem(ax)
+
+plt.show()
+```
+
+The 50% threshold lines can now be piecewise linear, because of the ReLU adaptive basis functions. (If we had chosen sigmoid/logistic, they'd be smooth curves.) These thresholds even be shrink-wrapping around individual training points, especially those that are far from the bulk of the distributions, which is less constrained.
+
++++
+
+## PyTorch
+
++++
+
+Now that we've done regression in Scikit-Learn and PyTorch and classification in Scikit-Learn, the extension to classification in PyTorch ought to be straightforward. However, it has some tricky aspects just because of the way PyTorch works and an inherent ambiguity in what we consider part of the model.
+
+First, the easy part: classification in PyTorch will look roughly like this:
+
+```{code-cell} ipython3
+import torch
+from torch import nn, optim
+```
+
+```{code-cell} ipython3
+# now now, just 1-dimensional features and only 2 categories
+features1d = torch.tensor(categorical_features_scaled[:, 0:1], dtype=torch.float32)
+targets1d = torch.tensor(categorical_targets[:, np.newaxis] == 0, dtype=torch.float32)
+
+model = nn.Sequential(
+    nn.Linear(1, 1),    # 1D → 1D linear transformation
+    nn.Sigmoid(),       # sigmoid shape for probability
+)
+
+# Binary Cross Entropy as the loss function for 2 categories
+loss_function = nn.BCELoss()
+
+# a generic optimizer
+optimizer = optim.Adam(model.parameters())
+
+for epoch in range(10000):
+    # almost always do this at the beginning of a step
+    optimizer.zero_grad()
+
+    # compute model predictions and loss/how bad the prediction is
+    predictions = model(features1d)
+    loss = loss_function(predictions, targets1d)
+
+    # almost always do this at the end of a step
+    loss.backward()
+    optimizer.step()
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+ax.scatter(features1d, targets1d, marker="+", color="tab:orange", label="given targets")
+
+model_x = np.linspace(-3, 3, 1000)
+model_y = model(torch.tensor(model_x[:, np.newaxis], dtype=torch.float32)).detach().numpy()[:, 0]
+ax.plot(model_x, model_y, linewidth=3, label="fitted probability")
+
+ax.set_xlabel("scaled bill length (unitless)")
+ax.set_ylabel("probability that penguin is Adelie")
+
+ax.legend(loc="upper right")
+
+plt.show()
+```
+
+This is a 1-dimensional, linear, logistic fit of 2 categories. We can see that because the model is just a `nn.Linear(1, 1)` passed through a `nn.Sigmoid()`.
+
+The loss function is [nn.BCELoss](https://pytorch.org/docs/stable/generated/torch.nn.BCELoss.html), or binary [cross-entropy](https://en.wikipedia.org/wiki/Cross-entropy) because when this quantity is minimized, the sigmoid approximates the probability of the 2 categories.
+
+It has a generalization to $n$ categories: [nn.CrossEntropyLoss](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html). When this full cross-entropy loss is minimized, the softmax approximates the probability of the $n$ categories.
+
+_However_, that [nn.CrossEntropyLoss](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html) is tricky to use. First, it assumes that the model output (the `predictions` that you provide as its first argument) _do not have_ the softmax applied. If you want to make any plots, you'll need to apply the softmax, so I often create two functions, one with the softmax included, the other without.
+
+The other tricky part is that _what_ it computes depends on the data type of the targets (the `targets` that you provide as its second argument).
+
+* If `targets` has `dtype=torch.int64`, PyTorch assumes each entry is an integer-encoded category label $\in [0, n)$.
+* If `targets` has `dtype=torch.float32`, PyTorch assumes each entry is a length-$n$ subarray of non-negative category probabilities that add up to $1$.
+
+To see this, let's create some artificial examples and pass them to the function. (This is an important debugging technique! You have to understand what your tools do!)
+
+Here are some targets expressed as category probabilities. Since they're targets, and therefore givens, they'll almost always be zeros and ones—likely derived from a one-hot encoding.
+
+```{code-cell} ipython3
+targets_as_probabilities = torch.tensor([
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+    [0, 1, 0],
+    [1, 0, 0],
+], dtype=torch.float32)
+```
+
+Here are the same targets expressed as category labels.
+
+```{code-cell} ipython3
+targets_as_labels = torch.argmax(targets_as_probabilities, axis=1)
+targets_as_labels
+```
+
+How do they differ? In the `dtype` and the rank (length of the `shape` tuple or `torch.Size` array):
+
+```{code-cell} ipython3
+targets_as_probabilities.dtype, targets_as_probabilities.shape
+```
+
+```{code-cell} ipython3
+targets_as_labels.dtype, targets_as_labels.shape
+```
+
+Here are some model predictions, such as what a model _without softmax_ might produce. There is no constraint on the values being between $0$ and $1$ or adding up to $1$.
+
+```{code-cell} ipython3
+predictions = torch.tensor([
+    [100,  10,  10],
+    [ -5,  20,   0],
+    [2.2, -10,  50],
+    [150, -10,  20],
+    [0.5, 123, -10],
+], dtype=torch.float32)
+```
+
+You'd get actual probabilities if you apply the [nn.Softmax](https://pytorch.org/docs/stable/generated/torch.nn.Softmax.html).
+
+```{code-cell} ipython3
+predictions_with_softmax = nn.Softmax(dim=1)(predictions)
+predictions_with_softmax
+```
+
+```{code-cell} ipython3
+predictions_with_softmax.sum(axis=1)
+```
+
+The [nn.CrossEntropyLoss](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html) takes `predictions` without softmax and when the second argument has floating-point type, it's presumed to be target (given) probabilities:
+
+```{code-cell} ipython3
+nn.CrossEntropyLoss()(predictions, targets_as_probabilities)
+```
+
+When the second argument has integer type, it's presumed to be target labels:
+
+```{code-cell} ipython3
+nn.CrossEntropyLoss()(predictions, targets_as_labels)
+```
+
+(We get the same answer because these `targets_as_labels` correspond to the `targets_as_probabilities`.)
+
+As another PyTorch technicality, notice that most of these functions create functions (or, as another way of saying it, they're class instances with a `__call__` method, so they can be called like functions). `nn.CrossEntropyLoss` is not a function of predictions and targets; it returns a function of predictions and targets:
+
+```{code-cell} ipython3
+nn.CrossEntropyLoss()
+```
+
+(This is an object you can then call as a function with two arguments.)
+
+In principle, targets might have probabilities between $0$ and $1$, depending on what's given in the problem. If so, then you must use the `targets_as_probabilities` method. PyTorch's documentation says that `targets_as_labels` is faster.
+
+In the next section, you'll do the full 2-dimensional, 3-category fit in PyTorch as an exercise.

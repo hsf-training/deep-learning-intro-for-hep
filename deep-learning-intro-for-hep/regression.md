@@ -122,8 +122,7 @@ Now let's do the same in PyTorch. First, the linear model: `nn.Linear(1, 1)` mea
 
 ```{code-cell} ipython3
 import torch
-import torch.nn as nn
-import torch.optim as optim
+from torch import nn, optim
 ```
 
 ```{code-cell} ipython3
