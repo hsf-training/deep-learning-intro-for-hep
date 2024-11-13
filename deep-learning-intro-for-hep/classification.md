@@ -155,7 +155,7 @@ plt.show()
 The model will be numerical, a function from bill length and depth to a 3-dimensional probability space. Probabilities have two hard constraints:
 
 * they are all strictly bounded between $0$ and $1$
-* all the probabilities in a set of possibilities need to add to $1$.
+* all the probabilities in a set of possibilities need to add up to $1$.
 
 If we define $P_A$, $P_G$, and $P_C$ for the probability that a penguin is Adelie, Gentoo, or Chinstrap, respectively, then $P_A + P_G + P_C = 1$ and all are non-negative.
 
