@@ -14,3 +14,5 @@ chapters:
 - file: exercise-2
 - file: classification
 - file: exercise-3
+- file: minimizers
+- file: mini-batches
