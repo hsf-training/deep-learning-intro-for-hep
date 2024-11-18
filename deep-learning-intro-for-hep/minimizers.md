@@ -76,19 +76,19 @@ $$\chi^2 = \sum_i (f(x_i) - y_i)^2$$
 
 The data points $x_i$ and $y_i$ are constants in the minimization; it's the parameterization of $f$ that varies. If $f$ is continuous and differentiable, then $\chi^2$ is, too.
 
-This should be a strong hint as to why ansatz-fitting is often unstable and/or depends strongly on its initial parameters: every problem has a different $f$ (and maybe a different parameterization of $f$). Even if $f$ is continuous and differentiable, it might have very large derivatives at some points and might be nearly flat in very wide regions. As the steep part scans over individual data points, those points have an outsized influence on the global fit, and points in the flat part have no influence.
+This should be a strong hint as to why ansatz-fitting is often unstable and/or depends strongly on its initial parameters: every problem has a different $f$ (and maybe a different parameterization of $f$). Even if $f$ is continuous and differentiable, it might have very large derivatives at some points and might be nearly flat in wide regions. As the steep part scans over individual data points, those points have an outsized influence on the global fit, and points in the flat part have no influence.
 
 ![](img/difficult-ansatz-fit.svg){. width="75%"}
 
 This should also be a hint as to why a linear fit can be solved exactly: a linear $f$ has a quadratic $f^2$, which can be minimized by finding the roots of its derivative. Orthogonal basis functions like Taylor and Fourier series are exactly solvable because, even though each basis function is non-linear, their coefficients form a linear system of equations.
 
-The adaptive basis functions that we use in neural networks, however, are not orthogonal to each other, so need an iterative, numerical algorithm to search for the minimum. A loss function, $L$, for any neural network has the following properties:
+The adaptive basis functions that we use in neural networks, however, are not orthogonal to each other, so we need an iterative, numerical algorithm to search for the minimum. A loss function, $L$, for the most common types of neural networks has the following properties:
 
 * $L$ takes $n$ floating-point numbers as input, which can be thought of as an $n$-dimensional space of real numbers. This number of parameters $n$ may be hundreds or thousands (or more).
-* $L$ returns $1$ floating-point number as output. $1$-dimensional real numbers are strictly ordered, which is what makes it possible to say that some value of loss is better than another. (In practice, this means that if we want to optimize two quantities, such as signal strength and background rejection, we have to put them both on the same scale: how much signal can we afford to lose to reject enough background? If we're running a bank, how much credit card fraud are we willing to ignore to avoid annoying card-holders with too many alerts? All loss problems have to become $1$-dimensional!)
+* $L$ returns $1$ floating-point number as output. $1$-dimensional real numbers are strictly ordered, which is what makes it possible to say that some value of loss is better than another. (In practice, this means that if we want to optimize two quantities, such as signal strength and background rejection in a HEP analysis, we have to put them both on the same scale: how much signal can we afford to lose to reject enough background? If we're running a bank, how much credit card fraud are we willing to ignore to avoid annoying card-holders with too many alerts? All loss problems have to become $1$-dimensional.)
 * $L$ is continuous and differentiable at every point (even if the definition of the derivative seems artificial in some cases).
-* $L$ may be very noisy and will have many local minima. Unless the neural network architecture is trivial, $L$ must have a non-unique global minimum because of symmetries.
-* $L$ is bounded below. Its output doesn't, for instance, limit to $\infty$ as some combination of its input parameters limit to $\infty$ or a point. At least the global minima _exist_.
+* $L$ may be very noisy and will have many local minima. Unless the neural network architecture is trivial, $L$ _will_ have non-unique global minima because of symmetries.
+* $L$ is bounded below. Its output doesn't, for instance, limit to $-\infty$ as some combination of its input parameters limit to $\infty$ or some divergent point. At least the global minima _exist_.
 
 +++
 
@@ -99,11 +99,11 @@ The adaptive basis functions that we use in neural networks, however, are not or
 All of the minimization algorithms we'll look at have the following basic approach:
 
 1. Start with a random set of parameter values as an initial point $\vec{p}_0$.
-2. Compute the loss function $L(\vec{p})$ and its derivative $\nabla L(\vec{p})$ at the current point.
+2. Compute the loss function $L(\vec{p})$ and its derivative $\nabla L(\vec{p})$ at the current point $\vec{p}$.
 3. Use the derivative to take a step in the direction that decreases $L$, but don't jump all the way to the estimated minimum. Take a small step whose size is controlled by the "learning rate."
-4. Either repeat step 2 or look elsewhere in the space to avoid getting stuck in a local minimum or narrow valley. Minimization algorithms mostly differ in how they treat this step.
+4. Either repeat step 2 or do something to avoid getting stuck in a local minimum or narrow valley. (There's a great deal of variety in how minimization algorithms choose to approach the apparent minimum.)
 
-Minuit follows this approach, though it also (numerically) calculates a second derivative, $\nabla^2 L(\vec{p})$, which it uses to describe the shape of the minimum. This is because Minuit is intended for ansatz fits—the steepness of the loss function at the minimum tells us the uncertainty in the fitted parameters. Neural network training doesn't need this.
+Minuit follows this approach, though it also (numerically) calculates a second derivative, $\nabla^2 L(\vec{p})$, which it uses to describe the shape of the minimum. This is because Minuit is intended for ansatz fits—the steepness of the loss function at the minimum tells us the uncertainty in the fitted parameters. Neural network training doesn't need it.
 
 ```{code-cell} ipython3
 from iminuit import Minuit
@@ -369,8 +369,17 @@ $$-\frac{1}{\sqrt{n_{\mbox{in}}}} < \mbox{initial parameters} < \frac{1}{\sqrt{n
 where $n_{\mbox{in}}$ is the number of vector components entering a linear transformation ("fan in").
 
 ```{code-cell} ipython3
-print(f"# par |  min  | max  | variance")
-print( "------+-------+------+---------")
+def print_header():
+    print(f"# par |  min  | max  | variance")
+    print( "------+-------+------+---------")
+
+def print_values(model):
+    parameters = np.concatenate(
+        [x.detach().numpy().ravel() for x in model.parameters()]
+    )
+    print(f"{len(parameters):>5d} | {parameters.min():.2f} | {parameters.max():.2f} | {parameters.var():.5f}")
+
+print_header()
 
 for fan_in in [10, 20, 50, 100, 200, 500, 1000]:
     fan_out = 10
@@ -378,17 +387,13 @@ for fan_in in [10, 20, 50, 100, 200, 500, 1000]:
     # make a linear transformation, a single layer of a neural network
     model = nn.Linear(fan_in, fan_out)
 
-    parameters = np.concatenate(
-        [x.detach().numpy().ravel() for x in model.parameters()]
-    )
-    print(f"{len(parameters):>5d} | {parameters.min():.2f} | {parameters.max():.2f} | {parameters.var():.5f}")
+    print_values(model)
 ```
 
 But it doesn't depend on the number of vector components that exit the linear transformation ("fan out").
 
 ```{code-cell} ipython3
-print(f"# par |  min  | max  | variance")
-print( "------+-------+------+---------")
+print_header()
 
 for fan_out in [10, 20, 50, 100, 200, 500, 1000]:
     fan_in = 10
@@ -396,10 +401,7 @@ for fan_out in [10, 20, 50, 100, 200, 500, 1000]:
     # make a linear transformation, a single layer of a neural network
     model = nn.Linear(fan_in, fan_out)
 
-    parameters = np.concatenate(
-        [x.detach().numpy().ravel() for x in model.parameters()]
-    )
-    print(f"{len(parameters):>5d} | {parameters.min():.2f} | {parameters.max():.2f} | {parameters.var():.5f}")
+    print_values(model)
 ```
 
 This is usually sufficient, but the optimal distributions depend on both $n_{\mbox{in}}$ and $n_{\mbox{out}}$. For smooth activation functions like sigmoids and inverse tangent, Xavier initialization is best and for ReLU and its variants, Hu initialization is best. This can be relevant if you build an architecture in which the size of one layer is very different from the size of the next.
@@ -407,8 +409,7 @@ This is usually sufficient, but the optimal distributions depend on both $n_{\mb
 The [nn.init](https://pytorch.org/docs/main/nn.init.html) module provides initialization functions, so you can set initial parameters appropriately:
 
 ```{code-cell} ipython3
-print(f"# par |  min  | max  | variance")
-print( "------+-------+------+---------")
+print_header()
 
 for fan_out in [10, 20, 50, 100, 200, 500, 1000]:
     fan_in = 10
@@ -417,10 +418,7 @@ for fan_out in [10, 20, 50, 100, 200, 500, 1000]:
     model = nn.Linear(fan_in, fan_out)
     nn.init.xavier_uniform_(model.weight)
 
-    parameters = np.concatenate(
-        [x.detach().numpy().ravel() for x in model.parameters()]
-    )
-    print(f"{len(parameters):>5d} | {parameters.min():.2f} | {parameters.max():.2f} | {parameters.var():.5f}")
+    print_values(model)
 ```
 
 ## Derivatives and the activation function
@@ -498,7 +496,7 @@ x[500]
 x.grad[500]
 ```
 
-The autograd computation is not sensitive to neighboring points the way that a real derivative is, so when $x = 0$, the derivative is calculated using the same code path as the primary function. For instance,
+The autograd computation is not sensitive to a neighborhood of points the way that a real derivative is. When $x = 0$, the derivative is calculated using the same code path as the primary function. For instance,
 
 ```{code-cell} ipython3
 x = torch.tensor(0, dtype=torch.float32, requires_grad=True)
@@ -533,10 +531,10 @@ is a convention adopted by the community. It could have been defined to be $0$ o
 +++
 
 * Use the [optim.Adam](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html) minimizer.
-* Pay close attention to the learning rate (`lr`). Try different, exponentially spaced steps (like `0.001`, `0.01`, `0.1`) if the optimization doesn't seem to be doing anything, or if the output is erratic.
+* Pay close attention to the learning rate (`lr`). Try different, exponentially spaced steps (like `0.001`, `0.01`, `0.1`) if the optimization doesn't seem to be doing anything or if the output is erratic.
 * Maybe even play with the momentum (`betas`), but the primary learning rate is more important.
-* The final, fitted parameters are not meaningful. Unlike ansatz fitting, solutions are even guaranteed to not be unique.
-* The variance of the initial random parameter values matters! If your network architecture has roughly the same number of vector components in each layer, you can use PyTorch's default. If not, initialize the parameter values using the appropriate function from [nn.init](https://pytorch.org/docs/main/nn.init.html), whcih depends on your choice of activation function.
+* The final, fitted parameters are not meaningful. Unlike ansatz fitting, solutions are even guaranteed to not be unique. The parameters you get from one loss-minimization will likely be different from the parameters you get from another.
+* The variance of the initial random parameter values matters! If your network architecture has roughly the same number of vector components in each layer, you can use PyTorch's default. If not, initialize the parameter values using the appropriate function from [nn.init](https://pytorch.org/docs/main/nn.init.html), which depends on your choice of activation function.
 * Most of the function minimizers need to be given derivatives. Despite appearances, ReLU is differentiable in the sense that it needs to be.
 
 And finally, the number of epochs and mini-batch size are also important for the rate of convergence of training. They're important enough for me to leave to the next section.
