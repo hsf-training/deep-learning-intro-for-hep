@@ -16,3 +16,5 @@ chapters:
 - file: exercise-3
 - file: minimizers
 - file: mini-batches
+- file: exercise-4
+- file: kernel-trick
