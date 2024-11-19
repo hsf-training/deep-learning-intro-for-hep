@@ -80,9 +80,9 @@ This should be a strong hint as to why ansatz-fitting is often unstable and/or d
 
 ![](img/difficult-ansatz-fit.svg){. width="75%"}
 
-This should also be a hint as to why a linear fit can be solved exactly: a linear $f$ has a quadratic $f^2$, which can be minimized by finding the roots of its derivative. Orthogonal basis functions like Taylor and Fourier series are exactly solvable because, even though each basis function is non-linear, their coefficients form a linear system of equations.
+This should also be a hint as to why a linear fit can be solved exactly: a linear $f$ has a quadratic $f^2$, which can be minimized by finding the roots of its derivative. Basis expansions like Taylor and Fourier series are exactly solvable because, even though each basis function is non-linear, their coefficients form a linear system of equations.
 
-The adaptive basis functions that we use in neural networks, however, are not orthogonal to each other, so we need an iterative, numerical algorithm to search for the minimum. A loss function, $L$, for the most common types of neural networks has the following properties:
+The adaptive basis functions that we use in neural networks, however, are not solvable as a linear system, so we need an iterative, numerical algorithm to search for the minimum. A loss function, $L$, for the most common types of neural networks has the following properties:
 
 * $L$ takes $n$ floating-point numbers as input, which can be thought of as an $n$-dimensional space of real numbers. This number of parameters $n$ may be hundreds or thousands (or more).
 * $L$ returns $1$ floating-point number as output. $1$-dimensional real numbers are strictly ordered, which is what makes it possible to say that some value of loss is better than another. (In practice, this means that if we want to optimize two quantities, such as signal strength and background rejection in a HEP analysis, we have to put them both on the same scale: how much signal can we afford to lose to reject enough background? If we're running a bank, how much credit card fraud are we willing to ignore to avoid annoying card-holders with too many alerts? All loss problems have to become $1$-dimensional.)

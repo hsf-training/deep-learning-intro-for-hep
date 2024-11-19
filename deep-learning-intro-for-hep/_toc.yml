@@ -18,3 +18,4 @@ chapters:
 - file: mini-batches
 - file: exercise-4
 - file: kernel-trick
+- file: under-overfitting

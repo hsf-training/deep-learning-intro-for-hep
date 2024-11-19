@@ -87,13 +87,11 @@ where each $a_n$ is computed from the $n$<sup>th</sup> derivative of the functio
 
 $$a_n = \frac{f^{(n)}(0)}{n!}$$
 
-The function $f$ can be thought of as a single infinite-dimensional vector and we're describing its components with all the $a_n$. These components are "orthonormal," meaning that they're at right angles to each other and have unit length (in a norm defined on functions: $\int f(x)^2 \, dx$). Other (useful) ways to split a function into infinitely many orthonormal pieces include [Jacobi polynomials](https://en.wikipedia.org/wiki/Jacobi_polynomials), [Laguerre polynomials](https://en.wikipedia.org/wiki/Laguerre_polynomials), [Hermite polynomials](https://en.wikipedia.org/wiki/Hermite_polynomials), [Chebyshev polynomials](https://en.wikipedia.org/wiki/Chebyshev_polynomials)...
+The function $f$ can be thought of as a single infinite-dimensional vector and we're describing its components with all the $a_n$. Any data with an [analytic](https://en.wikipedia.org/wiki/Analytic_function) functional relationship between $x$ and $y$ can be expressed by an infinite set of fit parameters $a_n$, though in practice, we'll have to pick a finite set of parameters to approximate the shape. Since finitely many data points $x_i$, $y_i$ can't tell us about infinitely many parameters anyway, this is fine.
 
-Since any (infinitely differentiable) function can be described by a Taylor series, we should be able to fit any data with a functional relationship to a series of polynomial terms. The only problem is that we have to pick a _finite_ number of terms.
+Even better, these parameters can be determined as a solution to a system of linear equations, rather than an iterative search. On specific domains, Taylor coefficients are linearly related to coefficients of orthogonal polynomial series, such as [Jacobi polynomials](https://en.wikipedia.org/wiki/Jacobi_polynomials), [Laguerre polynomials](https://en.wikipedia.org/wiki/Laguerre_polynomials), [Hermite polynomials](https://en.wikipedia.org/wiki/Hermite_polynomials), [Chebyshev polynomials](https://en.wikipedia.org/wiki/Chebyshev_polynomials), etc. Every coefficient of an orthogonal expansion can be determined independently of every other, since they're determined from integrals in which the integral of two basis functions is zero. Taylor series don't exactly have this property, but since they're only a linear transformation away, the Taylor coefficients can be computed in one step as an exact formula.
 
-You could pass something like $a_0 + a_1 x + a_2 x^2 + a_3 x^3$ as an ansatz to Minuit, but orthonormal basis functions have an exact solution. In fact, they're a kind of linear fit—a 4-term polynomial of 1 feature, $x$, is a fit to 4 features: $1$, $x$, $x^2$, and $x^3$. This is sometimes called the "kernel trick," and we'll cover it in a later section.
-
-NumPy has a polynomial fitter built in, so let's see the result.
+So while you could pass something like $a_0 + a_1 x + a_2 x^2 + a_3 x^3$ as an ansatz to Minuit and run its iterative algorithm, you could instead get an exact best-fit without the possibility of fit-failure by using a linear algebra library. NumPy has a polynomial fitter built in, so let's see the result.
 
 ```{code-cell} ipython3
 NUMBER_OF_POLYNOMIAL_TERMS = 15
@@ -174,7 +172,7 @@ This is a failure to generalize—we want our function approximation to make rea
 
 Your next thought, as a physicist, might be "Fourier series."
 
-[Fourier series](https://en.wikipedia.org/wiki/Fourier_series) are also heavily used throughout physics. For instance, did you know that [epicycles in medieval astronomy are the first few terms in a Fourier series](https://doi.org/10.1086/348869)? Discrete Fourier series approximate periodic functions and integral Fourier transforms approximate non-periodic functions. Like Taylor series, Fourier series are a decomposition of a function as an infinite-dimensional vector into infinitely many components, all orthonormal to one another. Instead of polynomial basis vectors, Fourier basis vectors are sine and cosine functions:
+[Fourier series](https://en.wikipedia.org/wiki/Fourier_series) are also heavily used throughout physics. For instance, did you know that [epicycles in medieval astronomy are the first few terms in a Fourier series](https://doi.org/10.1086/348869)? Discrete Fourier series approximate periodic functions and integral Fourier transforms approximate non-periodic functions. Like Taylor series, Fourier series are a decomposition of a function as an infinite-dimensional vector into infinitely many components, and Fourier components are orthogonal to each other. Instead of polynomial basis vectors, Fourier basis vectors are sine and cosine functions:
 
 $$f(x) = a_0 + a_1 \cos\left(2\pi\frac{1}{P}x\right) + b_1 \sin\left(2\pi\frac{1}{P}x\right) + a_2 \cos\left(2\pi\frac{2}{P}x\right) + b_2 \sin\left(2\pi\frac{2}{P}x\right) + \ldots$$
 
@@ -222,7 +220,7 @@ ax.legend(["measurements", "truth", f"{1 + len(cos_terms) + len(sin_terms)} Four
 plt.show()
 ```
 
-Like the Taylor series, this gets the large feature right and misses the edges. In fact, the Fourier model above is constrained to match at $x = 0$ and $x = 1$ because this is a discrete Fourier series and therefore periodic in the training domain.
+Like the Taylor series, this gets the large feature right and misses the edges. In fact, the Fourier model above is constrained to match at $f(0) = f(1)$ because this is a discrete Fourier series and therefore periodic in the training domain.
 
 Both the 15-term Taylor series and the 15-term Fourier series are not good fits to the function. In part, this is because the function is neither polynomial nor trigonometric, but a stitched-together monstrosity of both.
 
@@ -267,9 +265,9 @@ ax.legend(loc="lower left", bbox_to_anchor=(0.05, 0.1))
 plt.show()
 ```
 
-Fitting with these adaptive sigmoids requires a non-linear parameter search, rather than computing the parameters with an exact formula. In the Taylor and Fourier cases, the fact that all basis functions $\psi_i$ are orthogonal to each other means that you can determine each coefficient $c_i$ in isolation. Since adaptive basis functions don't have that property, you can't.
+Fitting with these adaptive sigmoids requires an iterative search, rather than computing the parameters with an exact formula. These basis functions are not orthogonal to each other (unlike Fourier components), and they're not even related through a linear transformation (unlike Taylor components).
 
-In fact, this is a harder-than-usual problem for Minuit because the search space has many local minima. To get around this, let's run it 15 times and take the best result.
+In fact, this is a harder-than-usual problem for Minuit because the search space has many local minima. To get around this, let's run it 15 times and take the best result (minimum of minima).
 
 ```{code-cell} ipython3
 from iminuit import Minuit

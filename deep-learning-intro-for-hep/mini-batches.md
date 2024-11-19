@@ -159,7 +159,7 @@ Calculating the total loss of one epoch takes some care because the output of `l
 
 $$\chi^2 = \sum_i^N \left[f(\vec{x}_i) - \vec{y}_i\right]^2$$
 
-so if $N$ is 1/10ᵗʰ of the size of the dataset, then this $\chi^2$ will be roughly 1/10ᵗʰ of the total $\chi^2$.
+so if $N$ is 1/10<sup>th</sup> of the size of the dataset, then this $\chi^2$ will be roughly 1/10ᵗʰ of the total $\chi^2$.
 
 ```{code-cell} ipython3
 torch.manual_seed(12345)
