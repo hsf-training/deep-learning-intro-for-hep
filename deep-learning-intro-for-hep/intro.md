@@ -9,7 +9,7 @@ The material in this book was first presented at [CoDaS-HEP](https://codas-hep.o
 * offline self-study by a student without a teacher, and
 * for teachers preparing new course slides and notebooks (without having to read my mind).
 
-The course materials include some inline problems, intended for active learning during a lecture, and a large project designed for students to work on for about two hours. (In practice, experienced students finished it in an hour and beginners could have used a little more time.)
+The course materials include some inline problems, intended for active learning during a lecture, and a large project designed for students to work on for about 2 hours. (In practice, experienced students finished it in an hour and beginners could have used a little more time.)
 
 ## Software for the course
 

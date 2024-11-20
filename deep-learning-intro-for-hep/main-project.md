@@ -13,4 +13,4 @@ kernelspec:
   name: python3
 ---
 
-# The main project
+# Main Project (2 hours)
