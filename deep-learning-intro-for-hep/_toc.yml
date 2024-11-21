@@ -21,8 +21,6 @@ chapters:
 - file: under-overfitting
 - file: regularization
 - file: exercise-5
-- file: exercise-6
 - file: hyperparameters
-- file: partitioning
 - file: goodness-of-fit
 - file: main-project

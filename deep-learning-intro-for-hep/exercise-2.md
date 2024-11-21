@@ -29,20 +29,23 @@ import matplotlib.pyplot as plt
 
 +++
 
-I [previously mentioned](basic-fitting.md) the Boston House Prices dataset. It contains descriptive details about areas around Boston:
+I [previously mentioned](basic-fitting.md) the Boston House Prices dataset. It contains descriptive details about towns around Boston:
 
-* proportion of residental land zoned for lots over 25,000 square feet
-* proportion of non-retail business acres per town
-* whether the area is adjacent to the Charles river (a boolean variable)
-* nitric oxides concentration
-* average number of rooms per dwelling
-* proportion of owner-occupied lots built before 1940
-* weighted distances to 5 Boston employment centers
-* accessibility to radial highways
-* full-value property tax rate
-* pupil-teacher ratio in schools
+* CRIM: per capita crime rate per town
+* ZN: proportion of residental land zoned for lots over 25,000 square feet
+* INDUS: proportion of non-retail business acres per town
+* CHAS: adjacency to the Charles River (a boolean variable)
+* NOX: nitric oxides concentration (parts per 10 million)
+* RM: average number of rooms per dwelling
+* AGE: proportion of owner-occupied units built before 1940
+* DIS: weighted distances to 5 Boston employment centers
+* RAD: index of accessiblity to radial highways
+* TAX: full-value property-tax rate per \$10,000
+* PTRATIO: pupil-teacher ratio by town
+* B: $1000(b - 0.63)^2$ where $b$ is the proportion of Black residents
+* LSTAT: % lower status by population
 
-as well as the median prices of owner-occupied homes. Your job is to predict the prices, given all of the other data as features. You will do this with both a linear fit and a neural network with 5 hidden sigmoid components.
+as well as MEDV, the median prices of owner-occupied homes. Your job is to predict the prices, given all of the other data as features. You will do this with both a linear fit and a neural network with 5 hidden sigmoid components.
 
 You can get the dataset from [the original source](https://www.kaggle.com/datasets/vikrishnan/boston-house-prices) or from this project's GitHub: [deep-learning-intro-for-hep/data/boston-house-prices.csv](https://github.com/hsf-training/deep-learning-intro-for-hep/blob/main/deep-learning-intro-for-hep/data/boston-house-prices.csv).
 

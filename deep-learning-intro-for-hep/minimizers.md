@@ -13,7 +13,7 @@ kernelspec:
   name: python3
 ---
 
-# Minimizing the objective function
+# Minimization algorithms
 
 +++
 
@@ -496,7 +496,7 @@ x[500]
 x.grad[500]
 ```
 
-The autograd computation is not sensitive to a neighborhood of points the way that a real derivative is. When $x = 0$, the derivative is calculated using the same code path as the primary function. For instance,
+The autograd computation is not sensitive to a neighborhood of points the way that a real derivative is. To see this, let's calculate a ReLU function by hand at $x = 0$, using the seemingly equivalent predicates `x > 0` and `x >= 0`:
 
 ```{code-cell} ipython3
 x = torch.tensor(0, dtype=torch.float32, requires_grad=True)
@@ -518,11 +518,17 @@ y.backward()
 x.grad
 ```
 
-The computation of `y` is unaffected by `>` versus `>=` because this function is continuous, but the autograd computation _does_ depend on this implementation detail. Finally,
+At $x = 0$, the first calculation fails `x > 0` so `y` is set to `0` and its derivative is the derivative of the expression `0`, which is `0`.
+
+At $x = 0$, the second calculation passes `x >= 0` so `y` is set to `x` (which is `0`) and its derivative is the derivative of the expression `x`, which is `1`.
+
+This autograd procedure is not sensitive to a local neighborhood around the point that is being differentiated! That's why it doesn't see that the derivative has a left-limit that is different from its right-limit, and doesn't recognize that a true derivative is not defined. The value that this procedure returns depends on what seems like an implementation detail: `x > 0` versus `x >= 0` to decide between `x` and `0`.
+
+But, as a matter of convention adopted by the ML community,
 
 $$\frac{d}{dx} \mbox{ReLU}(0) = 0$$
 
-is a convention adopted by the community. It could have been defined to be $0$ or $1$, but $0$ is more popular.
+It could have been defined to be $0$ or $1$, but $0$ is more popular.
 
 +++
 

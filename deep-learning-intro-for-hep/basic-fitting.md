@@ -403,18 +403,21 @@ If you _do_ know enough to write a (correct) functional form and seed the fit wi
 
 _However_, most scientific problems beyond physics don't have this much prior information. This is especially true in sciences that study the behavior of human beings. What is the underlying theory for a kid preferring chocolate ice cream over vanilla? What are the variables, and what's the functional form? Even if you think that human behavior is determined by underlying chemistry and physics, it would be horrendously complex.
 
-Here's an example: the [Boston Housing Prices](https://www.kaggle.com/datasets/vikrishnan/boston-house-prices) is a classic dataset for regression. The goal is to predict median housing prices in areas around Boston using features like
+Here's an example: the [Boston Housing Prices](https://www.kaggle.com/datasets/vikrishnan/boston-house-prices) is a classic dataset for regression. The goal is to predict median housing prices in towns around Boston using features like
 
+* per capita crime rate per town
 * proportion of residental land zoned for lots over 25,000 square feet
 * proportion of non-retail business acres per town
-* whether the area is adjacent to the Charles river (a boolean variable)
-* nitric oxides concentration
+* adjacency to the Charles River (a boolean variable)
+* nitric oxides concentration (parts per 10 million)
 * average number of rooms per dwelling
-* proportion of owner-occupied lots built before 1940
+* proportion of owner-occupied units built before 1940
 * weighted distances to 5 Boston employment centers
-* accessibility to radial highways
-* full-value property tax rate
-* pupil-teacher ratio in schools
+* index of accessiblity to radial highways
+* full-value property-tax rate per \$10,000
+* pupil-teacher ratio by town
+* $1000(b - 0.63)^2$ where $b$ is the proportion of Black residents
+* % lower status by population
 
 All of these seem like they would have an effect on housing prices, but it's almost impossible to guess which would be more important. Problems like these are usually solved by a generic linear fit of many variables. Unimportant features would have a best-fit slope near zero, and if our goal is to find out which features are most important, we can force unimportant features toward zero with "regularization" (to be discussed in a later section). The idea of ML as "throw everything into a big fit" is close to what you have to do if you have no ansatz, and neural networks are a natural generalization of high-dimensional linear fitting.
 

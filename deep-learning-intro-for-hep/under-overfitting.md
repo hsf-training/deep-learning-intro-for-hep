@@ -57,7 +57,7 @@ ax.legend(loc="lower left", framealpha=1)
 plt.show()
 ```
 
-The first, a 0<sup>th</sup> degree polynomial, is just an average. An average is the simplest model that has any relationship to the training data, but it's usually too simple: it doesn't characterize any functional relationships between features and targets and its predictions are far from any targets. This model _underfits_ the data.
+The first, a 0<sup>th</sup> degree polynomial, is just an average. An average is the simplest model that has any relationship to the training data, but it's usually too simple: it doesn't characterize any functional relationships between features and targets and its predictions are sometimes far from the targets. This model _underfits_ the data.
 
 The second, a 2<sup>nd</sup> degree polynomial, is just right for this data because it was generated from a 2<sup>nd</sup> degree polynomial ($1 + 4x - 5x^2$).
 
@@ -185,7 +185,7 @@ plt.show()
 
 The optimizer used all of the parameters it had available to shrink-wrap the model around the training data. ReLU segments are carefully positioned to draw the decision boundary around every data point, sometimes even making islands to correctly categorize outlier penguins. This model is very overfitted.
 
-The problem is that this model does not generalize. If we had more penguins to measure (sadly, we don't), they probably wouldn't line up with this decision boundary. There might be more orange outliers in the region dominated by green, but not likely in the same position as the outlier in this dataset, any islands this model might have drawn around it would be useless for categorizing new data.
+The problem is that this model does not generalize. If we had more penguins to measure (sadly, we don't), they probably wouldn't line up with this decision boundary. There might be more orange (Gentoo) outliers in the region dominated by green (Chinstrap), but not likely in the same position as the outlier in this dataset, any islands this model might have drawn around the training-set outliers would be useless for categorizing new data.
 
 +++
 
