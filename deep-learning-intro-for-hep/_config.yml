@@ -52,4 +52,5 @@ sphinx:
       - "img/distill-momentum.png"
       - "img/playground-solution-circle-1.png"
       - "img/playground-solution-circle-2.png"
+      - "img/ridiculously-overfitted.png"
     nb_execution_show_tb: true
