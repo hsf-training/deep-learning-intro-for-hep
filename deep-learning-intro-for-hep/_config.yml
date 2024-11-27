@@ -53,4 +53,8 @@ sphinx:
       - "img/playground-solution-circle-1.png"
       - "img/playground-solution-circle-2.png"
       - "img/ridiculously-overfitted.png"
+      - "img/better-boy-wolf-1.jpg"
+      - "img/better-boy-wolf-2.jpg"
+      - "img/better-boy-wolf-3.jpg"
+      - "img/better-boy-wolf-4.jpg"
     nb_execution_show_tb: true
