@@ -21,9 +21,23 @@ I didn't take the choice of PyTorch over TensorFlow lightly (since I'm a newcome
 
 Moreover, PyTorch seems to be more future-proof than TensorFlow. By examining the use of both outside of particle physics, we see that <a href="https://trends.google.com/trends/explore?q=%2Fm%2F0h97pvq,%2Fg%2F11bwp1s2k3,%2Fg%2F11gd3905v1&date=2014-08-14%202024-08-14">Google search volume</a> is increasing for PyTorch at the expense of TensorFlow ("JAX" is a common word with meanings beyond machine learning, making it impossible to compare), and PyTorch is much more frequently used by [machine learning competition winners](https://mlcontests.com/state-of-competitive-machine-learning-2023/#deep-learning) in the past few years.
 
-## What to install
+## To run everything in GitHub Codespaces
 
-Make sure that you have these packages installed with [conda](https://scikit-hep.org/user/installing-conda), pip, uv, etc.
+Launch a Codespace from the [hsf-training/deep-learning-intro-for-hep](https://github.com/hsf-training/deep-learning-intro-for-hep) repository:
+
+![](img/github-codespaces.png){. width="60%"}
+
+The first time, it will take a few minutes to install all the software. When you get a terminal prompt, convert all of these pages into notebooks by running the following command in the terminal:
+
+```shell
+source make-notebooks.sh
+```
+
+and navigate to the `notebooks` directory in the left side-bar. The pages are formatted better for reading on the web, but are executable as Jupyter notebooks in Codespaces.
+
+## To run everything on your own computer
+
+Make sure that you have the following packages installed with [conda](https://scikit-hep.org/user/installing-conda), pip, uv, pixi, etc.
 
 ```{include} ../environment.yml
 :literal: true
@@ -32,7 +46,22 @@ Make sure that you have these packages installed with [conda](https://scikit-hep
 
 If you're using pip, see [PyTorch's documentation](https://pytorch.org/get-started/locally/) for instructions. The name `pytorch-cpu` is only for conda.
 
-The exercises are all small enough that you won't need a GPU, but if you want to use PyTorch with your GPU, you'll have to install the GPU drivers (only) outside of conda and then `conda install 'cuda-version>=12' pytorch pytorch-cuda`. If you're using pip, the entire CUDA installation is outside of what pip manages.
+The exercises are all small enough that you won't need a GPU, but if you want to use PyTorch with your GPU, you'll have to install the GPU drivers (only) outside of conda and then `conda install 'cuda-version>=12' pytorch pytorch-cuda`. If you're using pip, note that you have to install CUDA outside of pip.
+
+To get all of these pages in Jupyter notebook form, download the repository:
+
+```shell
+git clone https://github.com/hsf-training/deep-learning-intro-for-hep.git
+cd deep-learning-intro-for-hep
+```
+
+Install the `jupytext` package (conda, pip, uv, pixi, etc.) and run the following command:
+
+```shell
+source make-notebooks.sh
+```
+
+The notebooks are in the new `notebooks` directory.
 
 ## Table of contents
 
