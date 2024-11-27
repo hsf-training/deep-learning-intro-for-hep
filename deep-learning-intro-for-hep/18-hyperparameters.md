@@ -57,7 +57,7 @@ as well as other changeable aspects of the training procedure,
 * distribution of initial parameter values in each layer,
 * number of epochs and mini-batch size.
 
-It would be confusing to call these choices "parameters," so we call them "**hyperparameters**" ("hyper" means "over or above"). The problem of finding the best model is split between you, the human, choosing hyperparameters and the optimizer choosing parameters. Following the farming analogy from the [Overview](overview.md), the hyperparameters are choices that the farmer gets to make—how much water, how much sun, etc. The parameters are the low-level aspects of how a plant grows, where its leaves branch, how its veins and roots organize themselves to survive. Generally, there are a lot more parameters than hyperparameters.
+It would be confusing to call these choices "parameters," so we call them "**hyperparameters**" ("hyper" means "over or above"). The problem of finding the best model is split between you, the human, choosing hyperparameters and the optimizer choosing parameters. Following the farming analogy from the [Overview](01-overview.md), the hyperparameters are choices that the farmer gets to make—how much water, how much sun, etc. The parameters are the low-level aspects of how a plant grows, where its leaves branch, how its veins and roots organize themselves to survive. Generally, there are a lot more parameters than hyperparameters.
 
 If there are a lot of hyperparameters to tune, we might want to tune them algorithmically—maybe with a grid search, randomly, or with Bayesian optimization. Technically, I suppose they become parameters, or we get a three-level hierarchy: parameters, hyperparameters, and hyperhyperparameters! Practitioners might not use consistent terminology ("using ML to tune hyperparameters" is a contradiction in terms), but just don't get confused about who is optimizing which: algorithm 1, algorithm 2, or human. Even if some hyperparameters are being tuned by an algorithm, some of them must be chosen by hand. For instance, you choose a type of ML algorithm, maybe a neural network, maybe something else, and non-numerical choices about the network topology are generally hand-chosen. If a grid search, random search, or Bayesian optimization is choosing the rest, you do have to set the grid spacing for the grid search, the number of trials and measure of the random search, or various options in the Bayesian search. Or, a software package that you use chooses for you.
 
@@ -67,7 +67,7 @@ If there are a lot of hyperparameters to tune, we might want to tune them algori
 
 +++
 
-In the section on [Regularization](regularization.md), we split a dataset into two samples and computed the loss function on each.
+In the section on [Regularization](16-regularization.md), we split a dataset into two samples and computed the loss function on each.
 
 * **Training:** loss computed from the training dataset is used to change the parameters of the model. Training loss can get arbitrarily small as the model is adjusted to fit the training data points exactly (if it has enough parameters to be so flexible).
 * **Test:** loss computed from the test dataset acts as an independent measure of the model quality. A model generalizes well if it is a good fit (has minimal loss) on both the training data and data drawn from the same distribution: the test dataset.

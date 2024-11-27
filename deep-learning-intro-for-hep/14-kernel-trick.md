@@ -202,7 +202,7 @@ Since the 3<sup>rd</sup> dimension is a strict function of the first 2, the data
 
 Before introducing adaptive basis functions, I argued that Taylor and Fourier series are essentially linear fits. This is because they're also applications of the kernel trick, taken to a high degree.
 
-Let's demonstrate it with the crazy function from the section on [Universal Approximators](universal-approximators.md):
+Let's demonstrate it with the crazy function from the section on [Universal Approximators](04-universal-approximators.md):
 
 $$y = \left\{\begin{array}{l l}
 \sin(22 x) & \mbox{if } |x - 0.43| < 0.15 \\

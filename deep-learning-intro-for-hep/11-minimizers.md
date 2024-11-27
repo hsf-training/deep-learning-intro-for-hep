@@ -340,7 +340,7 @@ Most likely, the functions you'll be minimizing will have hundreds or thousands 
 
 ![](img/loss-visualization-noshort.png){. width="65%"}
 
-Moreover, the minima that we're looking for are not unique. Consider the adaptive basis functions example from the section on [Universal approximators](universal-approximators.md):
+Moreover, the minima that we're looking for are not unique. Consider the adaptive basis functions example from the section on [Universal approximators](04-universal-approximators.md):
 
 ![](img/artificial-neural-network-layers-3.svg){. width="100%"}
 

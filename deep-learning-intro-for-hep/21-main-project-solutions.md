@@ -322,7 +322,7 @@ matrix_for_cutoff_decision_at(0.5)
 
 +++
 
-Once we have 2×2 confusion matrices as a function of `threshold`, we can plot the ROC curve as in the section on [Goodness of fit metrics](goodness-of-fit.md).
+Once we have 2×2 confusion matrices as a function of `threshold`, we can plot the ROC curve as in the section on [Goodness of fit metrics](19-goodness-of-fit.md).
 
 ```{code-cell} ipython3
 true_positive_rates = []

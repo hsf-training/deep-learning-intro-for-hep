@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 
 +++
 
-I [previously mentioned](basic-fitting.md) the Boston House Prices dataset. It contains descriptive details about towns around Boston:
+I [previously mentioned](03-basic-fitting.md) the Boston House Prices dataset. It contains descriptive details about towns around Boston:
 
 * CRIM: per capita crime rate per town
 * ZN: proportion of residental land zoned for lots over 25,000 square feet

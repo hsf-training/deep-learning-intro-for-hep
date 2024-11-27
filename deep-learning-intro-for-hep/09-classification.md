@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 
 +++
 
-See [Regression in PyTorch](regression.md) for instructions on how to get the data.
+See [Regression in PyTorch](07-regression.md) for instructions on how to get the data.
 
 ```{code-cell} ipython3
 penguins_df = pd.read_csv("data/penguins.csv")
