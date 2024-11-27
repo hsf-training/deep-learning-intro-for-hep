@@ -573,6 +573,8 @@ but the sum is not always $1$:
 np.sum(matrix_for_penguins(0.99) / len(features))
 ```
 
+We can't plot this as a ROC curve, since each of the categories extends in a different dimension. (It would be a "ROC surface" in $n$ dimensions.)
+
 Not all of the quantities in the suite of definitions are still meaningful with multiple categories, but a few are.
 
 ```{code-cell} ipython3
@@ -606,6 +608,6 @@ specificity_C = (AA + AG + GA + GG) / (CA + CG + AA + AG + GA + GG)
 specificity_A, specificity_G, specificity_C
 ```
 
-But that's because, for each category, we're labeling that category as "positive" and all the other categories as "negative" to compute the binary sensitivity and specificity. In general, we can always label a subset of the categories as positive and the rest as negative to talk about it in binary classification terms.
+But that's because, for each category, we're labeling that category as "positive" and all the other categories as "negative" to compute the binary sensitivity and specificity. In general, we can always label a subset of the categories as positive and the rest as negative to use binary classification goodness-of-fit criteria, including ROC curves.
 
 Now you have everything that you need to do the main project.
