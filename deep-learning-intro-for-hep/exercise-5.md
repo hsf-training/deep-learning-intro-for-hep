@@ -28,6 +28,6 @@ Do you notice anything different in the resulting matrix weights (the lines betw
 
 Notice the plot in the upper right:
 
-![](img/tensorflow-playground-loss.png){. width="75%"}
+![](img/tensorflow-playground-loss.png){. width="50%"}
 
 What is it telling you? How does it change as you add regularization?
