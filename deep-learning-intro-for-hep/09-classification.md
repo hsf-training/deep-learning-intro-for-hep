@@ -57,7 +57,7 @@ Python's `TypeError` won't tell you if you're inappropriately multiplying or div
 
 Categorical problems involve at least one categorical variable. For instance, given a penguin's bill length and bill depth, what's its species? We might ask a categorical model to predict the most likely category or we might ask it to tell us the probabilities of each category.
 
-We can't pass string-valued variables into a fitter, so we need to convert the strings into numbers. Since these categories are nominal (not ordinal), equality/inequality is the only meaningful operation, so the numbers should only indicate which strings are the same as each other and which are different.
+We can't pass string-valued variables into a fitter, so we need to convert the strings into numbers. Since these categories are nominal (not ordinal), equality/inequality is the only meaningful operation. The numbers should only indicate which strings are the same as each other and which are different.
 
 Pandas has a function, [pd.factorize](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.factorize.html), to turn unique categories into unique integers and an index to get the original strings back. (You can also use Pandas's [categorical dtype](https://pandas.pydata.org/docs/user_guide/categorical.html).)
 
@@ -80,9 +80,9 @@ categorical_1hot_df = pd.get_dummies(penguins_df.dropna()[["bill_length_mm", "bi
 categorical_1hot_df
 ```
 
-This is called [one-hot encoding](https://en.wikipedia.org/wiki/One-hot) and it's generally more useful than integer encoding, though it takes more memory (especially if you have a lot of distinct categories).
+This is called [one-hot encoding](https://en.wikipedia.org/wiki/One-hot) and, because it doesn't even imply an ordering or equal-sized spacings between categories, it's conceptually better. However, it takes more memory, especially if you have a lot of distinct categories.
 
-For instance, suppose that the categorical variable is the feature and we're trying to predict something numerical:
+To illustrate the conceptual limitations of integer encoding, suppose that the categorical variable is the feature and we're trying to predict something numerical:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -96,7 +96,7 @@ plt.show()
 
 If you were to fit a straight line through $x = 0$ and $x = 1$, it would have _some_ meaning: the intersections would be the average bill lengths of Adelie and Gentoo penguins, respectively. But if the fit also includes $x = 2$, it would be meaningless, since it would be using the order of Adelie, Gentoo, and Chinstrap, as well as the equal spacing between them, as relevant for determining the $y$ predictions.
 
-On the other hand, the one-hot encoding is difficult to visualize, but any fits through this high-dimensional space are meaningful.
+One-hot encoding is difficult to visualize, but any fits through this high-dimensional space are meaningful.
 
 ```{code-cell} ipython3
 fig = plt.figure(figsize=(8, 8))
@@ -152,26 +152,24 @@ plot_categorical_problem(ax)
 plt.show()
 ```
 
-The model will be numerical, a function from bill length and depth to a 3-dimensional probability space. Probabilities have two hard constraints:
+Scikit-Learn and PyTorch models must involve numerical inputs and outputs, so the model will be a function from bill length and depth to a 3-dimensional probability space. Probabilities must:
 
-* they are all strictly bounded between $0$ and $1$
-* all the probabilities in a set of possibilities need to add up to $1$.
+* be greater than or equal to $0$ and
+* add up to $1$.
 
-If we define $P_A$, $P_G$, and $P_C$ for the probability that a penguin is Adelie, Gentoo, or Chinstrap, respectively, then $P_A + P_G + P_C = 1$ and all are non-negative.
+If we define $P_A$, $P_G$, and $P_C$ for the probability that a penguin is Adelie, Gentoo, or Chinstrap, respectively, then $0 \le P_A, P_G, P_C \le 1$ and $P_A + P_G + P_C = 1$.
 
-One way to ensure the first constraint is to let a model predict values between $-\infty$ and $\infty$, then pass them through a sigmoid function:
+One way to ensure the first constraint is to let a model predict values $y$ between $-\infty$ and $\infty$, then pass them through a sigmoid function:
 
-$$p(x) = \frac{1}{1 + \exp(x)}$$
+$$p(y) = \frac{1}{1 + \exp(y)}$$
 
-If we only had 2 categories, $P_1$ and $P_2$, this would be sufficient: we'd model the probability of $P_1$ only by applying a sigmoid as the last step in our model. $P_2$ can be inferred from $P_1$.
+If we only had 2 categories, $P_1$ and $P_2$, we could define $P_1 = p(y)$ for an unconstrained $y$ and $P_2 = 1 - P_1$. But what about 3 categories, as in the penguin problem?
 
-But what if we have 3 categories, as in the penguin problem?
+The sigmoid function has a multidimensional generalization called [softmax](https://en.wikipedia.org/wiki/Softmax_function). Given an $n$-dimensional vector $\vec{y}$ with components $y_1, y_2, \ldots, y_n$,
 
-The sigmoid function has a multidimensional generalization called [softmax](https://en.wikipedia.org/wiki/Softmax_function). Given an $n$-dimensional vector $\vec{x}$ with components $x_1, x_2, \ldots, x_n$,
+$$P(\vec{y})_i = \frac{\exp(y_i)}{\displaystyle \sum_j^n \exp(y_j)}$$
 
-$$P(\vec{x})_i = \frac{\exp(x_i)}{\displaystyle \sum_j^n \exp(x_j)}$$
-
-For any $x_i$ between $-\infty$ and $\infty$, all $0 \le P_i \le 1$ and $\sum_i P_i = 1$. Thus, we can pass the output of any $n$-dimensional vector through a softmax to get probabilities.
+For any $y_i$ between $-\infty$ and $\infty$, all $0 \le P_i \le 1$ and $\sum_i P_i = 1$. Thus, we can pass the output of any $n$-dimensional vector through a softmax to get probabilities.
 
 +++
 
@@ -228,7 +226,7 @@ from sklearn.neural_network import MLPClassifier
 
 As in the previous section, we need to scale the features to be order 1. The bill lengths and depths are 30‒60 mm and 13‒22 mm, respectively, which would be hard for the optimizer to find in small steps, starting from numbers between $-1$ and $1$.
 
-But... do we need to scale the prediction targets? Why not?
+But... do we need to scale the prediction targets? Why or why not?
 
 ```{code-cell} ipython3
 def scale_features(x):
@@ -237,7 +235,7 @@ def scale_features(x):
 categorical_features_scaled = scale_features(categorical_features)
 ```
 
-Below, `alpha=0` because we haven't discussed regularization yet.
+Below, `alpha=0` because we haven't discussed [regularization](16-regularization.md) yet.
 
 ```{code-cell} ipython3
 best_fit = MLPClassifier(
@@ -254,7 +252,7 @@ plot_categorical_problem(ax)
 plt.show()
 ```
 
-The 50% threshold lines can now be piecewise linear, because of the ReLU adaptive basis functions. (If we had chosen sigmoid/logistic, they'd be smooth curves.) These thresholds even be shrink-wrapping around individual training points, especially those that are far from the bulk of the distributions, which is less constrained.
+The 50% threshold lines can now be piecewise linear, because of the ReLU adaptive basis functions. (If we had chosen sigmoid/logistic, they'd be smooth curves.) These thresholds may even be shrink-wrapping around individual training points, especially those that are far from the bulk of the distributions, which is less constrained.
 
 +++
 
@@ -398,7 +396,7 @@ nn.CrossEntropyLoss()(predictions, targets_as_labels)
 
 (We get the same answer because these `targets_as_labels` correspond to the `targets_as_probabilities`.)
 
-As another PyTorch technicality, notice that most of these functions create functions (or, as another way of saying it, they're class instances with a `__call__` method, so they can be called like functions). `nn.CrossEntropyLoss` is not a function of predictions and targets; it returns a function of predictions and targets:
+As another PyTorch technicality, notice that most of these functions create functions (or, as another way of saying it, they're classes with a `__call__` method, so that class instances can be called like functions). `nn.CrossEntropyLoss` is not a function of predictions and targets; it _returns_ a function of predictions and targets:
 
 ```{code-cell} ipython3
 nn.CrossEntropyLoss()

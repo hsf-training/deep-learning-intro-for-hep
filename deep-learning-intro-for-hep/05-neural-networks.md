@@ -60,7 +60,7 @@ f\left[a_{4,1}x_1 + a_{4,2}x_2 + \ldots + a_{4,10}x_{10} + b_4\right] = y_4 \\
 f\left[a_{5,1}x_1 + a_{5,2}x_2 + \ldots + a_{5,10}x_{10} + b_5\right] = y_5 \\
 \end{array}$$
 
-I personally don't know whether real neurons are deterministic—can be modeled as a strict function of their inputs—or that it's the same function $f$ for all dendrites ($y_i$), but early formulations like [McCulloch & Pitts (1943)](https://doi.org/10.1007/BF02478259) used a sharp, binary step function:
+I personally don't know whether real, biological neurons are deterministic—whether they can be modeled as a strict function of their inputs—or if they share the same activation function $f$ for all dendrites ($y_i$), but early formulations like [McCulloch & Pitts (1943)](https://doi.org/10.1007/BF02478259) used a sharp, binary step function:
 
 $$f(x) = \left\{\begin{array}{c l}
 0 & \mbox{if } x < 0 \\ 1 & \mbox{if } x \ge 0 \\
@@ -88,9 +88,9 @@ x_2 \\
 x_{10}
 \end{array}\right) + b\right] = y$$
 
-The 1-dimensional binary output is good for classification. A binary classification model is trained with a set of $N$ data points, $\vec{x}_i$ with $i \in [0, N)$, and corresponding binary targets, $y_i \in \{A, B\}$, to produce a predictor-machine that associates every point in the space $\vec{x}$ with a probability that it is $A$ or $B$, $P_A(\vec{x})$ and $P_B(\vec{x})$. Naturally, $P_A(\vec{x}) + P_B(\vec{x}) = 1$, so knowing $P_A(\vec{x})$ is equivalent to knowing $P_B(\vec{x})$.
+The 1-dimensional binary output is good for classification. A binary classification model is trained with a set of $N$ data points, $\vec{x}_i$ with $i \in [0, N)$, and corresponding binary targets, $y_i \in \{A, B\}$, to produce a predictor-machine that associates every point in the space $\vec{x}$ with a probability that it is $A$ or $B$, $P_A(\vec{x})$ and $P_B(\vec{x})$. Since they're probabilities, $P_A(\vec{x}) + P_B(\vec{x}) = 1$, so knowing $P_A(\vec{x})$ is equivalent to knowing $P_B(\vec{x})$.
 
-Here's a sample problem to learn: which regions of the plane are orange and which are blue?
+Here's a sample problem to learn: which regions of the plane are covered with orange dots and which are covered with blue dots?
 
 ```{code-cell} ipython3
 blob1 = np.random.normal(0, 1, (1000, 2)) + np.array([[0, 3]])
@@ -126,7 +126,7 @@ ax.set_ylim(-4, 7)
 plt.show()
 ```
 
-Since a perceptron doesn't have a hidden layer, it's not even considered a neural network by Scikit-Learn. A model consisting of a linear transformation passed into a sigmoid function is called logistic regression (sigmoid is sometimes called "logistic").
+Since a perceptron doesn't have a hidden layer, it's not even considered a neural network by Scikit-Learn. A model consisting of a linear transformation passed into a sigmoid function is called logistic regression (the sigmoid function is also called a "logistic").
 
 ```{code-cell} ipython3
 from sklearn.linear_model import LogisticRegression
@@ -244,9 +244,9 @@ The solution starts with the observation that, in a brain, the output of one neu
 
 ![](img/nerve-cells-sem-steve-gschmeissner.jpg){. width="100%"}
 
-The full case of a general graph is hard to think about: what happens if the output of one neuron connects, perhaps through a series of other neurons, back to one of its own inputs? Since each $x_i$ component is single-valued, a cycle has to be handled in a time-dependent way. A value of $x_i = 0$ might, though some connections, force $x_i \to 1$, but only _at a later time_.
+The full case of a general graph is hard to think about: what happens if the output of one neuron connects, perhaps through a series of other neurons, back to one of its own inputs? Since each $x_i$ component is single-valued, a cycle has to be handled in a time-dependent way. A value of $x_i = 0$ might, though some connections, force $x_i \to 1$, but only _at a later time_. (Signals in the brain take time to propagate, too.)
 
-There have been a few different approaches.
+There have been a few different ways to address cycles:
 
 1. Require the graph to not have cycles. This is what McCulloch & Pitts did in their original formulation, since they were trying to build neuron diagrams that make logical propositions, like AND, OR, and NOT in digital circuits. These have clear inputs and outputs and should be time-independent.
 2. Update the graph in discrete time-steps. If $x_i = 0$ implies, through some connections, that $x_i$ will be $1$, it is updated in a later time-step.
@@ -255,11 +255,11 @@ The layers that we now use in most neural networks are a special case of #1. Eve
 
 ![](img/boltzmann-machine.svg){. width="100%"}
 
-This is equivalent to the system of adaptive basis functions that we developed in the previous section:
+The Restricted Boltzmann machine is equivalent to the system of adaptive basis functions that we developed in the previous section—just move the nodes into tidy columns, maintaining their connections:
 
 ![](img/artificial-neural-network-layers-4.svg){. width="100%"}
 
-Now let's use it to classify orange and blue points, the problem described in the previous subsection.
+Now let's use this neural network to classify the orange and blue points that a single perceptron couldn't fit:
 
 ```{code-cell} ipython3
 from sklearn.neural_network import MLPRegressor
@@ -307,7 +307,7 @@ The basis functions didn't have to be sigmoid-shaped. Here are a few common opti
 | ![](img/Activation_prelu.svg){. width="100%"} | leaky ReLU | $\displaystyle f(x) = \left\{\begin{array}{c l}\alpha x & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ | 
 | ![](img/Activation_swish.svg){. width="100%"} | sigmoid linear unit or swish | $\displaystyle f(x) = \frac{x}{1 + e^{-x}}$ |
 
-Let's use the ReLU shape instead. This is perhaps the most common activation function, because of its simplicity (and its derivatives don't asymptotically approach zero).
+Let's use the ReLU shape instead. This is the most widely used activation function in ML, because of its simplicity (and because its derivatives don't asymptotically approach zero).
 
 ```{code-cell} ipython3
 best_fit = MLPRegressor(
@@ -337,13 +337,13 @@ The boundaries still separate the orange and blue points, but now they're made o
 
 With enough components in the hidden layer, we can approximate any shape. After all, each component is one adaptive basis function, and our favorite activation functions (the table above) have one wiggle each. Adding a component to the hidden layer adds a wiggle, which the fitter can use to wrap around the training points.
 
-However, if the fit function has too many wiggles to fit around the outliers in the training data, it will overfit the data (to be discussed in an upcoming section). We want a model that _generalizes_ the training data, not one that _memorizes_ it.
+However, if the fit function has too many wiggles to fit around the outliers in the training data, it will overfit the data (to be discussed in an [upcoming section](15-under-overfitting.md)). We want a model that _generalizes_ the training data, not one that _memorizes_ it.
 
 An effective way to do that is to add more hidden layers, like the diagram below:
 
 ![](img/artificial-neural-network-layers-5.svg){. width="100%"}
 
-$\vec{x}^{L1}$ (layer 1) is the input and $\vec{x}^{L2}$ (layer 2) is the first hidden layer. Then the output of that is passed through another linear transformation and activation function, as many times as we want. Each layer is a function composition. (Be careful when specifying how many layers a neural network has. We're interested in how many linear transformations the network has, so we'd count the above as 4, not 5.)
+$\vec{x}^{L1}$ (layer 1) is the input and $\vec{x}^{L2}$ (layer 2) is the first hidden layer. Then the output of that is passed through another linear transformation and activation function, as many times as we want. Each layer is a function composition. (Be careful when specifying how many layers a neural network has. We're interested in how many linear transformations the network has, so we'd count the above as 4 layers, not 5 layers.)
 
 This technique is called "deep learning" (especially when many, many layers are used) and it is largely responsible for the resurgence of interest in neural networks since 2015. Below is a plot of Google search volume for the words "neural network" and "deep learning":
 
@@ -370,7 +370,7 @@ But what really got things started was that deep neural networks started winning
 
 The general adage is that "one layer memorizes, many layers generalize."
 
-Each layer in a neural network is a function composition: the arbitrary curve that a set of adaptive basis functions learn is in a space that has already been transformed by a previous set of adaptive basis functions. Each layer warps space to make the next layer's problem simpler.
+Each layer in a neural network is a function composition: the arbitrary curve that a set of adaptive basis functions learns is in a space that has already been transformed by a previous set of adaptive basis functions. Each layer warps space to make the next layer's problem simpler.
 
 Roy Keyes has a [fantastic demo](https://gist.github.com/jpivarski/f99371614ecaa48ace90a6025d430247) (too much detail for this section) that classifies three categories of points that are arranged like spiral arms of a galaxy, shown below on the left. The first layer of the neural network transforms the $x$-$y$ space of the original problem into the mesh shown in grey on the right. In the transformed space, the three spiral arms are now linearly separable. It is the starting point for the second layer.
 
@@ -382,4 +382,4 @@ For another illustration ([ref](https://arxiv.org/abs/1402.1869)), consider the 
 
 One hidden layer with many components has a lot of adjustable handles to fit a curve. Multiple hidden layers search for symmetries and try to use them to describe the data in a more generalizable way.
 
-These arguments are heuristic: you could certainly have a problem with no internal symmetries. However, the fact that deep learning has been so successful might mean that most problems do.
+These arguments are heuristic: you could certainly have a problem with no internal symmetries. However, the fact that deep learning has been so successful might mean that most problems do have internal symmetries.

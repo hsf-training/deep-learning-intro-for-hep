@@ -1,6 +1,6 @@
 # History of HEP and ML
 
-The purpose of this section is to show that particle physics, specifically High Energy Physics (HEP), has always needed ML. It is not a fad: ML (in a usable form) would have brought major benefits to HEP at any stage in its history. It's being applied to many problems in HEP now because it's just becoming _possible_ now.
+The purpose of this section is to show that particle physics, specifically High Energy Physics (HEP), has always needed ML. It's not a fad: ML (in a usable form) would have brought major benefits to HEP at any stage in its history. It's being applied to many problems in HEP now because it's just becoming _possible_ now.
 
 ![](img/hep-plus-ml.jpg){. width="40%"}
 
@@ -30,7 +30,7 @@ Below, I extended the plot to the present day: the number of events per second h
 
 These event rates have been too fast for humans since the 1970's, when human scanners were replaced by heuristic track-finding routines, usually by hand-written algorithms that iterate through all combinations within plausible windows (which are now a bottleneck in high track densities).
 
-Although many computing tasks in particle physics are suitable for hand-written algorithms, the field also has and has always had tasks that are a natural fit for ML and artificial intelligence, to such an extent that human intelligence was enlisted to solve them. While ML would have been beneficial to HEP from the very beginning of the field, algorithms and computational resources have only recently made it possible.
+Although many computing tasks in particle physics are suitable for hand-written algorithms, the field also has and has always had tasks that are a natural fit for artificial intelligence, to such an extent that human intelligence was enlisted to solve them. While ML would have been beneficial to HEP from the very beginning of the field, algorithms and computational resources have only recently made it possible.
 
 ## Symbolic AI and connectionist AI
 
@@ -45,9 +45,9 @@ Symbolic AI consists of hand-written algorithms, which today wouldn't be called 
 
 Symbolic AI is called "symbolic" because the starting point is a system of abstract symbols and rules—like programming in general. An associated philosophical idea is that this is the starting point for intelligence itself: human and artificial intelligence consists in manipulating propositions like an algebra. Mathematician-philosophers like George Boole, Gottlob Frege, and Bertrand Russell formulated these as "the laws of thought".
 
-Connectionist AI makes a weaker claim about what happens in an intelligent system (natural or artificial): only that the system's inputs and outputs are correlated appropriately, and an intricate network of connections can implement that correlation. As we'll see, neural networks are an effective way to implement it, and they were (loosely) inspired by the biology of human brains. The idea that we can only talk about the inputs and outputs of human systems, without proposing symbols as entities in the mind, was a popular trend in psychology called Behaviorism in the first half of the 20th century. Today, Cognitive Psychologists can measure the scaling time and other properties of algorithms in human minds, so Behaviorism is out of favor. But it's ironic that large language models like ChatGPT are an implementation of what Behaviorists proposed as a model of human intelligence a century ago.
+Connectionist AI makes a weaker claim about what happens in an intelligent system (natural or artificial): only that the system's inputs and outputs are correlated appropriately, and an intricate network of connections can implement that correlation. As we'll see, neural networks are an effective way to implement it, and they were (loosely) inspired by the biology of human brains. The idea that we can only talk about the inputs and outputs of human systems, without proposing symbols as entities in the mind, was a popular trend in psychology called Behaviorism in the first half of the 20th century. Today, Cognitive Psychologists can measure the scaling time and other properties of algorithms in human minds, so Behaviorism is out of favor. But it's ironic that large language models like ChatGPT are an implementation of what Behaviorists proposed as a model of human intelligence a century ago!
 
-Although connectionist systems like neural networks don't start with propositions and symbols, something like these structures may form among the connections as the most effective way to produce the desired outputs, similar to emergent behavior in dynamical systems. Practitioners of explainable AI (xAI) try to find patterns like these in trained neural networks—far from treating a trained model as a black box, they treat it as a natural system to study!
+Although connectionist systems like neural networks don't start with propositions and symbols, something like these structures may form among the connections as the most effective way to produce the desired outputs, similar to emergent behavior in dynamical systems. Practitioners of explainable AI (xAI) try to find patterns like these in trained neural networks—far from treating a trained model as a black box, they treat it as a natural system to study.
 
 ## AI's summers and winters
 
@@ -82,13 +82,13 @@ More importantly for us, AI was adopted in experimental particle physics, starti
 
 ![](img/chep-acat-2024-ml.svg){. width="90%"}
 
-Clearly, the physicists' interests are following the developments in computer science, including the latest "winter." From personal experience, I know that Boosted Decision Trees (BDTs) were popular in the gap between the 2000 and 2015, but they rarely appear in CHEP conference talks. (Perhaps they were less exciting?)
+Clearly, the physicists' interests are following the developments in computer science, starting before the most recent winter. From personal experience, I know that Boosted Decision Trees (BDTs) were popular in the gap between the 2000 and 2015, but they rarely appear in CHEP conference talks. (Perhaps they were less exciting?)
 
-The 2024 Nobel Prize in Physics has drawn attention to connections between the theoretical basis of neural networks and statistical mechanics—particularly John Hopfield's memory networks (which have the same mathematical structure as Ising spin-glass systems in physics) and Geoffrey Hinton's application of simulated annealing to training Hopfield and restricted Boltzmann networks (gradually reducing random noise in training to find a more global optimum). However, this connection is distinct from the _application_ of neural networks to solve experimental physics problems—which seemed promising in the 1990's and is yielding significant results today.
+The 2024 Nobel Prize in Physics has drawn attention to connections between the theoretical basis of neural networks and statistical mechanics—particularly John Hopfield's memory networks (which have the same mathematical structure as Ising spin-glass systems in physics) and Geoffrey Hinton's application of simulated annealing to training Hopfield and restricted Boltzmann networks (gradually reducing random noise in training to find a more global optimum). However, this connection is distinct from the _application_ of neural networks to solve experimental physics problems—which is what I'll be focusing on.
 
 ## Conclusion
 
-HEP has always needed ML. Since the beginning of the HEP as we know it, high energy physicists have invested heavily in computing, but their problems could not be solved without human intelligence in the workflow, which doesn't scale to large numbers of collision events. Today, we're finding that many of the hand-written algorithms from the decades in which AI was not ready are less efficient and less capable than connectionist AI solutions, especially deep learning.
+HEP has always needed ML. Since the beginning of HEP as we know it, high energy physicists have invested heavily in computing, but their problems could not be solved without human intelligence in the workflow, which doesn't scale to large numbers of collision events. Today, we're finding that many of the hand-written algorithms from the decades in which AI was not ready are less efficient and less capable than connectionist AI solutions, especially deep learning.
 
 Meanwhile, the prospect of connectionist AI has been unclear until very recently. Interest and funding vacillated throughout its history (including a brief dip in 2020‒2022 ([ref](https://doi.org/10.1109/AIMLA59606.2024.10531477)), before ChatGPT) as hype alternated with pessimism. Given this history, one could find examples to justify either extreme: it has been heavily oversold and undersold.
 

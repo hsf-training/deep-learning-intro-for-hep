@@ -87,7 +87,7 @@ The adaptive basis functions that we use in neural networks, however, are not so
 * $L$ takes $n$ floating-point numbers as input, which can be thought of as an $n$-dimensional space of real numbers. This number of parameters $n$ may be hundreds or thousands (or more).
 * $L$ returns $1$ floating-point number as output. $1$-dimensional real numbers are strictly ordered, which is what makes it possible to say that some value of loss is better than another. (In practice, this means that if we want to optimize two quantities, such as signal strength and background rejection in a HEP analysis, we have to put them both on the same scale: how much signal can we afford to lose to reject enough background? If we're running a bank, how much credit card fraud are we willing to ignore to avoid annoying card-holders with too many alerts? All loss problems have to become $1$-dimensional.)
 * $L$ is continuous and differentiable at every point (even if the definition of the derivative seems artificial in some cases).
-* $L$ may be very noisy and will have many local minima. Unless the neural network architecture is trivial, $L$ _will_ have non-unique global minima because of symmetries.
+* $L$ may be very noisy and will have many local minima. Unless the neural network architecture is trivial, $L$ will at least have non-unique global minima because of symmetries.
 * $L$ is bounded below. Its output doesn't, for instance, limit to $-\infty$ as some combination of its input parameters limit to $\infty$ or some divergent point. At least the global minima _exist_.
 
 +++
@@ -103,7 +103,7 @@ All of the minimization algorithms we'll look at have the following basic approa
 3. Use the derivative to take a step in the direction that decreases $L$, but don't jump all the way to the estimated minimum. Take a small step whose size is controlled by the "learning rate."
 4. Either repeat step 2 or do something to avoid getting stuck in a local minimum or narrow valley. (There's a great deal of variety in how minimization algorithms choose to approach the apparent minimum.)
 
-Minuit follows this approach, though it also (numerically) calculates a second derivative, $\nabla^2 L(\vec{p})$, which it uses to describe the shape of the minimum. This is because Minuit is intended for ansatz fits—the steepness of the loss function at the minimum tells us the uncertainty in the fitted parameters. Neural network training doesn't need it.
+Minuit follows this approach, though it also (numerically) calculates a second derivative, $\nabla^2 L(\vec{p})$, which it uses to describe the shape of the minimum. This is because Minuit is intended for ansatz fits—the second derivative of the loss function at the minimum tells us the uncertainty in its fitted parameters. Neural network training doesn't need it.
 
 ```{code-cell} ipython3
 from iminuit import Minuit
@@ -278,7 +278,7 @@ Momentum is the reason why Adam (and variants) are robust minimizers: they dynam
 
 <a href="https://distill.pub/2017/momentum/"><img src="distill-momentum.png" width="100%"></a>
 
-But we can see it by trying to minimize the following function, which has a long, narrow valley that tends to trap the minimization process (like golf).
+But we can see it for ourselves by trying to minimize the following function, which has a long, narrow valley that tends to trap the minimization process (like sand traps in golf).
 
 ```{code-cell} ipython3
 def function_to_minimize(x, y):
@@ -336,7 +336,7 @@ plt.show()
 
 Keep in mind that what we're doing is unusual: it's very unlikely that you'll ever minimize 2-dimensional functions, and certainly not by hand like this. The reason we're doing this is to understand what these options mean, to have an idea of what to tune when a neural network isn't improving during training.
 
-Most likely, the functions you'll be minimizing will have hundreds or thousands of dimensions, but they'll have complicated structure like the 2-dimensional examples above. This is a 2-dimensional cross-section taken from a real machine learning application ([ref](https://doi.org/10.48550/arXiv.1712.09913)):
+Most likely, the functions you'll be minimizing will have hundreds or thousands of dimensions, but they'll have complicated structure like the 2-dimensional examples above. Below is a 2-dimensional cross-section taken from a real machine learning application ([ref](https://doi.org/10.48550/arXiv.1712.09913)):
 
 ![](img/loss-visualization-noshort.png){. width="65%"}
 
@@ -348,9 +348,9 @@ Once you find a best fit for all sigmoids $\psi(x; \alpha_i, \beta_i)$ in
 
 $$y = \sum_i^n c_i \psi(x; \alpha_i, \beta_i) = \sum_i^n c_i \, \frac{1}{1 + \exp\left((x - \alpha_i)/\beta_i\right)}$$
 
-swap any sigmoid $i$ for sigmoid $j$ (i.e. swap $c_i \leftrightarrow c_j$, $\alpha_i \leftrightarrow \alpha_j$, and $\beta_i \leftrightarrow \beta_j$) and the result will be identical. However, we have just replaced the values of 3 components of parameter $\vec{p}$ with 3 other components: this is a new point $\vec{p}'$. If one is a minimum, then the other must also be a minimum with exactly the same value.
+swap any sigmoid $i$ for sigmoid $j$ (that is, swap $c_i \leftrightarrow c_j$, $\alpha_i \leftrightarrow \alpha_j$, and $\beta_i \leftrightarrow \beta_j$) and the result will be identical. However, we have just replaced the values of 3 components of parameter $\vec{p}$ with 3 other components: this is a new point $\vec{p}'$. If one is a minimum, then the other must also be a minimum with exactly the same value.
 
-This underscores the distinction between ansatz-fitting and neural network training: when fitting a function to an ansatz, we want to find the unique minimum because the location and shape of the minimum tells us the value and uncertainty in some theoretical parameter—something about the real world, such as the strength of gravity or the charge of an electron. In neural network training, the minimum _cannot_ be unique, at least because of the symmetries in swapping adaptive basis functions, but also because the landscape is very complicated with many local minima. _This_ is why neural networks are evaluated on their ability to predict, not on the values of their internal parameters.
+This underscores the distinction between ansatz-fitting and neural network training: when fitting a function to an ansatz, we want to find the unique minimum because the location and shape of the minimum tells us the value and uncertainty in some theoretical parameter—something about the real world, such as the strength of gravity or the charge of an electron. In neural network training, the fitted $\vec{p}$ _cannot_ be unique, at least because of the symmetries in swapping adaptive basis functions, but also because the landscape is very bumpy with many traps. _This_ is why neural networks are judged only by their ability to predict, not on the values of their internal parameters.
 
 +++
 
@@ -404,7 +404,7 @@ for fan_out in [10, 20, 50, 100, 200, 500, 1000]:
     print_values(model)
 ```
 
-This is usually sufficient, but the optimal distributions depend on both $n_{\mbox{in}}$ and $n_{\mbox{out}}$. For smooth activation functions like sigmoids and inverse tangent, Xavier initialization is best and for ReLU and its variants, Hu initialization is best. This can be relevant if you build an architecture in which the size of one layer is very different from the size of the next.
+This default is usually sufficient, but the optimal distributions depend on both $n_{\mbox{in}}$ and $n_{\mbox{out}}$. For smooth activation functions like sigmoids and inverse tangent, Xavier initialization is best and for ReLU and its variants, Hu initialization is best. This may be relevant if you build an architecture in which the size of one layer is very different from the size of the next.
 
 The [nn.init](https://pytorch.org/docs/main/nn.init.html) module provides initialization functions, so you can set initial parameters appropriately:
 
@@ -425,9 +425,9 @@ for fan_out in [10, 20, 50, 100, 200, 500, 1000]:
 
 +++
 
-You might have noticed the `requires_grad` option in all of the PyTorch `Tensor` objects. By default, PyTorch computes derivatives for every computation it performs and most optimizers use these derivatives. The `loss_function.backward()` step in every model-training `for` loop that you write computes derivatives from the output of the neural network (where it's constrained by the target you're trying to optimize for) through to the inputs.
+You might have noticed the `requires_grad` option in all of the [torch.Tensor](https://pytorch.org/docs/stable/tensors.html) objects. By default, PyTorch computes derivatives for every computation it performs and most optimizers use these derivatives. The `loss_function.backward()` step in every model-training `for` loop that you write computes derivatives from the output of the neural network (where it's constrained by the target you're trying to optimize for) through to the inputs.
 
-Here's an example of using a PyTorch `Tensor` to compute a function's derivative.
+Here's an example of using a [torch.Tensor](https://pytorch.org/docs/stable/tensors.html) to compute a function's derivative.
 
 ```{code-cell} ipython3
 x = torch.linspace(-np.pi, np.pi, 1000, requires_grad=True)
@@ -452,15 +452,15 @@ ax.legend(loc="upper left")
 plt.show()
 ```
 
-Unlike Minuit, this derivative is not computed by finite differences ($df/dx \approx (f(x + \Delta x) - f(x))/\Delta x$ for some small $\Delta x$), and it is not a fully symbolic derivative from a computer algebra system (like Mathematica, Maple, or SymPy). [Autograd](https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html) is a technique that passes arrays of derivatives through the same calculation that the main arrays have gone through, applying the chain rule at every step. Thus, it's not approximate, it doesn't depend on a choice of scale ($\Delta x$), and the functions don't have to be closed-form formulae.
+Unlike Minuit, this derivative is not computed by finite differences ($df/dx \approx (f(x + \Delta x) - f(x))/\Delta x$ for some small $\Delta x$), and it is not a fully symbolic derivative from a computer algebra system (like Mathematica, Maple, or SymPy). [Autograd](https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html) is a technique that passes arrays of derivatives through the same calculation that the main arrays have gone through, swapping functions like sine for their derivatives, applying the chain rule at every step. Thus, it's not approximate, it doesn't depend on a choice of scale ($\Delta x$), and the functions don't have to be closed-form formulae.
 
-This is the reason why you have to [Tensor.detach](https://pytorch.org/docs/stable/generated/torch.Tensor.detach.html) before converting a `Tensor` to a NumPy array—the removal of information about the derivative shouldn't be implicit, or it could lead to wrong calculations.
+This is the reason why you have to [Tensor.detach](https://pytorch.org/docs/stable/generated/torch.Tensor.detach.html) before converting a [torch.Tensor](https://pytorch.org/docs/stable/tensors.html) to a NumPy array—the removal of information about the derivative shouldn't be implicit, or it could lead to wrong calculations.
 
 But this is also relevant because you might be wondering how we can use ReLU functions in loss functions that are supposed to be differentiable. Formally,
 
 $$\mbox{ReLU}(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$$
 
-doesn't have a true derivative at $x = 0$. (Limiting from the left, the derivative is $0$; limiting from the right, the derivative is $1$.) However, as an artifact of the autograd technique non-differentiable points get "fake" derivatives (that derive from details of their implementation).
+doesn't have a true derivative at $x = 0$. (Limiting from the left, the derivative is $0$; limiting from the right, the derivative is $1$.) However, as an artifact of the autograd technique non-differentiable points get "fake" derivatives that derive from details of their implementation.
 
 ```{code-cell} ipython3
 x = torch.arange(1000, dtype=torch.float32, requires_grad=True) * 0.004 - 2
@@ -538,7 +538,7 @@ It could have been defined to be $0$ or $1$, but $0$ is more popular.
 
 * Use the [optim.Adam](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html) minimizer.
 * Pay close attention to the learning rate (`lr`). Try different, exponentially spaced steps (like `0.001`, `0.01`, `0.1`) if the optimization doesn't seem to be doing anything or if the output is erratic.
-* Maybe even play with the momentum (`betas`), but the primary learning rate is more important.
+* Maybe even play with the momentum (`betas`), but the learning rate is more important.
 * The final, fitted parameters are not meaningful. Unlike ansatz fitting, solutions are even guaranteed to not be unique. The parameters you get from one loss-minimization will likely be different from the parameters you get from another.
 * The variance of the initial random parameter values matters! If your network architecture has roughly the same number of vector components in each layer, you can use PyTorch's default. If not, initialize the parameter values using the appropriate function from [nn.init](https://pytorch.org/docs/main/nn.init.html), which depends on your choice of activation function.
 * Most of the function minimizers need to be given derivatives. Despite appearances, ReLU is differentiable in the sense that it needs to be.

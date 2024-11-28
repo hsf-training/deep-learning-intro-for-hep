@@ -118,7 +118,7 @@ In the second plot, a very weak $\lambda_{L2} = 10^{-14}$ is almost—but not qu
 
 To get visible effects, I had to set $\lambda_{L1}$ and $\lambda_{L2}$ to very different orders of magnitude, and the Lasso (L1) regularization needed more iterations (`max_iter`) to converge.
 
-(One more thing that I should point out: if you want to use this technique in a real application, use [Legendre polynomials](https://en.wikipedia.org/wiki/Legendre_polynomials) as the terms in the linear fit, rather than $x^0$, $x^1$, $x^2$, etc., since [Legendre polynomials](https://en.wikipedia.org/wiki/Legendre_polynomials) are orthonormal with uniform weight on the interval $(-1, 1)$. Also, scale $(-1, 1)$ to the domain of your actual data. Notice that in this fit, the highly constrained polynomials are more constrained by the point at $x = 1$ than any other point!)
+(One more thing that I should point out: if you want to use this technique in a real application, use [Legendre polynomials](https://en.wikipedia.org/wiki/Legendre_polynomials) as the terms in the linear fit, rather than $x^0$, $x^1$, $x^2$, etc., since [Legendre polynomials](https://en.wikipedia.org/wiki/Legendre_polynomials) are orthonormal with uniform weight on the interval $(-1, 1)$. Also, scale $(-1, 1)$ to the domain of your actual data. Notice that in this fit, the highly constrained polynomials are more constrained by the point at $x = 1$ than any other point—that's because of the non-uniform weight on this interval!)
 
 +++
 
@@ -235,7 +235,7 @@ Remember that the 13 features of this dataset quantify a variety of things, all 
 * TAX: full-value property-tax rate per \$10,000
 * PTRATIO: pupil-teacher ratio by town
 * B: $1000(b - 0.63)^2$ where $b$ is the proportion of Black residents
-* LSTAT: % lower status by population
+* LSTAT: \% lower status by population
 
 This is a "throw everything into the model and see what's relevant" kind of analysis. If the dataset is large enough, unimportant features should have a slope that is statistically consistent with zero, but this dataset only has 506 rows (towns near Boston). Rather than a null hypothesis analysis, let's find out which features are the most disposable by fitting it with Lasso (L1) regularization, to see which features it zeros out first.
 
@@ -482,7 +482,7 @@ Unlike L1 and L2 regularization, the parameter values are not much smaller than 
 
 +++
 
-In an upcoming section, we'll cover hyperparameter optimization and validation, in which we'll divide a dataset into a subset for training and another (one or two) for tests. The value of the loss function on the training dataset can get arbitrarily small as the model overfits, but the value of the loss function on data not used in training is a good indication of how well the model generalizes.
+In an [upcoming section](18-hyperparameters.md), we'll cover hyperparameter optimization and validation, in which we'll divide a dataset into a subset for training and another (one or two) for tests. The value of the loss function on the training dataset can get arbitrarily small as the model overfits, but the value of the loss function on data not used in training is a good indication of how well the model generalizes.
 
 Let's see what the training and test loss look like for an overfitted model. Below, we're using [Datasets](https://pytorch.org/docs/stable/data.html#torch.utils.data.Dataset) and [DataLoaders](https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader) for convenience, because they work with PyTorch's [random_split](https://pytorch.org/docs/stable/data.html#torch.utils.data.random_split) function.
 

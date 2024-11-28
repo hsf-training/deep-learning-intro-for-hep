@@ -59,7 +59,7 @@ plt.show()
 
 The first, a 0<sup>th</sup> degree polynomial, is just an average. An average is the simplest model that has any relationship to the training data, but it's usually too simple: it doesn't characterize any functional relationships between features and targets and its predictions are sometimes far from the targets. This model _underfits_ the data.
 
-The second, a 2<sup>nd</sup> degree polynomial, is just right for this data because it was generated from a 2<sup>nd</sup> degree polynomial ($1 + 4x - 5x^2$).
+The second, a 2<sup>nd</sup> degree polynomial, is just right for this dataset because it was generated to have an underlying quadratic relationship, $1 + 4x - 5x^2$.
 
 The third, a 9<sup>th</sup> degree polynomial, has more detail than the dataset itself. It makes false claims about what data would do between the points and beyond the domain. It _overfits_ the data.
 
@@ -185,7 +185,7 @@ plt.show()
 
 The optimizer used all of the parameters it had available to shrink-wrap the model around the training data. ReLU segments are carefully positioned to draw the decision boundary around every data point, sometimes even making islands to correctly categorize outlier penguins. This model is very overfitted.
 
-The problem is that this model does not generalize. If we had more penguins to measure (sadly, we don't), they probably wouldn't line up with this decision boundary. There might be more orange (Gentoo) outliers in the region dominated by green (Chinstrap), but not likely in the same position as the outlier in this dataset, any islands this model might have drawn around the training-set outliers would be useless for categorizing new data.
+The problem is that this model does not generalize. If we had more penguins to measure (sadly, we don't), they probably wouldn't line up with this decision boundary. There might be more orange (Gentoo) outliers in the region dominated by green (Chinstrap), but not likely in the same position as the outlier in this dataset, and any islands this model might have drawn around the training-set outliers would be useless for categorizing new data.
 
 +++
 
@@ -193,7 +193,7 @@ The problem is that this model does not generalize. If we had more penguins to m
 
 +++
 
-First, you need a way to even know whether you're under or overfitting. In the regression example, overlaying the fits on more data drawn from the same distribution revealed that the 0<sup>th</sup> and 9<sup>th</sup> degree polynomials are inaccurate/biased in some regions of $x$. Judging a model by data that were not used to fit it is a powerful technique. In general, you'll want to split your data into a subsample for training and another subsample reserved for validation and tests (which we'll cover in a later section).
+First, you need a way to even know whether you're under or overfitting. In the regression example, overlaying the fits on more data drawn from the same distribution revealed that the 0<sup>th</sup> and 9<sup>th</sup> degree polynomials are inaccurate/biased in some regions of $x$. Judging a model by data that were not used to fit it is a powerful technique. In general, you'll want to split your data into a subsample for training and another subsample reserved for validation and tests (which we'll cover in a [later section](18-hyperparameters.md)).
 
 If you know that you're underfitting a model, you can always add more parameters. That's the benefit of neural networks over ansatz fits: if an ansatz is underfitting the data, then there are correlations in the data that you don't know about. You need to fully understand them and put them in your fit function before you can make accurate predictions. But if a neural network is underfitting, just add more layers and/or more vector components per layer.
 

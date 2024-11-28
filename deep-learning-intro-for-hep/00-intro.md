@@ -13,9 +13,9 @@ The course materials include some inline problems, intended for active learning 
 
 ## Software for the course
 
-This course uses [Scikit-Learn](https://scikit-learn.org/) and [PyTorch](https://pytorch.org/) for examples and problem sets. [TensorFlow](https://www.tensorflow.org/) is also a popular machine learning library, but its functionality is mostly the same as PyTorch, and I didn't want to hide the concepts behind incidental differences in software interfaces. (I _did_ include Scikit-Learn because its interface is much simpler than PyTorch. When I want to emphasize issues that surround fitting in general, I'll use Scikit-Learn because the fit itself is just two lines of code, and when I want to emphasize the details of the machine learning model, I'll use PyTorch, which expands the fit into tens of lines of code and allows for more control of this part.)
+This course uses [Scikit-Learn](https://scikit-learn.org/) and [PyTorch](https://pytorch.org/) for examples and problem sets. [TensorFlow](https://www.tensorflow.org/) is also a popular machine learning library, but its functionality is mostly the same as PyTorch, and I didn't want to hide the concepts behind incidental differences in software interfaces. (I _did_ include Scikit-Learn because its interface is much simpler than PyTorch. When I want to emphasize issues that surround fitting in general, I'll use Scikit-Learn because the fit itself is just two lines of code, and when I want to emphasize the details of the machine learning model, I'll use PyTorch, which expands the fit into tens of lines of code and allows for more control.)
 
-I didn't take the choice of PyTorch over TensorFlow lightly (since I'm a newcomer to both). I verified that PyTorch is about as popular as TensorFlow among CMS physicists using the plot below (derived using the methodology in [this GitHub repo](https://github.com/jpivarski-talks/2023-05-09-chep23-analysis-of-physicists) and [this talk](https://indico.jlab.org/event/459/contributions/11547/)). Other choices, such as [JAX](https://jax.readthedocs.io/), would be a mistake because a reader of this tutorial would not be prepared to collaborate with machine learning as it is currently practiced in particle physics.
+I didn't take the choice of PyTorch over TensorFlow lightly. I verified that PyTorch is about as popular as TensorFlow among CMS physicists using the plot below (derived using the methodology in [this GitHub repo](https://github.com/jpivarski-talks/2023-05-09-chep23-analysis-of-physicists) and [this talk](https://indico.jlab.org/event/459/contributions/11547/)). Other choices, such as [JAX](https://jax.readthedocs.io/), would be a mistake because a reader of this tutorial would not be prepared to collaborate with machine learning as it is currently practiced in particle physics.
 
 ![](img/github-ml-package-cmsswseed.svg){. width="100%"}
 
@@ -37,7 +37,7 @@ and navigate to the `notebooks` directory in the left side-bar. The pages are fo
 
 ## To run everything on your own computer
 
-Make sure that you have the following packages installed with [conda](https://scikit-hep.org/user/installing-conda), pip, uv, pixi, etc.
+Make sure that you have the following packages installed with [conda](https://scikit-hep.org/user/installing-conda) (or pip, uv, pixi, etc.):
 
 ```{include} ../environment.yml
 :literal: true

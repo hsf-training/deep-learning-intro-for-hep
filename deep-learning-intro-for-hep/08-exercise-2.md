@@ -43,11 +43,11 @@ I [previously mentioned](03-basic-fitting.md) the Boston House Prices dataset. I
 * TAX: full-value property-tax rate per \$10,000
 * PTRATIO: pupil-teacher ratio by town
 * B: $1000(b - 0.63)^2$ where $b$ is the proportion of Black residents
-* LSTAT: % lower status by population
+* LSTAT: \% lower status by population
 
 as well as MEDV, the median prices of owner-occupied homes. Your job is to predict the prices, given all of the other data as features. You will do this with both a linear fit and a neural network with 5 hidden sigmoid components.
 
-You can get the dataset from [the original source](https://www.kaggle.com/datasets/vikrishnan/boston-house-prices) or from this project's GitHub: [deep-learning-intro-for-hep/data/boston-house-prices.csv](https://github.com/hsf-training/deep-learning-intro-for-hep/blob/main/deep-learning-intro-for-hep/data/boston-house-prices.csv).
+You can get the dataset from [the original source](https://www.kaggle.com/datasets/vikrishnan/boston-house-prices) or from this project's GitHub: [deep-learning-intro-for-hep/data/boston-house-prices.csv](https://github.com/hsf-training/deep-learning-intro-for-hep/blob/main/deep-learning-intro-for-hep/data/boston-house-prices.csv). If you're using Codespaces or cloned the repository, it's already in the `data` directory.
 
 ```{code-cell} ipython3
 housing_df = pd.read_csv(
@@ -127,6 +127,8 @@ ax.legend(loc="upper right", bbox_to_anchor=(1.2, 1), framealpha=1)
 plt.show()
 ```
 
+And it does: the residuals are narrower after the fit.
+
 ## Neural network solution in Scikit-Learn
 
 +++
@@ -156,7 +158,7 @@ def unscale_predictions(predictions):
     return (predictions * regression_targets.std()) + regression_targets.mean()
 ```
 
-In this neural network, let's use 5 sigmoids ("logistic" functions) in the hidden layer. The `alpha=0` turns off regularization, which we haven't covered yet.
+In this neural network, let's use 5 sigmoids ("logistic" functions) in the hidden layer. The `alpha=0` turns off regularization, which we [haven't covered yet](16-regularization.md).
 
 ```{code-cell} ipython3
 best_fit_nn = MLPRegressor(
@@ -184,7 +186,7 @@ plt.show()
 
 The neural network is a further improvement, beyond the linear model. This shouldn't be a surprise, since we've given the fitter more knobs to turn: instead of just a linear transformation, we have a linear transformation followed by 5 adaptive basis functions (the sigmoids).
 
-Note that this is not a proper procedure for modeling yet: you can get an _arbitrarily_ good fit by adding more and more sigmoids. Try replacing the `(5,)` with `(100,)` to see what happens to the neural network residuals. If we have enough adaptive basis functions, we can center one on every input data point, and our "quality check" is looking at the model's prediction of those same input data points. We'll talk more about this in the sections on overfitting and splitting data into training, validation, and test datasets.
+Note that this is not a proper procedure for modeling yet: you can get an _arbitrarily_ good fit by adding more and more sigmoids. Try replacing the `(5,)` with `(100,)` to see what happens to the neural network residuals. If we have enough adaptive basis functions, we can center one on every input data point, and our "quality check" is looking at the model's prediction of those same input data points. We'll talk more about this in the sections on [overfitting](15-under-overfitting.md) and splitting data into [training, validation, and test datasets](18-hyperparameters.md).
 
 +++
 

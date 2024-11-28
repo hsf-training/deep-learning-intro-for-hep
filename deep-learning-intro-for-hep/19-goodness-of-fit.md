@@ -77,11 +77,11 @@ Story time:
 >
 > The next day, the same thing happened.
 >
-> The day after that, there really was a wolf and the shepherd cried, "Wolf!" but the villagers refused to be fooled again and didn't help. The wolf ate all the sheep.
+> The day after that, there actually was a wolf and the shepherd cried, "Wolf!" but the villagers refused to be fooled again and didn't help. The wolf ate all the sheep.
 
 Each day, there are two possible truth states:
 
-* there really is a wolf
+* there actually is a wolf
 * there is not wolf
 
 and two possible claims by a model that puports to represent reality (the shepherd boy's utterances):
@@ -277,9 +277,9 @@ The F₁ score ranges from 0 (worst) to 1 (best), and there is a [family of Fᵦ
 
 +++
 
-Returning to the Boy Who Cried Wolf, the 4 outcomes are not equally good or bad. Public scorn is not as bad as all the sheep being eaten, so if the shepherd boy has any doubt about whether a wolf-like animal is really a wolf, he should err on the side of calling it a wolf.
+Returning to the Boy Who Cried Wolf, the 4 outcomes are not equally good or bad. Public scorn is not as bad as all the sheep being eaten, so if the shepherd boy has any doubt about whether a wolf-like animal is actually a wolf, he should err on the side of calling it a wolf.
 
-Suppose that we really want to catch as many blue (positive) points as possible, and we're willing to accept some contamination of orange (negative). Instead of cutting the model at its 50% threshold, perhaps we should cut it at its 90% threshold:
+Suppose that we want to catch as many blue (positive) points as possible, and we're willing to accept some contamination of orange (negative). Instead of cutting the model at its 50% threshold, perhaps we should cut it at its 90% threshold:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(5, 5))
@@ -365,7 +365,8 @@ Some properties of the ROC curve:
 * The better a model is, the closer it gets to $(0, 1)$ (zero false positive rate and perfect true positive rate).
 * If the model is completely uninformative—randomly guessing—then the ROC curve is a horizontal line from $(0, 0)$ to $(1, 1)$. (For finite datasets, it's a noisy horizontal line: it only approaches a perfect diagonal when evaluated on very large datasets.)
 * If you plot the ROC curve with higher resolution than the size of the dataset it is evaluated on, as above, it consists of horizontal and vertical segments as the threshold curve scans across individual points (of the two categories).
-* Be sure to plot the ROC curve using the validation dataset while tuning hyperparameters and only use the test dataset after the model is fixed.
+
+Be sure to plot the ROC curve using the validation dataset while tuning hyperparameters and only use the test dataset after the model is fixed.
 
 For completeness, let's see the ROC curves for a perfect model (always correct) and a model that randomly guesses.
 

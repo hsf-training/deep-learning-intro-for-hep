@@ -33,9 +33,7 @@ while last_loss is None or loss - last_loss > EPSILON:
     optimizer.step()
 ```
 
-But usually, we just pick a large enough number of iterations for the specific application. (Minuit and Scikit-Learn have to work for _all_ applications; hence, they have to be more clever about the stopping condition.) These iterations are called "epochs."
-
-(I haven't been able to figure out why they're called that.)
+But usually, we just pick a large enough number of iterations for the specific application. (Minuit and Scikit-Learn have to work for _all_ applications; hence, they have to be more clever about the stopping condition.) These iterations are called "epochs." I haven't been able to find out why they're called that.
 
 +++
 
@@ -119,7 +117,7 @@ targets = torch.tensor(boston_prices_df["MEDV"]).float()[:, np.newaxis]
 
 In this and the next code block, we'll train a 5-hidden layer model, first without mini-batches (all data in one big batch) and then with mini-batches. In both cases, we'll set the [torch.manual_seed](https://pytorch.org/docs/stable/generated/torch.manual_seed.html) to make sure that both optimization processes start in the same state, since random luck can also contribute to the time needed for convergence.
 
-Also, let's track the value of the loss function and number of function calls (`model`, `loss_function`, and `optimizer.step()`) as a function of epoch.
+Also, let's track the value of the loss function and number of function calls (`model`, `loss_function`, and `optimizer.step`) as a function of epoch.
 
 ```{code-cell} ipython3
 torch.manual_seed(12345)
@@ -267,7 +265,7 @@ If the whole dataset does not fit in the processor's working memory, then some k
 
 are much more expensive than almost any conceivable model. Thus, you'll generally do better to pass the batches of data that you get from the source into the training step to update the optimization state as much as possible with the data you have, before undertaking the time-consuming step of accumulating the next batch.
 
-Generally, a good mini-batch size for minimizing training time is just small enough for the working memory to fit within your processor's memory size, such as the GPU global memory. If you're tuning other hyperparameters, such as learning rate, the numbers of layers and hidden layer sizes, and regularization, re-tune the mini-batch size _last_, since it depends on all of the rest.
+Generally, a good mini-batch size for minimizing training time is just small enough for the working memory to fit within your processor's memory size, such as the GPU global memory. If you're tuning fitter options, such as learning rate, or the numbers of layers and hidden layer sizes and [regularization](16-regularization.md), re-tune the mini-batch size _last_, since it depends on all of the rest and they don't depend on it.
 
 +++
 
@@ -277,7 +275,7 @@ Generally, a good mini-batch size for minimizing training time is just small eno
 
 There's another reason to train in small batches: it helps to avoid getting stuck in local minima and end up with a model that generalizes well.
 
-In problem domains like stock market prediction, models need to be updated with every new data point: this is called [online machine learning](https://en.wikipedia.org/wiki/Online_machine_learning). It's an extreme form of mini-batching in which the `NUMBER_IN_BATCH` is 1. Each new data point pulls the fitter toward a different minimum, but roughly in the same direction, and this noise prevents the model from memorizing specific features of a constant dataset. Due to the success that online training processes have had over fixed-dataset processes, we'd expect to find some balance between very noisy online training and smooth-but-biased full-dataset training. We'll discuss techniques to _measure_ overfitting in later sections, but reducing the batch size is one way to reduce overfitting.
+In problem domains like stock market prediction, models need to be updated with every new data point: this is called [online machine learning](https://en.wikipedia.org/wiki/Online_machine_learning). It's an extreme form of mini-batching in which the `NUMBER_IN_BATCH` is 1. Each new data point pulls the fitter toward a different minimum, but roughly in the same direction, and this noise prevents the model from memorizing specific features of a constant dataset. Due to the success that online training processes have had over fixed-dataset processes, we'd expect to find some balance between very noisy online training and smooth-but-biased full-dataset training. We'll discuss techniques to _measure_ [overfitting](15-under-overfitting.md) in [later sections](18-hyperparameters.md), but reducing the batch size is one way to reduce overfitting.
 
 Let's see the "roughness" of the loss function as a function of batch size for our sample problem. We'll use the `model` that has already been optimized above, so we're near one of its minima.
 

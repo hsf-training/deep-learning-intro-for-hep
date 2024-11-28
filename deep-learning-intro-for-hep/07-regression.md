@@ -17,7 +17,7 @@ kernelspec:
 
 +++
 
-This and the next section introduce PyTorch so that we can use it for the remainder of the course. Whereas Scikit-Learn gives you a function for just about [every type of machine learning model](https://scikit-learn.org/stable/machine_learning_map.html), PyTorch gives you the pieces and expects you to build it yourself. (The [JAX](https://jax.readthedocs.io/) library is even more extreme in providing only the fundamental pieces. PyTorch's level of abstraction is between JAX and Scikit-Learn.)
+This and the [next section](09-classification.md) introduce PyTorch so that we can use it for the remainder of the course. Whereas Scikit-Learn gives you a function for just about [every type of machine learning model](https://scikit-learn.org/stable/machine_learning_map.html), PyTorch gives you the pieces and expects you to build it yourself. (The [JAX](https://jax.readthedocs.io/) library is even more extreme in providing only the fundamental pieces. PyTorch's level of abstraction is between JAX and Scikit-Learn.)
 
 I'll use the two types of problems we've seen so far—regression and classification—to show Scikit-Learn and PyTorch side-by-side. First, though, let's get a dataset that will provide us with realistic regression and classification problems.
 
@@ -31,7 +31,7 @@ import matplotlib.pyplot as plt
 
 +++
 
-This is my new favorite dataset: basic measurements on 3 species of penguins. You can get the data as a CSV file from the [original source](https://www.kaggle.com/code/parulpandey/penguin-dataset-the-new-iris) or from this project's GitHub: [deep-learning-intro-for-hep/data/penguins.csv](https://github.com/hsf-training/deep-learning-intro-for-hep/blob/main/deep-learning-intro-for-hep/data/penguins.csv).
+This is my new favorite dataset: basic measurements on 3 species of penguins. You can get the data as a CSV file from the [original source](https://www.kaggle.com/code/parulpandey/penguin-dataset-the-new-iris) or from GitHub: [deep-learning-intro-for-hep/data/penguins.csv](https://github.com/hsf-training/deep-learning-intro-for-hep/blob/main/deep-learning-intro-for-hep/data/penguins.csv). If you're using Codespaces or cloned the repository, it's already in the `data` directory.
 
 ![](img/culmen_depth.png){. width="50%"}
 
@@ -93,7 +93,7 @@ plot_regression_problem(ax)
 plt.show()
 ```
 
-Next, let's add a layer of ReLU functions using Scikit-Learn's [MLPRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html). The reason we set `alpha=0` is because its regularization is not off by default, and we haven't talked about regularization yet. The `solver="lbfgs"` picks a more robust optimization method for this low-dimension problem.
+Next, let's add a layer of ReLU functions using Scikit-Learn's [MLPRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html). ("MLP" stands for "Multi Layer Perceptron.") The reason we set `alpha=0` is because its regularization is not off by default, and we haven't talked about [regularization](16-regularization.md) yet. The `solver="lbfgs"` picks a more robust optimization method for this low-dimension problem.
 
 ```{code-cell} ipython3
 from sklearn.neural_network import MLPRegressor
@@ -136,7 +136,7 @@ A model has parameters that the optimizer will vary in the fit. When you create 
 list(model.parameters())
 ```
 
-We can't pass NumPy arrays directly into PyTorch—they have to be converted into PyTorch's own array type (which can reside on CPU or GPU), called `Tensor`.
+We can't pass NumPy arrays directly into PyTorch—they have to be converted into PyTorch's own array type (which can reside on CPU or GPU), [torch.Tensor](https://pytorch.org/docs/stable/tensors.html).
 
 PyTorch's functions are very sensitive to the exact data types of these tensors: the difference between integers and floating-point can make PyTorch run a different algorithm! For floating-point numbers, PyTorch prefers 32-bit.
 
@@ -148,7 +148,7 @@ tensor_targets = torch.tensor(regression_targets[:, np.newaxis], dtype=torch.flo
 Now we need to say _how_ we're going to train the model.
 
 * What will the loss function be? For a regression problem, it would usually be $\chi^2$, or mean squared error: [nn.MSELoss](https://pytorch.org/docs/stable/generated/torch.nn.MSELoss.html)
-* Which optimizer should we choose? (This is the equivalent of `solver="lbfgs"` in Scikit-Learn.) We'll talk more about these later, and the right choice will usually be [nn.Adam](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html#torch.optim.Adam), but not for this linear problem. For now, we'll use [nn.Rprop](https://pytorch.org/docs/stable/generated/torch.optim.Rprop.html#torch.optim.Rprop).
+* Which optimizer should we choose? (This is the equivalent of `solver="lbfgs"` in Scikit-Learn.) We'll talk more about in an [upcoming section](11-minimizers.md), and the right choice will usually be [nn.Adam](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html#torch.optim.Adam), but not for this linear problem. For now, we'll use [nn.Rprop](https://pytorch.org/docs/stable/generated/torch.optim.Rprop.html#torch.optim.Rprop).
 
 The optimizer has access to the model's parameters, and it will modify them in-place.
 
@@ -158,7 +158,7 @@ loss_function = nn.MSELoss()
 optimizer = optim.Rprop(model.parameters())
 ```
 
-To actually train the model, you have to write your own loop! It's more verbose, but you get to control what happens and debug it.
+To actually train the model, you have to write your own loop! The code you'll write is more verbose, but you get to control what happens and debug it.
 
 One step in optimization is called an "epoch." In Scikit-Learn, we set `max_iter=1000` to get 1000 epochs. In PyTorch, we write,
 
@@ -178,11 +178,11 @@ for epoch in range(1000):
     optimizer.step()
 ```
 
-The `optimizer.zero_grad()`, `loss.backward()`, and `optimizer.step()` calls change the state of the optimizer and the model parameters, but you can think of them just as the beginning and end of an optimization step.
+The [optim.Optimizer.zero_grad](https://pytorch.org/docs/stable/generated/torch.optim.Optimizer.zero_grad.html), [torch.Tensor.backward](https://pytorch.org/docs/stable/generated/torch.Tensor.backward.html), and [optim.Optimizer.step](https://pytorch.org/docs/stable/generated/torch.optim.Optimizer.step.html) calls change the state of the optimizer and the model parameters, but you can think of them just as the beginning and end of an optimization step.
 
-There are other state-changing functions, like `model.train()` (to tell it we're going to start training) and `model.eval()` (to tell it we're going to start using it for inference), but we won't be using any of the features that depend on the variables that these set.
+There are other state-changing functions, like [nn.Module.train](https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module.train) (to tell it we're going to start training) and [nn.Module.eval](https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module.eval) (to tell it we're going to start using it for inference), but these only matter for a few techniques, such as dropout regularization, [discussed later](16-regularization.md).
 
-Now, to draw a plot with this model, we'll have to turn the NumPy `x` positions into a `Tensor`, run it through the model, and then convert the model's output back into a NumPy array. The output has derivatives as well as values, so those will need to be detached.
+Now, to draw a plot with this model, we'll have to turn the NumPy `x` positions into a [torch.Tensor](https://pytorch.org/docs/stable/tensors.html), run it through the model, and then convert the model's output back into a NumPy array. The output has derivatives as well as values, so those will need to be detached.
 
 * NumPy `x` to Torch: `torch.tensor(x, dtype=torch.float32)` (or other dtype)
 * Torch `y` to NumPy: `y.detach().numpy()`
@@ -279,7 +279,7 @@ list(model.parameters())
 
 Initially, the model parameters are all random numbers between $-1$ and $1$. After fitting, _some_ of the parameters are in the few-hundred range.
 
-Now look at the $x$ and $y$ ranges on the plot: flipper lengths are hundreds of millimeters and body masses are thousands of grams. The optimizer had to gradually step values of order 1 up to values of order 100‒1000, and it took small steps to avoid jumping over the solution. In the end, the optimizer found a reasonably good fit by scaling just a few parameters up and effectively performed a purely linear fit.
+Now look at the $x$ and $y$ ranges on the plot: flipper lengths are hundreds of millimeters and body masses are thousands of grams. The optimizer had to gradually increase parameters of order 1 up to order 100‒1000, and it takes small steps to avoid jumping over the solution. In the end, the optimizer found a reasonably good fit by scaling just a few parameters up and effectively performed a purely linear fit.
 
 We should have scaled the inputs and outputs so that the values the fitter sees are _all_ of order 1. This is something that PyTorch _assumes_ you will do.
 
@@ -374,8 +374,8 @@ This time, we see the effect of the ReLU steps because the data and the model pa
 
 I think this illustrates an important point about working with neural networks: you cannot treat them as black boxes—you have to understand the internal parts to figure out why it is or isn't fitting the way you want it to. Nothing told us that the ReLU parameters were effectively being ignored because the data were at the wrong scale. We had to step through the pieces to find that out.
 
-Hand-written code, called "craftsmanship" in the [Overview](01-overview.md), is generally designed to be more compartmentalized than this. If you're coming from a programming background, this is something to look out for! Andrej Karpathy's excellent [recipe for training neural networks](https://karpathy.github.io/2019/04/25/recipe/) starts with the warning that neural network training is a "[leaky abstraction](https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/)," which is to say, you have to understand its inner workings to use it effectively—more so than other software products.
+Hand-written code, called "craftsmanship" in the [Overview](01-overview.md), is generally designed to be more compartmentalized than this. If you're coming from a programming background, look out for these interdependencies! Andrej Karpathy's excellent [recipe for training neural networks](https://karpathy.github.io/2019/04/25/recipe/) starts with the warning that neural network training is a "[leaky abstraction](https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/)," which is to say, you have to understand its inner workings to use it effectively—more so than with hand-written software.
 
 That may be why PyTorch is so popular: it forces you to look at the individual pieces, rather than maintaining the illusion that pressing a `fit` button will give you what you want.
 
-Next, we'll see how to use it for classification problems.
+After an exercise, we'll see how to use it for [classification problems](09-classification.md).

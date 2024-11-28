@@ -59,7 +59,7 @@ ax.legend(loc="lower right")
 plt.show()
 ```
 
-I don't think I need to demonstrate that a linear fit would be terrible.
+I don't need to demonstrate that a linear fit would be terrible.
 
 We can get a good fit from a theory-driven ansatz, but as I showed in the previous section, it's very sensitive to the initial guess that we give the fitter.
 
@@ -186,7 +186,7 @@ b_n &&=&& \frac{2}{P} \int_P f(x) \sin\left(2\pi\frac{n}{P}x\right) \, dx \\
 \end{align}
 $$
 
-NumPy has a function for computing integrals using the trapezoidal rule, which I'll use below to fit a Fourier series to the function.
+NumPy has Fast Fourier Transform (FFT) algorithms built-in, but they're hard to apply to arbitrary length (non-power-of-2) datasets. NumPy also has a function for computing integrals using the trapezoidal rule, so I'll use that below to fit a Fourier series to the function.
 
 ```{code-cell} ipython3
 NUMBER_OF_COS_TERMS = 7
@@ -230,7 +230,7 @@ Both the 15-term Taylor series and the 15-term Fourier series are not good fits 
 
 +++
 
-The classic methods of universal function approximation—Taylor series, Fourier series, and others—have one thing in common: they all approximate the function with a fixed set of basis functions $\psi_i$ for $i \in [0, N)$.
+The classic methods of universal function approximation—Taylor series, Fourier series, and the like—have one thing in common: they all approximate the function with a fixed set of basis functions $\psi_i$ for $i \in [0, N)$.
 
 $$f(x) = \sum_i^N c_i \, \psi_i(x)$$
 
@@ -240,7 +240,7 @@ Suppose, instead, that we had a set of functions that could also change shape:
 
 $$f(x) = \sum_i^N c_i \, \psi(x; \alpha_i, \beta_i)$$
 
-These are functions of $x$, parameterized by $\alpha_i$ and $\beta_i$. Here's an example set that we can use: [sigmoid functions](https://en.wikipedia.org/wiki/Sigmoid_function) with an adjustable center $\alpha$ and width $\beta$:
+These are functions of $x$, parameterized by $\alpha_i$ and $\beta_i$. Here's a useful example of a set of functions: [sigmoid functions](https://en.wikipedia.org/wiki/Sigmoid_function) with an adjustable center $\alpha$ and width $\beta$:
 
 $$\psi(x; \alpha, \beta) = \frac{1}{1 + \exp\left((x - \alpha)/\beta\right)}$$
 
@@ -265,7 +265,7 @@ ax.legend(loc="lower left", bbox_to_anchor=(0.05, 0.1))
 plt.show()
 ```
 
-Fitting with these adaptive sigmoids requires an iterative search, rather than computing the parameters with an exact formula. These basis functions are not orthogonal to each other (unlike Fourier components), and they're not even related through a linear transformation (unlike Taylor components).
+Fitting with these adaptive sigmoids requires an iterative search, like Minuit, rather than computing the parameters with an exact formula. These basis functions are not orthogonal to each other (unlike Fourier components), and they're not even related to an orthogonal basis through a linear transformation (unlike Taylor components).
 
 In fact, this is a harder-than-usual problem for Minuit because the search space has many local minima. To get around this, let's run it 15 times and take the best result (minimum of minima).
 
@@ -323,7 +323,7 @@ assert np.sum((model_y - curve_y)**2) < 10
 
 It's a beautiful fit (usually)!
 
-Since you used 5 sigmoids with 3 parameters each (scaling coefficient $c_i$, center $\alpha_i$, and width $\beta_i$), this is 15 parameters, and the result is much better than it is with 15 Taylor components or 15 Fourier components.
+Since we used 5 sigmoids with 3 parameters each (scaling coefficient $c_i$, center $\alpha_i$, and width $\beta_i$), it's a total of 15 parameters, and the result is much better than it is with 15 Taylor components or 15 Fourier components.
 
 Moreover, it generalizes reasonably well:
 
@@ -383,11 +383,11 @@ the full fit function is
 
 $$y = \sum_i^n c_i \, f\left(x'_i\right)$$
 
-We took a 1-dimensional $x$, linear transformed it into an n-dimensional $\vec{x}'$, applied a non-linear function $f$, and then linear-transformed that into a 1-dimensional $y$. Let's draw it (for $n = 5$) like this:
+We took a 1-dimensional $x$, linear transformed it into an $n$-dimensional $\vec{x}'$, applied a non-linear function $f$, and then linear-transformed that into a 1-dimensional $y$. Let's draw it (for $n = 5$) like this:
 
 ![](img/artificial-neural-network-layers-3.svg){. width="100%"}
 
-If you've seen diagrams of neural networks before, this should look familiar! The input is on the left is a vertical column of boxes—only one in this case because our input is 1-dimensional—and the linear transformation is represented by arrows to the next vertical column of boxes, our 5-dimensional $\vec{x}'$. The sigmoid $f$ is not shown in diagram, and the next set of arrows represent another linear transformation to the outputs, $y$, which is also 1-dimensional so only one box.
+If you've seen diagrams of neural networks before, this should look familiar! The input is on the left as a vertical column of boxes—only one in this case because our input is 1-dimensional—and the linear transformation is represented by arrows to the next vertical column of boxes, our 5-dimensional $\vec{x}'$. The sigmoid $f$ is not shown in diagram, and the next set of arrows represents another linear transformation to the outputs, $y$, which is also 1-dimensional, so only one box.
 
 The first linear transform has slopes $1/\beta$ and intercepts $\alpha_i/\beta_i$ and the second linear transformation in our example has only slopes $c_i$, but we could have added another intercept $y_0$ if we wanted to, to let the vertical offset float.
 
