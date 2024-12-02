@@ -28,3 +28,7 @@ The reason for (1) is that making networks deeper is just a matter of adding lay
 The reason for (2) is that many (not all) HEP problems are supervised. We usually know what functions we want to approximate because we have detailed Monte Carlo (MC) simulations of the fundamental physics and our detectors, so we can use "MC truth" as targets in training. This is very different from wanting ChatGPT to "respond like a human." Sometimes, however, we want algorithms to find "unusual events" or group points into clusters, so we'll be turning to algorithms of these types soon.
 
 For (3), there is no excuse. The fact that neural networks can be arbitrary graphs leaves them wide open to experimentation with different topologies. This is where much of the research is. In the remainder of this course, we'll look at a few topologies, but I'll mostly leave you to explore these beyond the course.
+
+![](img/ml-for-everyone.jpg){. width="75%"}
+
+(from [Machine Learning for Everyone](https://vas3k.com/blog/machine_learning/))
