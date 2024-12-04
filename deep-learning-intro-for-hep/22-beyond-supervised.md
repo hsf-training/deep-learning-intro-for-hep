@@ -43,11 +43,11 @@ import matplotlib.pyplot as plt
 
 +++
 
-Clustering is a common task in HEP. In a clustering problem, we have a set of features $\vec{x}_i$ (for $i \in [0, N)$ and we want to find $n$ groups or "clusters" of the $N$ points such that $\vec{x}_i$ in the same cluster are close to each other and $\vec{x}_i$ in different clusters are far from each other.
+Clustering is relatively common in HEP. In a clustering problem, we have a set of features $\vec{x}_i$ (for $i \in [0, N)$ and we want to find $n$ groups or "clusters" of the $N$ points such that $\vec{x}_i$ in the same cluster are close to each other and $\vec{x}_i$ in different clusters are far from each other.
 
-If we know how many clusters we want to make, then the most common choice is k-means clustering. The k-means algorithm starts with $k$ initial cluster centers, $c_j$ (for $j \in [0, k)$) and labels all points in the space of $\vec{x}$ by the closest cluster: if $\vec{x}_i$ is closer to $c_j$ than all other $c_{j'}$ ($j' \ne j$), then $\vec{x}_i \in C_j$ where $C_j$ is the cluster associated with center $c_j$.
+If we know how many clusters we want to make, then the most common choice is k-means clustering. The k-means algorithm starts with $k$ initial cluster centers, $\vec{c}_j$ (for $j \in [0, k)$) and labels all points in the space of $\vec{x}$ by the closest cluster: if $\vec{x}_i$ is closer to $\vec{c}_j$ than all other $\vec{c}_{j'}$ ($j' \ne j$), then $\vec{x}_i \in C_j$ where $C_j$ is the cluster associated with center $\vec{c}_j$.
 
-The algorithm then moves each cluster center $c_j$ to the mean $\vec{x}$ for all $\vec{x} \in C_j$. After enough iterations, the cluster centers gravitate to the densest accumulations of points. Note that this is _not_ a neural network. (We're getting to that.)
+The algorithm then moves each cluster center $\vec{c}_j$ to the mean $\vec{x}$ for all $\vec{x} \in C_j$. After enough iterations, the cluster centers gravitate to the densest accumulations of points. Note that this is _not_ a neural network. (We're getting to that.)
 
 ```{code-cell} ipython3
 from sklearn.cluster import KMeans
@@ -101,7 +101,7 @@ ax.legend(loc="lower left")
 plt.show()
 ```
 
-Remember that the k-means algorithm only sees the bill length and bill depth points _without_ species labels (without colors in the above plot). It uses the 3 cluster centers we gave it to split the data mostly vertically because the raw distribution is more clumpy in bill length than bill depth:
+Remember that the k-means algorithm only sees the bill length and bill depth points _without_ species labels (without colors in the above plot). It chose to place the 3 cluster centers in a way that's mostly spaced by bill length (horizontally) because the raw distribution is more clumpy in bill length than bill depth:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -161,11 +161,11 @@ We can continue all the way from $k = 1$ (all points in a single cluster) to $k 
 
 +++
 
-One of the assumptions built into k-means fitting is that points should belong to the cluster center that is closest to it in all dimensions equally. Thus, the area that belongs to each cluster is roughly circular (actually, [Voronoi tiles](https://en.wikipedia.org/wiki/Voronoi_diagram)). We can generalize the k-means algorithm a little bit by replacing each circularly symmetric cluster center with a Gaussian ellipsoid. Instead of a boolean membership like $\vec{x}_i \in C_j$, we can associate each $\vec{x}_i$ to all the clusters by varying degrees:
+One of the assumptions built into k-means fitting is that points should belong to the cluster center that is closest to it in all dimensions equally. Thus, the area that belongs to each cluster is roughly circular ([Voronoi tiles](https://en.wikipedia.org/wiki/Voronoi_diagram), which is how soap bubbles fill a space). We can generalize the k-means algorithm a little bit by replacing each cluster center with a Gaussian ellipsoid. Instead of a boolean membership like $\vec{x}_i \in C_j$, we can associate each $\vec{x}_i$ to all the clusters by varying degrees:
 
 $$\mbox{membership}_{C_j}(\vec{x}_i) \propto \mbox{Gaussian}(\vec{x}_i; \vec{\mu}_j, \hat{\sigma}_j)$$
 
-That is, a point $\vec{x}_i$ would _mostly_ belong to a cluster $C_j$ if it's within fewer standard deviations of the cluster's mean $\vec{\mu}_j$, scaled by its covariance matrix $\hat{\sigma}_j$, than other clusters $C_{j'}$ ($j' \ne j$). However, each point is a member of all clusters to different degrees, and some points may be on a boundary, where their membership to two clusters is about equal. We can turn this "soft clustering" into a "hard clustering" like k-means by considering only the maximum $\mbox{membership}_{C_j}(\vec{x}_i)$ for each point.
+That is, a point $\vec{x}_i$ would _mostly_ belong to a cluster $C_j$ if it's within fewer standard deviations of the cluster's mean $\vec{\mu}_j$, scaled by its covariance matrix $\hat{\sigma}_j$, than other clusters $C_{j'}$ ($j' \ne j$). However, each point is a member of all clusters to different degrees, and some points may be on a boundary, where the degree of their membership in two clusters is about equal. We can turn this "soft clustering" into a "hard clustering" like k-means by considering only the maximum $\mbox{membership}_{C_j}(\vec{x}_i)$ for each point.
 
 What's more important is that the covariance matrices allow the clusters to extend in long strips if necessary.
 
@@ -213,7 +213,7 @@ Now imagine that penguins in the antarctic don't come labeled with species names
 
 +++
 
-Instead of specifying the number of clusters, we could have specified a cut-off threshold: penguins are considered distinct if their distance in bill length, bill depth space is larger than some number of millimeters. This is called hierarchical or agglomerative clustering.
+Instead of specifying the number of clusters, we could have specified a cut-off threshold: penguins are considered distinct if their distance in bill length, bill depth space is larger than some number of millimeters. This is called [hierarchical or agglomerative clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering).
 
 ```{code-cell} ipython3
 from sklearn.cluster import AgglomerativeClustering
@@ -251,24 +251,32 @@ ax.set_ylabel("bill depth (mm)")
 plt.show()
 ```
 
-This algorithm has more parameters than k-means and Gaussian mixtures. You have to provide:
+For this algorithm, you have to specify two kinds of distance metrics:
 
-* a metric for the distance between two points, $\vec{x}_{i}$ and $\vec{x}_{i'}$ ($i' \ne i$),
-* a "linkage," which is the distance between a point $\vec{x}_i$ and a cluster $C_j$, which can be
-  - single: the minimum distance between $\vec{x}_i$ and any $\vec{x}_{i'} \in C_j$, which tends to make long, connected worms
-  - complete: the maximum distance between $\vec{x}_i$ and all $\vec{x}_{i'} \in C_j$, which tends to make round balls
-  - average: the average distance between $\vec{x}_i$ and all $\vec{x}_{i'} \in C_j$
-  - Wald: a measure that minimizes the variance within a cluster (used by default by Scikit-Learn, above).
+* a metric for the distance between two points, $\vec{x}_{i}$ and $\vec{x}_{i'}$ ($i' \ne i$), which could be Euclidean, but there are other choices (also affected by the choice of coordinates),
+* a "linkage," which specifies the distance between two clusters, $C_j$ and $C_{j'}$. Clusters are made of points, so the linkage is how pointwise distances are combined into a cluster distance. Some examples:
+  - single: the distance between $C_j$ and $C_{j'}$ is the _minimum_ distance between any $\vec{x}_i$ in $C_j$ and any $\vec{x}_{i'}$ in $C_{j'}$. Single linkage tends to make long, snakey clusters.
+  - complete: the distance between $C_j$ and $C_{j'}$ is the _maximum_ distance between any $\vec{x}_i$ in $C_j$ and any $\vec{x}_{i'}$ in $C_{j'}$. Complete linkage tends to make circular clusters in a Euclidean metric and the equivalent in other metrics ([Manhattan/taxicab metric](https://en.wikipedia.org/wiki/Taxicab_geometry) makes diamonds, [Chebyshev metric](https://en.wikipedia.org/wiki/Chebyshev_distance) makes squares, etc.).
+  - average: the distance between two clusters is the _average_ distance between all their pairs of points or between the cluster centers.
+  - [Wald](https://en.wikipedia.org/wiki/Ward%27s_method): minimizes the variance within a cluster (used by default by Scikit-Learn, above).
 
-I'm mentioning hierarchical clustering because it is important for HEP: jet-finding is an implementation of hierarchical clustering with HEP-specific choices for the measures above. In the FastJet manual ([ref](https://fastjet.fr/)), you'll find that the distance between two particles $i$ and $i'$ in the anti-kT algorithm is
+Adding a point to a cluster changes the shape of the cluster, which affects how all subsequent points are added to clusters. This algorithm starts by considering each point as a separate cluster, then merging nearby clusters before more distant clusters, reevaluating all distances as the clusters change shape.
+
+I'm mentioning this algorithm because it is important for HEP: jet-finding is an implementation of hierarchical clustering with HEP-specific choices for the measures above. In the FastJet manual ([ref](https://fastjet.fr/)), you'll find that the distance between two particle momenta $i$ and $i'$ in the anti-kT algorithm is
 
 $$d_{ii'} = \mbox{min}\left(\left(\frac{1}{p_{Ti}}\right)^2, \left(\frac{1}{p_{Ti'}}\right)^2\right) \frac{(\eta_i - \eta_{i'})^2 + (\phi_i - \phi_{i'})^2}{(\Delta R)^2}$$
 
-where $p_{Ti}$, $\eta_i$, and $\phi_i$ are the transverse momentum, pseudorapidity, and azimuthal angle of particle $i$, respectively, and similarly for $i'$. The $\Delta R$ parameter is a user-chosen jet scale cut-off. The linkage is the distance between an unclustered particle $i$ and the vector-sum of particles in the cluster as "pseudojet" $i'$. One more complication: there's also a special "beam jet" whose distance from particle $i$ is
+where $p_{Ti}$, $\eta_i$, and $\phi_i$ are the transverse momentum, pseudorapidity, and azimuthal angle of particle $i$, respectively, and similarly for $i'$. The $\Delta R$ parameter is a user-chosen jet scale cut-off. This is a Euclidean metric in $\eta$-$\phi$ (which is uniformly populated by QCD backgrounds in hadron collisions).
+
+The linkage is similar to the "average" above: to find the distance between two partial clusters, called "pseudojets," you compute the vector-sum of the momenta of all particles in the pseudojet to get just one momentum, and then compare pseudojets in the same way you'd compare particles. Weighting the distances by the inverse transverse momentum squared prevents clusters from changing radically as they grow: we like the anti-kT algorithm because it's stable, even when jets are surrounded by low-energy noise.
+
+One more complication: HEP jet-finding algorithms also include a special "beam jet" whose distance from particle $i$ is
 
 $$d_{iB} = \left(\frac{1}{p_{Ti}}\right)^2$$
 
-and it is usually ignored (so all good jets are far from the QCD background expected along the beamline). Apart from these choices, HEP jet-finding is standard hierarchical clustering.
+and it is usually ignored, so that the remaining jets are far from the QCD background that is expected along the beamline.
+
+Apart from these choices, HEP jet-finding is standard hierarchical clustering.
 
 +++
 
