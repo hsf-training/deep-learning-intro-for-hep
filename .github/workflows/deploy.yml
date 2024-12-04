@@ -60,4 +60,6 @@ jobs:
       # Deploy the book's HTML to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
+        # only deploy if merging into main, not if testing a PR
+        if: github.ref_name == 'main'
         uses: actions/deploy-pages@v2
