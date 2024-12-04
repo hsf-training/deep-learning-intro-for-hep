@@ -15,4 +15,4 @@ kernelspec:
 
 # Autoencoders
 
-_To be completed soon!_
+This one is next.
