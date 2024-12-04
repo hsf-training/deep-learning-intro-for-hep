@@ -45,9 +45,9 @@ import matplotlib.pyplot as plt
 
 Clustering is relatively common in HEP. In a clustering problem, we have a set of features $\vec{x}_i$ (for $i \in [0, N)$ and we want to find $n$ groups or "clusters" of the $N$ points such that $\vec{x}_i$ in the same cluster are close to each other and $\vec{x}_i$ in different clusters are far from each other.
 
-If we know how many clusters we want to make, then the most common choice is k-means clustering. The k-means algorithm starts with $k$ initial cluster centers, $c_j$ (for $j \in [0, k)$) and labels all points in the space of $\vec{x}$ by the closest cluster: if $\vec{x}_i$ is closer to $c_j$ than all other $c_{j'}$ ($j' \ne j$), then $\vec{x}_i \in C_j$ where $C_j$ is the cluster associated with center $c_j$.
+If we know how many clusters we want to make, then the most common choice is k-means clustering. The k-means algorithm starts with $k$ initial cluster centers, $\vec{c}_j$ (for $j \in [0, k)$) and labels all points in the space of $\vec{x}$ by the closest cluster: if $\vec{x}_i$ is closer to $\vec{c}_j$ than all other $\vec{c}_{j'}$ ($j' \ne j$), then $\vec{x}_i \in C_j$ where $C_j$ is the cluster associated with center $\vec{c}_j$.
 
-The algorithm then moves each cluster center $c_j$ to the mean $\vec{x}$ for all $\vec{x} \in C_j$. After enough iterations, the cluster centers gravitate to the densest accumulations of points. Note that this is _not_ a neural network. (We're getting to that.)
+The algorithm then moves each cluster center $\vec{c}_j$ to the mean $\vec{x}$ for all $\vec{x} \in C_j$. After enough iterations, the cluster centers gravitate to the densest accumulations of points. Note that this is _not_ a neural network. (We're getting to that.)
 
 ```{code-cell} ipython3
 from sklearn.cluster import KMeans
