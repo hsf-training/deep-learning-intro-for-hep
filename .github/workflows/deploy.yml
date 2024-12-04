@@ -1,10 +1,12 @@
 name: deploy-book
 
 on:
-  # Trigger the workflow on push to main branch
   push:
     branches:
       - main
+
+  pull_request:
+
   schedule:
     # Every day at 2am UTC
     - cron: "00 2 * * *"
