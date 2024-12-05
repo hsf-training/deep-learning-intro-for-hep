@@ -15,10 +15,6 @@ kernelspec:
 
 # Ragged data and Graph Neural Networks (GNNs)
 
-+++
-
-
-
 ```{code-cell} ipython3
 import numpy as np
 import awkward as ak
@@ -39,4 +35,8 @@ event_data.Muon_pt
 
 ```{code-cell} ipython3
 event_data.fields
+```
+
+```{code-cell} ipython3
+
 ```
