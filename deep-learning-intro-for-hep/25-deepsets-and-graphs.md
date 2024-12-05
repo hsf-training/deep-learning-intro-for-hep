@@ -13,6 +13,30 @@ kernelspec:
   name: python3
 ---
 
-# DeepSets and Graph Neural Networks (GNNs)
+# Ragged data and Graph Neural Networks (GNNs)
 
-_To be completed soon!_
++++
+
+
+
+```{code-cell} ipython3
+import numpy as np
+import awkward as ak
+import uproot
+
+import torch
+from torch import nn, optim
+from torch_geometric.nn import aggr
+```
+
+```{code-cell} ipython3
+event_data = uproot.open("data/SMHiggsToZZTo4L.root")["Events"].arrays()
+```
+
+```{code-cell} ipython3
+event_data.Muon_pt
+```
+
+```{code-cell} ipython3
+event_data.fields
+```
