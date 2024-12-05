@@ -17,5 +17,6 @@ dependencies:
   - iminuit
   - scikit-learn
   - h5py
+  - scipy
   - awkward
   - pytorch-cpu  # `torch` in pip

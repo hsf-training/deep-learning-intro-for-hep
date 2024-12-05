@@ -8,8 +8,8 @@ on:
   pull_request:
 
   schedule:
-    # Every day at 2am UTC
-    - cron: "00 2 * * *"
+    # Every day at 4am UTC (10pm Chicago, 5am Geneva)
+    - cron: "00 4 * * *"
 
 env:
   BASE_URL: /${{ github.event.repository.name }}
