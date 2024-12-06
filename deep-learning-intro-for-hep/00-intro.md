@@ -46,6 +46,8 @@ Make sure that you have the following packages installed with [conda](https://sc
 
 If you're using pip, see [PyTorch's documentation](https://pytorch.org/get-started/locally/) for instructions. The name `pytorch-cpu` is only for conda.
 
+The packages labeled "used in very few sections (optional)" are only used in the sections _after_ the main project, which is a tour of neural networks beyond supervised regression and classification. You only need to install these if you're working on those sections. The `torch_geometric` package is pip-only. You can get it in conda with the `pyg` package, but only in the `pyg` channel.
+
 The exercises are all small enough that you won't need a GPU, but if you want to use PyTorch with your GPU, you'll have to install the GPU drivers (only) outside of conda and then `conda install 'cuda-version>=12' pytorch pytorch-cuda`. If you're using pip, note that you have to install CUDA outside of pip.
 
 To get all of these pages in Jupyter notebook form, download the repository:

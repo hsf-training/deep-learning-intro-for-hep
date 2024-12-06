@@ -28,4 +28,5 @@ chapters:
 - file: 22-beyond-supervised
 - file: 23-autoencoders
 - file: 24-convolutional
-- file: 25-deepsets-and-graphs
+- file: 25-ragged-data-and-graphs
+- file: xx-conclusion
