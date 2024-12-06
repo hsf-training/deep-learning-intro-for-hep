@@ -175,80 +175,142 @@ The muon $p_T$ values above are shuffled within each event (but not across event
 
 ## Building permutation invariance into the model
 
-```{code-cell} ipython3
++++
 
-```
+Another way to ensure that the model has permutation symmetry is to compute it using only operations that preserve that symmetry. For instance, consider the following:
 
-```{code-cell} ipython3
+![](img/artificial-neural-network-sum.svg){. width="100%"}
 
-```
+When we have $n$ muons in an event, we can consider passing the attributes of each one of those $n$ muons into the same neural network, then compute the sum (or minimum, maximum, mean, or other aggregation) of the network's outputs to produce a single fixed-size vector for the next stage of processing. The next stage could be more neural network layers.
 
-```{code-cell} ipython3
+The next event might have a different number of muons, but they would each be passed through the network and aggregated the same way. Since the aggregation can take an arbitrary number of inputs and it doesn't priviledge the inputs (the aggregation can't be `first` or `last` or something), a model built from it is automatically permutation invariant.
 
-```
+You might be wondering about the loss of information inherent in aggregating $n$ vectors into $1$ vector. You can compensate for that by making the network increase the number of dimensions from $\vec{x}^{L1}$ to the $\vec{y}$ that gets aggregated. This gives the optimizer wiggle room to preserve information about multiple inputs. The number of dimensions that you should give $\vec{y}$ depends on the average number of inputs $n$, so you'll need to be sure to tune this hyperparameter for a particular training dataset.
 
-```{code-cell} ipython3
-
-```
+To implement this, we'll need aggregation operators that propagate derivatives and can be used in a PyTorch model. [PyTorch Geometric](https://pytorch-geometric.readthedocs.io/en/stable/) is an extension of PyTorch for Graph Neural Networks (GNNs).
 
 ```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-import torch
-from torch import nn, optim
 from torch_geometric.nn import aggr
 ```
 
+PyTorch Geometric wants ragged arrays to be expressed as two equal-length [torch.Tensors](https://pytorch.org/docs/stable/tensors.html): one contains the flattened data (`dtype=torch.float32`) and the other contains the index of the list that it originally belonged to (`dtype=torch.int64`).
+
+That is, a ragged array like
+
 ```{code-cell} ipython3
-muons = torch.tensor(ak.to_numpy(
-    np.column_stack([ak.flatten(event_data[name])[:, np.newaxis] for name in ["Muon_pt", "Muon_eta", "Muon_phi"]])
-), dtype=torch.float32)
-muons
+event_data.Muon_pt
+```
+
+would have to be expanded by broadcasting ([ak.broadcast_arrays](https://awkward-array.org/doc/main/reference/generated/ak.broadcast_arrays.html)) increasing integers made by [np.arange](https://numpy.org/doc/2.1/reference/generated/numpy.arange.html).
+
+```{code-cell} ipython3
+ragged_data, ragged_index = ak.broadcast_arrays(
+    event_data.Muon_pt,
+    np.arange(len(event_data))[:, np.newaxis],
+)
+
+flattened_data = torch.tensor(ak.to_numpy(ak.flatten(ragged_data)), dtype=torch.float32)
+flattened_index = torch.tensor(ak.to_numpy(ak.flatten(ragged_index)), dtype=torch.int64)
+```
+
+After broadcasting, the `ragged_index` has the same list lengths as `ragged_data`, containing duplicated event numbers:
+
+```{code-cell} ipython3
+ragged_index
+```
+
+While `flattened_index` tells [aggr.SumAggregation](https://pytorch-geometric.readthedocs.io/en/stable/generated/torch_geometric.nn.aggr.SumAggregation.html) how to add the values in `flattened_data` without crossing event boundaries:
+
+```{code-cell} ipython3
+aggr.SumAggregation()(flattened_data[:, np.newaxis], flattened_index)
+```
+
+The `[:, np.newaxis]` is because PyTorch expects this tensor to be a feature tensor, with a fixed number of attributes in each value. Let's make it one, pulling together both the process of interlacing attribute vectors into a feature vector and creating a ragged index.
+
+```{code-cell} ipython3
+ragged_features = [event_data[name, :, :, np.newaxis] for name in muon_fields]
+
+_, ragged_index = ak.broadcast_arrays(event_data["Muon_pt"], np.arange(len(event_data))[:, np.newaxis])
+
+ragged_data = ak.concatenate(ragged_features, axis=-1)
+
+flattened_data = torch.tensor(ak.to_numpy(ak.flatten(ragged_data)), dtype=torch.float32)
+flattened_index = torch.tensor(ak.to_numpy(ak.flatten(ragged_index)), dtype=torch.int64)
+```
+
+In the above,
+
+* `ragged_features` is a list of ragged arrays (all with the same shape) for each of the muon attributes,
+* `ragged_index` is event numbers broadcasted to one of the muon attributes (`"Muon_pt"`),
+* `ragged_data` is a ragged array of feature vectors,
+* `flattened_data` is a floating-point [torch.Tensor](https://pytorch.org/docs/stable/tensors.html) of feature vectors without event boundaries,
+* `flattened_index` is an integer [torch.Tensor](https://pytorch.org/docs/stable/tensors.html) of event numbers for each feature vector.
+
+They can be used in a [aggr.SumAggregation](https://pytorch-geometric.readthedocs.io/en/stable/generated/torch_geometric.nn.aggr.SumAggregation.html) (or any other aggregation) without modification.
+
+```{code-cell} ipython3
+result = aggr.SumAggregation()(flattened_data, flattened_index)
+result
+```
+
+The result of the aggregation has dimensions of: number of events × number of muon attributes.
+
+```{code-cell} ipython3
+result.shape
+```
+
+Here's an example that passes feature vectors through a neural network, and then passes that into a 20-dimensional aggregation (larger than the 11 dimensions of the muon attributes):
+
+```{code-cell} ipython3
+from torch import nn
 ```
 
 ```{code-cell} ipython3
-muons_count = torch.tensor(ak.to_numpy(
-    ak.num(event_data["Muon_pt"])
-), dtype=torch.int64)
-muons_count
+class NeuralNetworkThenSum(nn.Module):
+    def __init__(self):
+        super().__init__()   # let PyTorch do its initialization first
+        self.neural_network = nn.Sequential(
+            nn.Linear(11, 15),
+            nn.Sigmoid(),
+            nn.Linear(15, 20),
+            nn.Sigmoid(),
+        )
+        self.sum = aggr.SumAggregation()
+
+    def forward(self, flattened_data, flattened_index):
+        return self.sum(self.neural_network(flattened_data), flattened_index)
 ```
 
 ```{code-cell} ipython3
-electrons = torch.tensor(ak.to_numpy(
-    np.column_stack([ak.flatten(event_data[name])[:, np.newaxis] for name in ["Electron_pt", "Electron_eta", "Electron_phi"]])
-), dtype=torch.float32)
-electrons
+model = NeuralNetworkThenSum()
+
+model(flattened_data, flattened_index)
 ```
 
-```{code-cell} ipython3
-electrons_count = torch.tensor(ak.to_numpy(
-    ak.num(event_data["Electron_pt"])
-), dtype=torch.int64)
-electrons_count
-```
+This fragment can be part of a larger network, such as DeepSets ([ref](https://dl.acm.org/doi/10.5555/3294996.3295098)), Attention ([ref](https://arxiv.org/abs/1409.0473)), or Transformers ([ref](https://dl.acm.org/doi/10.5555/3295222.3295349)).
 
-```{code-cell} ipython3
+DeepSets is the simplest: it just applies a few more layers of a standard neural network after the sum:
 
-```
+![](img/artificial-neural-network-deepsets.svg){. width="100%"}
+
+Applied to sets of particles, the first neural network transforms particle attributes to a [latent space](https://en.wikipedia.org/wiki/Latent_space) representing all particles in the event and the second one transforms this event data to a regression or classification.
+
++++
+
+## Graph Neural Networks (GNNs)
+
++++
+
+Just as linear fitting is the first step toward neural networks, DeepSets is the first step toward Graph Neural Networks (GNNs). Whereas a basic neural network takes fixed-size vectors as inputs and DeepSets takes sets of fixed-sized vectors as inputs, GNNs take _graphs_ of fixed-sized vectors as inputs.
+
+In this context, a "[graph](https://en.wikipedia.org/wiki/Graph_(discrete_mathematics))" is an abstract structure made of vertices and edges (not, for instance, a plot of data). Neural networks are computations described as graphs (see all the pictures above, on this page), but what's special about GNNs is that they perform computations on _data_ that are graphs.
+
+DeepSets operates on data that are sets, and a set is just a graph without edges:
+
+| Set | Graph |
+|:--:|:--:|
+| ![](img/example-set.svg){. width="100%"} | ![](img/example-graph.svg){. width="100%"} |
+
+DeepSets combines all objects in a single summation, treating all objects equally. GNNs, however, use the edges to assign weights in the summation or otherwise modify the aggregation in an edge-dependent way.
+
+GNNs are a large field of study, and they are particularly useful in HEP because HEP objects are unordered with important interrelationships.
