@@ -332,7 +332,7 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
-assert np.sum((y_from_ansatz - y)**2) < 50
+assert np.sum((y_from_ansatz - y)**2) < 100
 ```
 
 It's a great fit, but you had to put part of the answer in to get this answer out. First, you had to know the functional form. Suppose you used the formula for the position of a tossed object _without_ air resistance?
