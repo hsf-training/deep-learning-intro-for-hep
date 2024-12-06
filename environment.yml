@@ -16,7 +16,11 @@ dependencies:
   - pandas
   - iminuit
   - scikit-learn
+  - pytorch-cpu  # this is `torch` in pip
+
+  # used in very few sections (optional)
   - h5py
   - scipy
-  - awkward
-  - pytorch-cpu  # `torch` in pip
+  - uproot
+  - pip:
+    - torch_geometric
