@@ -311,7 +311,7 @@ def ansatz(t, y0, t0, mu, tf):
     return y0 - (1/mu)*np.log(np.cosh((t - t0)/tf))
 
 least_squares = LeastSquares(t, y, 1, ansatz)
-minimizer = Minuit(least_squares, y0=100, t0=0, mu=1, tf=5)   # <-- initial guess
+minimizer = Minuit(least_squares, y0=100, t0=0, mu=0.1, tf=3)   # <-- initial guess
 minimizer.migrad()
 
 y_from_ansatz = ansatz(t, **{p.name: p.value for p in minimizer.params})
@@ -329,6 +329,10 @@ ax.set_xlabel("time after release")
 ax.set_ylabel("height above ground")
 
 plt.show()
+```
+
+```{code-cell} ipython3
+assert np.sum((y_from_ansatz - y)**2) < 50
 ```
 
 It's a great fit, but you had to put part of the answer in to get this answer out. First, you had to know the functional form. Suppose you used the formula for the position of a tossed object _without_ air resistance?
@@ -358,6 +362,10 @@ ax.set_xlabel("time after release")
 ax.set_ylabel("height above ground")
 
 plt.show()
+```
+
+```{code-cell} ipython3
+assert np.sum((y_from_wrong_ansatz - y)**2) > 100
 ```
 
 Or suppose you have the right functional form but provided the fitter with a bad initial guess? These are the numbers passed to the `Minuit` object constructor:
