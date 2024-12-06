@@ -1,4 +1,4 @@
-# Introduction to deep learning for particle physicists
+[![](deep-learning-intro-for-hep/img/book-logo.svg)](https://hsf-training.github.io/deep-learning-intro-for-hep/)
 
 [Click here to start reading!](https://hsf-training.github.io/deep-learning-intro-for-hep/)
 
