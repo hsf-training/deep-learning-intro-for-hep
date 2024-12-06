@@ -11,8 +11,6 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-execution:
-  timeout: 600
 ---
 
 # Autoencoders
@@ -114,8 +112,8 @@ class Autoencoder(nn.Module):
 ```
 
 ```{code-cell} ipython3
-NUM_EPOCHS = 50
-BATCH_SIZE = 100
+NUM_EPOCHS = 20
+BATCH_SIZE = 500
 
 torch.manual_seed(12345)
 
@@ -210,7 +208,7 @@ ax[4].set_title("Z boson jets (\"z\")")
 plt.show()
 ```
 
-The clumps don't correspond exactly with jet source, but that's because jets from the same source can decay in different ways. Notice that top quark jets have 3 prominent features at low $x$ values—might they correspond to decay modes of the $W$ and $b$?
+The clumps don't correspond exactly with jet source, but that's because jets from the same source can decay in different ways.
 
 Generally, we see the largest differences between gluons/light quarks, top quarks, and $W$/$Z$ bosons, as expected.
 
@@ -234,7 +232,7 @@ class Autoencoder1D(nn.Module):
 ```
 
 ```{code-cell} ipython3
-NUM_EPOCHS_2 = 30
+NUM_EPOCHS_2 = 20
 
 model1D = Autoencoder1D(model.shrinking, model.growing)
 
@@ -261,7 +259,7 @@ for epoch in range(NUM_EPOCHS_2):
 fig, ax = plt.subplots()
 
 ax.plot(range(len(loss_vs_epoch)), loss_vs_epoch)
-ax.axvline(50, color="gray", ls="--")
+ax.axvline(NUM_EPOCHS, color="gray", ls="--")
 
 ax.set_ylim(0, ax.get_ylim()[1])
 ax.set_xlabel("epoch")
