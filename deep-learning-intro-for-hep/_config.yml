@@ -36,6 +36,9 @@ repository:
 html:
   use_issues_button: true
   use_repository_button: true
+  analytics:
+    plausible_analytics_domain: hepsoftwarefoundation.org
+    plausible_analytics_url: https://views.scientific-python.org/js/script.js
 
 parse:
   myst_enable_extensions:
