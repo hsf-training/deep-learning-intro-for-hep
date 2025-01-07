@@ -342,6 +342,14 @@ confusion_matrix = np.array(
 confusion_matrix
 ```
 
+```{code-cell} ipython3
+assert confusion_matrix[0:2, 2:].sum() / confusion_matrix[0:2].sum() < 0.5
+```
+
+```{code-cell} ipython3
+assert confusion_matrix[3:, :3].sum() / confusion_matrix[3:].sum() < 0.5
+```
+
 Most images are in the diagonal of the confusion matrix—the predicted category is the actual category—so this CNN is correctly identifying jets!
 
 The biggest confusion (off-diagonal terms) is between gluons and light quarks and between $W$ and $Z$ bosons, as expected.
