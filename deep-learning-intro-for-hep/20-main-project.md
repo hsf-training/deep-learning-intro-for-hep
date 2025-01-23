@@ -12,7 +12,7 @@ kernelspec:
   language: python
   name: python3
 execution:
-  timeout: 600
+  timeout: 120
 ---
 
 # Main Project (2 hours)
