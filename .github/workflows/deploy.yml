@@ -60,7 +60,7 @@ jobs:
 
       # Upload the book's HTML as an artifact
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: "deep-learning-intro-for-hep/_build/html"
 
@@ -69,4 +69,4 @@ jobs:
         id: deployment
         # only deploy if merging into main, not if testing a PR
         if: github.ref_name == 'main'
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
