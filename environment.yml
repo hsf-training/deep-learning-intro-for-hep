@@ -16,6 +16,7 @@ dependencies:
   - pandas
   - iminuit
   - scikit-learn
+  - fastparquet
   - pytorch-cpu  # this is `torch` in pip
 
   # used in very few sections (optional)
