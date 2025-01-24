@@ -30,7 +30,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 import h5py
-import sklearn.datasets
 import torch
 from torch import nn, optim
 ```
@@ -42,7 +41,7 @@ from torch import nn, optim
 The jet dataset that you used for your [main project](20-main-project.md) is based on 16 hand-crafted features:
 
 ```{code-cell} ipython3
-list(sklearn.datasets.fetch_openml("hls4ml_lhc_jets_hlf")["data"].columns)
+list(pd.read_parquet("data/hls4ml_lhc_jets_hlf.parquet").columns[:-1])
 ```
 
 Suppose we didn't know that these are a useful way to characterize jet substructure, or suppose that there are better ways not listed here (very plausible!). A model trained on these 16 features wouldn't have as much discriminating power as it could.

@@ -34,7 +34,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-import sklearn.datasets
 import torch
 from torch import nn, optim
 from torch.utils.data import TensorDataset, DataLoader, random_split
@@ -48,12 +47,10 @@ The data comes from an online catalog: [hls4ml_lhc_jets_hlf](https://openml.org/
 
 The full description is online, with references to the paper in which it was published.
 
-Scikit-Learn has a tool for downloading it, which takes a minute or two.
-
 ```{code-cell} ipython3
-hls4ml_lhc_jets_hlf = sklearn.datasets.fetch_openml("hls4ml_lhc_jets_hlf")
-
-features, targets = hls4ml_lhc_jets_hlf["data"], hls4ml_lhc_jets_hlf["target"]
+hls4ml_lhc_jets_hlf = pd.read_parquet("data/hls4ml_lhc_jets_hlf.parquet")
+features = hls4ml_lhc_jets_hlf.drop("jet_type", axis=1)
+targets = hls4ml_lhc_jets_hlf["jet_type"]
 ```
 
 View the features (16 numerical properties of jets) as a Pandas DataFrame:

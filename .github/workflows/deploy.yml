@@ -48,11 +48,6 @@ jobs:
           cache-environment: true
           post-cleanup: "all"
 
-      # Preload the main project data
-      - name: Preload main project data
-        run: |
-          python -c 'import sklearn.datasets; d = sklearn.datasets.fetch_openml("hls4ml_lhc_jets_hlf"); d["data"], d["target"]'
-
       # Build the book
       - name: Build the book
         run: |
