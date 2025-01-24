@@ -26,7 +26,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-import sklearn.datasets
 import torch
 from torch import nn, optim
 from torch.utils.data import TensorDataset, DataLoader, random_split
@@ -90,9 +89,9 @@ expected_ROC = np.array([
 ## Step 1: download and understand the data
 
 ```{code-cell} ipython3
-hls4ml_lhc_jets_hlf = sklearn.datasets.fetch_openml("hls4ml_lhc_jets_hlf")
-
-features, targets = hls4ml_lhc_jets_hlf["data"], hls4ml_lhc_jets_hlf["target"]
+hls4ml_lhc_jets_hlf = pd.read_parquet("data/hls4ml_lhc_jets_hlf.parquet")
+features = hls4ml_lhc_jets_hlf.drop("jet_type", axis=1)
+targets = hls4ml_lhc_jets_hlf["jet_type"]
 ```
 
 ## Step 2: split the data into training, validation, and test samples

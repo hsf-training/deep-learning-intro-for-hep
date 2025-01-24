@@ -45,7 +45,6 @@ import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-import sklearn.datasets
 import torch
 from torch import nn, optim
 ```
@@ -57,12 +56,10 @@ from torch import nn, optim
 Let's use the jet data from the main project.
 
 ```{code-cell} ipython3
-hls4ml_lhc_jets_hlf = sklearn.datasets.fetch_openml("hls4ml_lhc_jets_hlf")
-
+hls4ml_lhc_jets_hlf = pd.read_parquet("data/hls4ml_lhc_jets_hlf.parquet")
 features_unnormalized = torch.tensor(
-    hls4ml_lhc_jets_hlf["data"].values, dtype=torch.float32,
+    hls4ml_lhc_jets_hlf.drop("jet_type", axis=1).values, dtype=torch.float32
 )
-
 features = (features_unnormalized - features_unnormalized.mean(axis=0)) / features_unnormalized.std(axis=0)
 ```
 
@@ -189,7 +186,7 @@ The exact distribution isn't meaningful (and it would change if we used a differ
 How well do these clumps correspond to the known jet sources?
 
 ```{code-cell} ipython3
-hidden_truth = hls4ml_lhc_jets_hlf["target"].values
+hidden_truth = hls4ml_lhc_jets_hlf["jet_type"].values
 ```
 
 ```{code-cell} ipython3
