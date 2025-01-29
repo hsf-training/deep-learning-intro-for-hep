@@ -35,7 +35,17 @@ source venv/bin/activate
 source make-notebooks.sh
 ```
 
-and navigate to the `notebooks` directory in the left side-bar. Once you evaluate a cell in the notebook, Codespaces will ask you if you want to install the Python extension (yes, you do) and will ask which kernel to use: you want the recommended option, `venv/bin/python`.
+and navigate to the `notebooks` directory in the left side-bar.
+
+![](img/github-codespaces-2.png){. width="60%"}
+
+Once you evaluate a cell in the notebook, Codespaces will ask you if you want to install the Python extension (yes, you do) and will ask which kernel to use: you want the recommended option, `venv/bin/python`.
+
+![](img/github-codespaces-3.png){. width="100%"}
+
+![](img/github-codespaces-4.png){. width="100%"}
+
+![](img/github-codespaces-5.png){. width="100%"}
 
 The pages are formatted better for reading on the web, but being able to run the code cells is also useful!
 
