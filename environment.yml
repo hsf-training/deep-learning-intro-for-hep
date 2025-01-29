@@ -8,6 +8,7 @@ dependencies:
 
   # infrastructure (you won't need these)
   - jupyter-book
+  - jupytext
   - ghp-import
 
   # packages we'll use
