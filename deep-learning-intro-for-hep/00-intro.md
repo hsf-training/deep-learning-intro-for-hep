@@ -30,10 +30,14 @@ Launch a Codespace from the [hsf-training/deep-learning-intro-for-hep](https://g
 The first time, it will take a few minutes to install all the software. When you get a terminal prompt, convert all of these pages into notebooks by running the following command in the terminal:
 
 ```shell
+python -m venv venv
+source venv/bin/activate
 source make-notebooks.sh
 ```
 
-and navigate to the `notebooks` directory in the left side-bar. The pages are formatted better for reading on the web, but are executable as Jupyter notebooks in Codespaces.
+and navigate to the `notebooks` directory in the left side-bar. Once you evaluate a cell in the notebook, Codespaces will ask you if you want to install the Python extension (yes, you do) and will ask which kernel to use: you want the recommended option, `venv/bin/python`.
+
+The pages are formatted better for reading on the web, but being able to run the code cells is also useful!
 
 ## To run everything on your own computer
 
