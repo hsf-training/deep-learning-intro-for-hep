@@ -27,7 +27,7 @@ bibtex_bibfiles:
 
 # Information about where the book exists on the web
 repository:
-  url: https://github.com/hsf-training/deep-learning-intro-for-hep to deep learning for particle physicists  # Online location of your book
+  url: https://github.com/hsf-training/deep-learning-intro-for-hep  # Online location of your book
   path_to_book: deep-learning-intro-for-hep  # Optional path to your book, relative to the repository root
   branch: main  # Which branch of the repository should be used when creating links (optional)
 
