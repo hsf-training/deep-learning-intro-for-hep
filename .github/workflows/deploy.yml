@@ -52,6 +52,7 @@ jobs:
       - name: Build the book
         run: |
           jupyter-book build -W deep-learning-intro-for-hep
+          jupyter lite build --lite-dir browser --output-dir deep-learning-intro-for-hep/_build/html/lite --base-url "/${{ github.event.repository.name }}/lite/"
 
       # Upload the book's HTML as an artifact
       - name: Upload artifact
