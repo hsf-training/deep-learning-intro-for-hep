@@ -49,6 +49,10 @@ Once you evaluate a cell in the notebook, Codespaces will ask you if you want to
 
 The pages are formatted better for reading on the web, but being able to run the code cells is also useful!
 
+## To experiment with PyTorch in your browser
+
+The [browser notebook](./lite/lab/index.html?path=pytorch-basics.ipynb) is an experimental JupyterLite pilot for running small PyTorch examples without installing Python. It covers tensors, automatic differentiation, and a tiny neural network; it does not yet run the other notebooks or chapters in this book. For a separate playground, see [PyTorch for Pyodide](https://mmtftr.github.io/pyodide-pytorch/).
+
 ## To run everything on your own computer
 
 Make sure that you have the following packages installed with [conda](https://scikit-hep.org/user/installing-conda) (or pip, uv, pixi, etc.):

@@ -1,0 +1,10 @@
+{
+  "PipliteAddon": {
+    "piplite_urls": [
+      "https://github.com/mmtftr/pyodide-pytorch/releases/download/torch-2.13.0-pyodide-314.0.2-r7/torch-2.13.0+pyodide314.0.2.r7-cp314-cp314-pyemscripten_2026_0_wasm32.whl"
+    ]
+  },
+  "LiteBuildConfig": {
+    "ignore_sys_prefix": true
+  }
+}

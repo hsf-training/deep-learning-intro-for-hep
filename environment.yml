@@ -10,6 +10,9 @@ dependencies:
   - jupyter-book
   - jupytext
   - ghp-import
+  - pip:
+      - jupyterlite==0.8.5
+      - jupyterlite-pyodide-kernel==0.8.5
 
   # packages we'll use
   - numpy
