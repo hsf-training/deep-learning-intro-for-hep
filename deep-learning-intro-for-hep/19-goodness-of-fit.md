@@ -143,15 +143,15 @@ def plot_cutoff_decision_at(threshold):
     background_x, background_y = np.meshgrid(np.linspace(-3, 3, 100), np.linspace(-3, 3, 100))
     background_2d = np.column_stack([background_x.ravel(), background_y.ravel()])
     probabilities = model.predict_proba(background_2d)
-    
+
     # draw contour lines where the probabilities cross the 50% threshold
     ax.contour(background_x, background_y, probabilities[:, 1].reshape(background_x.shape), [threshold])
     ax.contourf(background_x, background_y, probabilities[:, 1].reshape(background_x.shape), alpha=0.1)
-    
+
     # draw data points on top
     ax.scatter(all_xy[all_target == 0, 0], all_xy[all_target == 0, 1])
     ax.scatter(all_xy[all_target == 1, 0], all_xy[all_target == 1, 1])
-    
+
     ax.axis([-3, 3, -3, 3])
 
 plot_cutoff_decision_at(0.5)
@@ -539,13 +539,13 @@ def matrix_for_penguins(threshold):
     actually_Adelie = features[targets == 0]
     actually_Gentoo = features[targets == 1]
     actually_Chinstrap = features[targets == 2]
-    
+
     def model_says_Adelie(data_subset):
         return np.sum(best_fit.predict_proba(data_subset)[:, 0] > threshold)
-    
+
     def model_says_Gentoo(data_subset):
         return np.sum(best_fit.predict_proba(data_subset)[:, 1] > threshold)
-    
+
     def model_says_Chinstrap(data_subset):
         return np.sum(best_fit.predict_proba(data_subset)[:, 2] > threshold)
 

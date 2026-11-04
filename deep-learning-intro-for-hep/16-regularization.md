@@ -224,14 +224,14 @@ targets = boston_prices_df["MEDV"]
 Remember that the 13 features of this dataset quantify a variety of things, all of which seem like they might have some effect on housing prices (or perhaps they were included to demonstrate/discover a null effect).
 
 * CRIM: per capita crime rate per town
-* ZN: proportion of residental land zoned for lots over 25,000 square feet
+* ZN: proportion of residential land zoned for lots over 25,000 square feet
 * INDUS: proportion of non-retail business acres per town
 * CHAS: adjacency to the Charles River (a boolean variable)
 * NOX: nitric oxides concentration (parts per 10 million)
 * RM: average number of rooms per dwelling
 * AGE: proportion of owner-occupied units built before 1940
 * DIS: weighted distances to 5 Boston employment centers
-* RAD: index of accessiblity to radial highways
+* RAD: index of accessibility to radial highways
 * TAX: full-value property-tax rate per \$10,000
 * PTRATIO: pupil-teacher ratio by town
 * B: $1000(b - 0.63)^2$ where $b$ is the proportion of Black residents

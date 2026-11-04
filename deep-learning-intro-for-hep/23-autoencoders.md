@@ -130,11 +130,11 @@ for epoch in range(NUM_EPOCHS):
         stop_batch = start_batch + BATCH_SIZE
 
         optimizer.zero_grad()
-    
+
         predictions = model(features[start_batch:stop_batch])
         loss = loss_function(predictions, features[start_batch:stop_batch])
         total_loss += loss.item()
-    
+
         loss.backward()
         optimizer.step()
 
@@ -168,7 +168,7 @@ fig, ax = plt.subplots(figsize=(6, 5))
 xmin, xmax = np.min(embedded[:, 0]), np.max(embedded[:, 0])
 ymin, ymax = np.min(embedded[:, 1]), np.max(embedded[:, 1])
 
-def plot_embedded(ax, embedded):    
+def plot_embedded(ax, embedded):
     p = ax.hist2d(embedded[:, 0], embedded[:, 1],
                   bins=(100, 100), range=((xmin, xmax), (ymin, ymax)),
                   norm=mpl.colors.LogNorm())
@@ -242,11 +242,11 @@ for epoch in range(NUM_EPOCHS_2):
         stop_batch = start_batch + BATCH_SIZE
 
         optimizer.zero_grad()
-    
+
         predictions = model1D(features[start_batch:stop_batch])
         loss = loss_function(predictions, features[start_batch:stop_batch])
         total_loss += loss.item()
-    
+
         loss.backward()
         optimizer.step()
 

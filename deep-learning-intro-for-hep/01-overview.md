@@ -24,7 +24,7 @@ Some authors make distinctions between the terms
 * Artificial Intelligence (AI) and
 * Machine Learning (ML).
 
-I have not seen practicioners of AI/ML distinguish these terms consistently, so I treat them as synonymous. Moreover, these terms and
+I have not seen practitioners of AI/ML distinguish these terms consistently, so I treat them as synonymous. Moreover, these terms and
 
 * data mining
 * MultiVariate Analysis (MVA)
