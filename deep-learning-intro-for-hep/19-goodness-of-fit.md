@@ -462,7 +462,7 @@ sorted_indexes = np.argsort(false_positive_rates)
 sorted_x = np.array(false_positive_rates)[sorted_indexes]
 sorted_y = np.array(true_positive_rates)[sorted_indexes]
 
-np.trapz(sorted_y, sorted_x, 0.001)
+np.trapezoid(sorted_y, sorted_x, 0.001)
 ```
 
 A randomly guessing model should be close to $0.5$ (exactly $0.5$ in the limit of infinitely large datasets):
@@ -472,7 +472,7 @@ sorted_indexes = np.argsort(random_false_positive_rates)
 sorted_x = np.array(random_false_positive_rates)[sorted_indexes]
 sorted_y = np.array(random_true_positive_rates)[sorted_indexes]
 
-np.trapz(sorted_y, sorted_x, 0.001)
+np.trapezoid(sorted_y, sorted_x, 0.001)
 ```
 
 ## More than two categories

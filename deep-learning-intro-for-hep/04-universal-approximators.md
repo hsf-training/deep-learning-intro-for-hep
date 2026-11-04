@@ -196,9 +196,9 @@ sort_index = np.argsort(x)
 x_sorted = x[sort_index]
 y_sorted = y[sort_index]
 
-constant_term = np.trapz(y_sorted, x_sorted)
-cos_terms = [2*np.trapz(y_sorted * np.cos(2*np.pi * (i + 1) * x_sorted), x_sorted) for i in range(NUMBER_OF_COS_TERMS)]
-sin_terms = [2*np.trapz(y_sorted * np.sin(2*np.pi * (i + 1) * x_sorted), x_sorted) for i in range(NUMBER_OF_SIN_TERMS)]
+constant_term = np.trapezoid(y_sorted, x_sorted)
+cos_terms = [2*np.trapezoid(y_sorted * np.cos(2*np.pi * (i + 1) * x_sorted), x_sorted) for i in range(NUMBER_OF_COS_TERMS)]
+sin_terms = [2*np.trapezoid(y_sorted * np.sin(2*np.pi * (i + 1) * x_sorted), x_sorted) for i in range(NUMBER_OF_SIN_TERMS)]
 
 model_x = np.linspace(0, 1, 1000)
 model_y = (

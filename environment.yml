@@ -7,7 +7,7 @@ dependencies:
   - python=3.11
 
   # infrastructure (you won't need these)
-  - jupyter-book
+  - jupyter-book>=1,<2
   - jupytext
   - ghp-import
 
