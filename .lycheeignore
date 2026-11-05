@@ -1,0 +1,24 @@
+# Images that _config.yml copies to the site root (sphinx html_extra_path), so
+# the pages link to them without the img/ prefix. The book build checks them.
+^file://.*/deep-learning-intro-for-hep/(tensorflow-playground|ups-and-downs-of-ai-3-overlay|distill-momentum|playground-solution-circle-[12]|ridiculously-overfitted)\.png$
+^file://.*/deep-learning-intro-for-hep/better-boy-wolf-[1-4]\.jpg$
+
+# These sites block automated requests (403 bot challenge or 429) but work in
+# a browser. The doi.org entries redirect to such publishers (e.g. MIT Press,
+# Oxford Academic).
+^https://trends\.google\.com/trends/explore\?q=%2Fm%2F0h97pvq
+^https://doi\.org/10\.1037/h0042519$
+^https://psycnet\.apa\.org/doi/10\.1037/h0042519$
+^https://www\.nytimes\.com/1958/07/13/archives/electronic-brain-teaches-itself\.html
+^https://doi\.org/10\.1086/348869$
+^https://doi\.org/10\.2307/1271436$
+^https://doi\.org/10\.1073/pnas\.1211547109$
+^https://doi\.org/10\.1162/neco\.2006\.18\.7\.1527$
+^https://doi\.org/10\.7551/mitpress/7496\.003\.0016$
+^https://doi\.org/10\.1111/j\.1467-9868\.2005\.00503\.x$
+^https://doi\.org/10\.1111/j\.2517-6161\.1996\.tb02080\.x$
+^https://dl\.acm\.org/doi/10\.5555/2981562\.2981711$
+^https://dl\.acm\.org/doi/10\.5555/2627435\.2670313$
+^https://dl\.acm\.org/doi/10\.5555/3042573\.3042641$
+^https://dl\.acm\.org/doi/10\.5555/3294996\.3295098$
+^https://dl\.acm\.org/doi/10\.5555/3295222\.3295349$

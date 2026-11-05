@@ -51,7 +51,7 @@ background_x, background_y = np.meshgrid(np.arange(10), np.arange(10))
 background_2d = np.column_stack([background_x.ravel(), background_y.ravel()])
 
 values = arbitrary2d_function(background_x, background_y)
-    
+
 ax.contourf(background_x, background_y, values.reshape(background_x.shape))
 
 plt.show()
@@ -109,7 +109,7 @@ Minuit follows this approach, though it also (numerically) calculates a second d
 from iminuit import Minuit
 ```
 
-Let's start by defining a function to optmize:
+Let's start by defining a function to optimize:
 
 ```{code-cell} ipython3
 def function_to_minimize(x, y):

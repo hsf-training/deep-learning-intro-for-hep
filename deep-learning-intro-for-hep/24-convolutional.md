@@ -292,11 +292,11 @@ for epoch in range(NUM_EPOCHS):
         stop_batch = start_batch + BATCH_SIZE
 
         optimizer.zero_grad()
-    
+
         predictions = model_without_softmax(jet_images_tensor[start_batch:stop_batch])
         loss = loss_function(predictions, jet_labels_tensor[start_batch:stop_batch])
         total_loss += loss.item()
-    
+
         loss.backward()
         optimizer.step()
 

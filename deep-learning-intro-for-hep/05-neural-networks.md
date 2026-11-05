@@ -300,11 +300,11 @@ The basis functions didn't have to be sigmoid-shaped. Here are a few common opti
 
 | | Name | Function |
 |:-:|:-|:-:|
-| ![](img/Activation_binary_step.svg){. width="100%"} | binary step | $\displaystyle f(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ 1 & \mbox{if } x \ge 0\end{array}\right.$ | 
-| ![](img/Activation_logistic.svg){. width="100%"} | sigmoid, logistic, or soft step | $\displaystyle f(x) = \frac{1}{1 + e^{-x}}$ | 
-| ![](img/Activation_tanh.svg){. width="100%"} | hyperbolic tangent | $\displaystyle f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ | 
-| ![](img/Activation_rectified_linear.svg){. width="100%"} | rectified linear unit or ReLU | $\displaystyle f(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ | 
-| ![](img/Activation_prelu.svg){. width="100%"} | leaky ReLU | $\displaystyle f(x) = \left\{\begin{array}{c l}\alpha x & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ | 
+| ![](img/Activation_binary_step.svg){. width="100%"} | binary step | $\displaystyle f(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ 1 & \mbox{if } x \ge 0\end{array}\right.$ |
+| ![](img/Activation_logistic.svg){. width="100%"} | sigmoid, logistic, or soft step | $\displaystyle f(x) = \frac{1}{1 + e^{-x}}$ |
+| ![](img/Activation_tanh.svg){. width="100%"} | hyperbolic tangent | $\displaystyle f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ |
+| ![](img/Activation_rectified_linear.svg){. width="100%"} | rectified linear unit or ReLU | $\displaystyle f(x) = \left\{\begin{array}{c l}0 & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ |
+| ![](img/Activation_prelu.svg){. width="100%"} | leaky ReLU | $\displaystyle f(x) = \left\{\begin{array}{c l}\alpha x & \mbox{if } x < 0 \\ x & \mbox{if } x \ge 0\end{array}\right.$ |
 | ![](img/Activation_swish.svg){. width="100%"} | sigmoid linear unit or swish | $\displaystyle f(x) = \frac{x}{1 + e^{-x}}$ |
 
 Let's use the ReLU shape instead. This is the most widely used activation function in ML, because of its simplicity (and because its derivatives don't asymptotically approach zero).

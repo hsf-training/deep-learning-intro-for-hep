@@ -183,7 +183,7 @@ Another way to ensure that the model has permutation symmetry is to compute it u
 
 When we have $n$ muons in an event, we can consider passing the attributes of each one of those $n$ muons into the same neural network, then compute the sum (or minimum, maximum, mean, or other aggregation) of the network's outputs to produce a single fixed-size vector for the next stage of processing. The next stage could be more neural network layers.
 
-The next event might have a different number of muons, but they would each be passed through the network and aggregated the same way. Since the aggregation can take an arbitrary number of inputs and it doesn't priviledge the inputs (the aggregation can't be `first` or `last` or something), a model built from it is automatically permutation invariant.
+The next event might have a different number of muons, but they would each be passed through the network and aggregated the same way. Since the aggregation can take an arbitrary number of inputs and it doesn't privilege the inputs (the aggregation can't be `first` or `last` or something), a model built from it is automatically permutation invariant.
 
 You might be wondering about the loss of information inherent in aggregating $n$ vectors into $1$ vector. You can compensate for that by making the network increase the number of dimensions from $\vec{x}^{L1}$ to the $\vec{y}$ that gets aggregated. This gives the optimizer wiggle room to preserve information about multiple inputs. The number of dimensions that you should give $\vec{y}$ depends on the average number of inputs $n$, so you'll need to be sure to tune this hyperparameter for a particular training dataset.
 

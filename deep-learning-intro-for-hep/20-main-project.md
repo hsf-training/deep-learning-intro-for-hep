@@ -204,7 +204,7 @@ the index range `0:2` selects lightweight QCD probabilities and the index range 
 
 Compute the 2×2 confusion matrix for the problem of distinguishing lightweight QCD jets (background) from heavy electroweak jets (signal). You might find this easiest to write as a function of a `threshold`, with the default `threshold` being `0.5`. Anyway, you'll need that for the next step.
 
-Finally, plot a ROC curve, the true positive rate versus false positive rate curve. How close does your model get to perfection (true positive rate = 1 and false positive rate = 0)? How does its shape differ at one end of the ROC curve from the other? Would it be symmetric if you swapped true positive rate withs false positive rate?
+Finally, plot a ROC curve, the true positive rate versus false positive rate curve. How close does your model get to perfection (true positive rate = 1 and false positive rate = 0)? How does its shape differ at one end of the ROC curve from the other? Would it be symmetric if you swapped true positive rate with false positive rate?
 
 +++
 

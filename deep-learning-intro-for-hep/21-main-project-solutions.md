@@ -186,11 +186,11 @@ for epoch in range(NUM_EPOCHS):
     train_loss = 0
     for features_tensor, targets_tensor in train_loader:
         optimizer.zero_grad()
-    
+
         predictions_tensor = model_without_softmax(features_tensor)
         loss = loss_function(predictions_tensor, targets_tensor)
         train_loss += loss.item() * len(targets_tensor)           # normalize!
-    
+
         loss.backward()
         optimizer.step()
 

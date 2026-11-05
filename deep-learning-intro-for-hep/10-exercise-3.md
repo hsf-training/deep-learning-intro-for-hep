@@ -65,7 +65,7 @@ def plot_categorical_solution(ax, model, xlow=29, xhigh=61, ylow=12, yhigh=22):
     background_x, background_y = np.meshgrid(np.linspace(xlow, xhigh, 100), np.linspace(ylow, yhigh, 100))
     background_2d = np.column_stack([background_x.ravel(), background_y.ravel()])
     probabilities = model(background_2d)
-    
+
     # draw contour lines where the probabilities cross the 50% threshold
     ax.contour(background_x, background_y, probabilities[:, 0].reshape(background_x.shape), [0.5])
     ax.contour(background_x, background_y, probabilities[:, 1].reshape(background_x.shape), [0.5])
