@@ -37,11 +37,11 @@ jobs:
         shell: "bash -l {0}"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       # Install dependencies
       - name: Set up Python via Micromamba
-        uses: mamba-org/setup-micromamba@v2
+        uses: mamba-org/setup-micromamba@v3
         with:
           environment-file: environment.yml
           init-shell: bash
@@ -55,7 +55,7 @@ jobs:
 
       # Upload the book's HTML as an artifact
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: "deep-learning-intro-for-hep/_build/html"
 
@@ -64,4 +64,4 @@ jobs:
         id: deployment
         # only deploy if merging into main, not if testing a PR
         if: github.ref_name == 'main'
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
